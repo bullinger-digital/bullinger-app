@@ -1,0 +1,13 @@
+<meta xmlns="http://exist-db.org/xquery/repo">
+    <description>Heinrich-Bullinger-Briefwechseledition</description>
+    <author />
+    <status>beta</status>
+    <license>GNU-LGPL</license>
+    <copyright>true</copyright>
+    <type>application</type>
+    <prepare>pre-install.xql</prepare>
+    <finish>post-install.xql</finish>
+    <target>bullinger</target>
+    <permissions user="bullinger" group="tei" mode="rw-r--r--" />
+    <deployed>2022-11-30T16:46:15.982Z</deployed>
+</meta>
