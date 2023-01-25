@@ -3,6 +3,6 @@
   "version" : "1.0.0",
   "description" : "Heinrich-Bullinger-Briefwechseledition",
   "dependencies" : {
-    "@teipublisher/pb-components" : "1.36.1"
+    "@teipublisher/pb-components" : "1.42.0"
   }
 }

@@ -34,7 +34,7 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
  : In this case, change $config:webcomponents-cdn to point to http://localhost:port 
  : (default: 8000, but check where your server is running).
  :)
-declare variable $config:webcomponents :="1.36.1";
+declare variable $config:webcomponents :="local";
 
 (:~
  : CDN URL to use for loading webcomponents. Could be changed if you created your
@@ -303,7 +303,7 @@ declare variable $config:context-path :=
 (:~
  : The root of the collection hierarchy containing data.
  :)
-declare variable $config:data-root := "/db/apps/bullinger-data/data";
+declare variable $config:data-root := "/db/apps/bullinger-data/data/letters";
 
 (:~
  : The root of the collection hierarchy whose files should be displayed

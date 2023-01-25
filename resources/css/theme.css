@@ -1,11 +1,11 @@
 /* Due to a safari issue, relative paths to background images won't work as variables, so we list them here */
 
 .logo {
-    background-image: url("../images/tei-publisher-logo-contrast-color.svg");
+    background-image: url("../images/bullinger-digital.svg");
 }
 
 .splash {
-    background-image: url("../images/tei-publisher-logo-color.svg");
+    background-image: url("../images/bullinger-digital.svg");
 }
 
 .menubar {
@@ -44,8 +44,8 @@ body {
     --pb-annotation-stripes-light: #e0e0ef;
     --pb-annotation-stripes-dark: #50505f;
     --pb-drawer-background-color: var(--pb-color-inverse);
-    --pb-menubar-background-color: #35424b;
-    --pb-menubar-color: var(--pb-color-inverse);
+    --pb-menubar-background-color: #d1dae0;
+    --pb-menubar-color: var(--pb-color-primary);
     --pb-toolbar-background-color: #d1dae0;
     --pb-toolbar-color: var(--pb-color-primary);
     --paper-tooltip-delay-in: 200;
@@ -60,8 +60,8 @@ body {
     --pb-popover-line-height: 1.2;
     --pb-popover-placement: "bottom";
     --pb-popover-fallback-placement: "top right left";
-    --pb-lang-input-color: var(--pb-color-inverse);
-    --pb-lang-label-color: var(--pb-color-inverse);
+    --pb-lang-input-color: var(--pb-color-primary);
+    --pb-lang-label-color: var(--pb-color-primary);
     --pb-link-color: black;
     --pb-link-font-family: var(--pb-serif-font-family);
     --pb-highlight-color: #F9E976;
