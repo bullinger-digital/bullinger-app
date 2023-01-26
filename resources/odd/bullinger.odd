@@ -53,6 +53,73 @@
             <param name="title" value="desc"/>
         </model>
                 </elementSpec>
+            <elementSpec ident="teiHeader" mode="change">
+                    <model output="latex" behaviour="metadata"/>
+                    <model output="fo" behaviour="omit"/>
+                    <model output="web" predicate="$parameters?header='short'" behaviour="block"/>
+                    <model output="web" behaviour="metadata"/>
+                </elementSpec>
+                <elementSpec ident="summary" mode="add">
+                    <model behaviour="block"/>
+                </elementSpec>
+                <elementSpec ident="TEI" mode="change">
+                    <modelSequence predicate="$parameters?view='metadata'">
+            <model behaviour="block">
+                <param name="date" value="format-date(.//correspAction[@type=&#34;sent&#34;]/date/@when, &#34;[D1o] [MNn] [Y]&#34;, &#34;de&#34;, (), ())"/>
+                <param name="sender" value="let $pers-id := .//correspAction[@type=&#34;sent&#34;]/persName/@ref let $place-id := .//correspAction[@type=&#34;sent&#34;]/place/@source let $person := doc(&#34;/db/apps/bullinger-data/data/index/persons.xml&#34;)//persName[@xml:id=$pers-id] let $place := doc(&#34;/db/apps/bullinger-data/data/index/places.xml&#34;)//place[@xml:id=$place-id]/settlement/text() return     &lt;span&gt;&lt;a href=&#34;&#34;&gt;{$person/forename/text() || &#34; &#34; || $person/surname/text()}&lt;/a&gt;{if($place) then (&#34;, &#34; || $place) else ()}&lt;/span&gt;"/>
+                <param name="recipient" value="let $pers-id := .//correspAction[@type=&#34;received&#34;]/persName/@ref let $place-id := .//correspAction[@type=&#34;received&#34;]/place/@source let $person := doc(&#34;/db/apps/bullinger-data/data/index/persons.xml&#34;)//persName[@xml:id=$pers-id] let $place := doc(&#34;/db/apps/bullinger-data/data/index/places.xml&#34;)//place[@xml:id=$place-id]/settlement/text() return     &lt;span&gt;&lt;a href=&#34;&#34;&gt;{$person/forename/text() || &#34; &#34; || $person/surname/text()}&lt;/a&gt;{if($place) then (&#34;, &#34; || $place) else ()}&lt;/span&gt;"/>
+                <param name="autograph" value="let $archive-id := .//msIdentifier/repository/@ref let $archive := doc(&#34;/db/apps/bullinger-data/data/index/archives.xml&#34;)//org[@xml:id=$archive-id]     return   &lt;span&gt;&lt;a href=&#34;{$archive/idno[@subtype=&#34;url&#34;]/text()}&#34;&gt;{$archive/orgName/text()}&lt;/a&gt;, {.//msIdentifier/idno[@subtype=&#34;Autograph&#34;]/text()}&lt;/span&gt;"/>
+                <param name="lang" value=".//langUsage/language/text()"/>
+                <param name="printed" value=".//listBibl/bibl[@subtype=&#34;Teilübersetzung&#34;]/title/text()"/>
+                <param name="hbbw-no" value="./@source/string() || &#34;, &#34; || ./@n/string()"/>
+                <pb:template xmlns="" xml:space="preserve"><pb-collapse class="metadata" expand-icon="icons:chevron-right" collapse-icon="icons:expand-more">
+  <div slot="collapse-trigger">
+    <h4 class="block-title accordion">Metadata</h4>
+  </div>
+  <div id="sourceDesc" slot="collapse-content">
+    <div>
+      <div>Datum</div>
+      <div>[[date]]</div>
+    </div>
+    <div>
+      <div>Absender</div>
+      <div>[[sender]]</div>
+    </div>
+    <div>
+      <div>Empfänger</div>
+      <div>[[recipient]]</div>
+    </div>
+    <div>
+      <div>Autograph</div>
+      <div>[[autograph]]</div>
+    </div>
+    <div>
+      <div>Sprache</div>
+      <div>[[lang]]</div>
+    </div>
+    <div>
+      <div>Gedruckt</div>
+      <div>[[printed]]</div>
+    </div>
+    <div>
+      <div>HBBW-Briefnummer</div>
+      <div>[[hbbw-no]]</div>
+    </div>
+  </div>
+</pb-collapse></pb:template>
+            </model>
+            <model predicate="exists(.//msContents/summary/node())" behaviour="inline">
+                <param name="content" value=".//msContents/summary"/>
+                <pb:template xmlns="" xml:space="preserve"><pb-collapse class="metadata" expand-icon="icons:chevron-right" collapse-icon="icons:expand-more">
+  <div slot="collapse-trigger">
+    <h4 class="block-title accordion">Regest</h4>
+  </div>
+  <div id="regest" slot="collapse-content">[[content]]</div>
+</pb-collapse></pb:template>
+            </model>
+        </modelSequence>
+                    <model behaviour="document"/>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>
