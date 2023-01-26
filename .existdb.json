@@ -10,8 +10,10 @@
     "sync": {
         "server": "localhost",
         "ignore": [
+            ".devcontainer"
             ".existdb.json",
             ".git/**",
+            "build/**",
             "node_modules/**",
             "bower_components/**",
             "package*.json",

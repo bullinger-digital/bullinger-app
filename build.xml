@@ -19,7 +19,7 @@
         <mkdir dir="${app.build.dir}"/>
         <copy todir="${app.build.dir}">
             <fileset dir="${basedir}"
-                excludes="${build.dir}/**,build.xml,README.md,.*,repo.xml.tmpl,node_modules/**,package*.json,local.node-exist.json,gulpfile.js"/>
+                excludes="${build.dir}/**,build.xml,README.md,.*,repo.xml.tmpl,node_modules/**,package*.json,local.node-exist.json,gulpfile.js,.devcontainer"/>
         </copy>
         <copy todir="${app.build.dir}" overwrite="true" verbose="true">
             <fileset file="*.xml.tmpl"/>

@@ -86,7 +86,7 @@ declare variable $config:default-view :="div";
  : The default HTML template used for viewing document content. This can be
  : overwritten by the teipublisher processing instruction inside a TEI document.
  :)
-declare variable $config:default-template :="view.html";
+declare variable $config:default-template :="facsimile.html";
 
 (:
  : The element to search by default, either 'tei:div' or 'tei:text'.
@@ -322,14 +322,14 @@ declare variable $config:data-exclude :=
 (:~
  : The main ODD to be used by default
  :)
-declare variable $config:default-odd :="teipublisher.odd";
+declare variable $config:default-odd :="bullinger.odd";
 
 (:~
  : Complete list of ODD files used by the app. If you add another ODD to this list,
  : make sure to run modules/generate-pm-config.xql to update the main configuration
  : module for transformations (modules/pm-config.xql).
  :)
-declare variable $config:odd-available :=("teipublisher.odd");
+declare variable $config:odd-available :=("bullinger.odd");
 
 (:~
  : List of ODD files which are used internally only, i.e. not for displaying information
