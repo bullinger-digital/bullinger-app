@@ -65,42 +65,21 @@
                 <elementSpec ident="TEI" mode="change">
                     <modelSequence predicate="$parameters?view='metadata'">
             <model behaviour="block">
-                <param name="date" value="format-date(.//correspAction[@type=&#34;sent&#34;]/date/@when, &#34;[D1o] [MNn] [Y]&#34;, &#34;de&#34;, (), ())"/>
-                <param name="sender" value="let $pers-id := .//correspAction[@type=&#34;sent&#34;]/persName/@ref let $place-id := .//correspAction[@type=&#34;sent&#34;]/place/@source let $person := doc(&#34;/db/apps/bullinger-data/data/index/persons.xml&#34;)//persName[@xml:id=$pers-id] let $place := doc(&#34;/db/apps/bullinger-data/data/index/places.xml&#34;)//place[@xml:id=$place-id]/settlement/text() return     &lt;span&gt;&lt;a href=&#34;&#34;&gt;{$person/forename/text() || &#34; &#34; || $person/surname/text()}&lt;/a&gt;{if($place) then (&#34;, &#34; || $place) else ()}&lt;/span&gt;"/>
-                <param name="recipient" value="let $pers-id := .//correspAction[@type=&#34;received&#34;]/persName/@ref let $place-id := .//correspAction[@type=&#34;received&#34;]/place/@source let $person := doc(&#34;/db/apps/bullinger-data/data/index/persons.xml&#34;)//persName[@xml:id=$pers-id] let $place := doc(&#34;/db/apps/bullinger-data/data/index/places.xml&#34;)//place[@xml:id=$place-id]/settlement/text() return     &lt;span&gt;&lt;a href=&#34;&#34;&gt;{$person/forename/text() || &#34; &#34; || $person/surname/text()}&lt;/a&gt;{if($place) then (&#34;, &#34; || $place) else ()}&lt;/span&gt;"/>
-                <param name="autograph" value="let $archive-id := .//msIdentifier/repository/@ref let $archive := doc(&#34;/db/apps/bullinger-data/data/index/archives.xml&#34;)//org[@xml:id=$archive-id]     return   &lt;span&gt;&lt;a href=&#34;{$archive/idno[@subtype=&#34;url&#34;]/text()}&#34;&gt;{$archive/orgName/text()}&lt;/a&gt;, {.//msIdentifier/idno[@subtype=&#34;Autograph&#34;]/text()}&lt;/span&gt;"/>
-                <param name="lang" value=".//langUsage/language/text()"/>
-                <param name="printed" value=".//listBibl/bibl[@subtype=&#34;Teilübersetzung&#34;]/title/text()"/>
+                <param name="senderAndRecipient" value=".//correspAction"/>
+                <param name="autograph" value=".//msIdentifier"/>
+                <param name="lang" value=".//langUsage/language"/>
+                <param name="printed" value=".//listBibl/bibl"/>
                 <param name="hbbw-no" value="./@source/string() || &#34;, &#34; || ./@n/string()"/>
+                <pb:set-param name="foo" value="'foobar2'"/>
                 <pb:template xmlns="" xml:space="preserve"><pb-collapse class="metadata" expand-icon="icons:chevron-right" collapse-icon="icons:expand-more">
   <div slot="collapse-trigger">
     <h4 class="block-title accordion">Metadata</h4>
   </div>
-  <div id="sourceDesc" slot="collapse-content">
-    <div>
-      <div>Datum</div>
-      <div>[[date]]</div>
-    </div>
-    <div>
-      <div>Absender</div>
-      <div>[[sender]]</div>
-    </div>
-    <div>
-      <div>Empfänger</div>
-      <div>[[recipient]]</div>
-    </div>
-    <div>
-      <div>Autograph</div>
-      <div>[[autograph]]</div>
-    </div>
-    <div>
-      <div>Sprache</div>
-      <div>[[lang]]</div>
-    </div>
-    <div>
-      <div>Gedruckt</div>
-      <div>[[printed]]</div>
-    </div>
+  <div id="sourceDesc" slot="collapse-content">  
+    [[senderAndRecipient]]
+    [[autograph]]
+    [[lang]]
+    [[printed]]
     <div>
       <div>HBBW-Briefnummer</div>
       <div>[[hbbw-no]]</div>
@@ -119,6 +98,74 @@
             </model>
         </modelSequence>
                     <model behaviour="document"/>
+                </elementSpec>
+            <elementSpec ident="language" mode="add">
+                    <model predicate="$parameters?view='metadata'" behaviour="inline">
+            <param name="content" value="text()"/>
+            <pb:template xmlns="" xml:space="preserve">    <div>
+      <div>Sprache</div>
+      <div>[[content]]</div>
+    </div></pb:template>
+        </model>
+                </elementSpec>
+                <elementSpec ident="msIdentifier" mode="add">
+                    <model predicate="$parameters?view='metadata'" behaviour="inline">
+            <param name="repository" value="repository"/>
+            <param name="idno" value="if(idno/@subtype='Autograph') then (', ' || ./idno[@subtype='Autograph']/text()) else ()"/>
+            <pb:set-param name="foo" value="'foobar1'"/>
+            <pb:set-param name="archive" value="let $archive-id := ./repository/@ref return doc('/db/apps/bullinger-data/data/index/archives.xml')//org[@xml:id=$archive-id]"/>
+            <pb:template xmlns="" xml:space="preserve"><div>
+  <div>Autograph</div>
+  <div>[[repository]][[idno]]</div>
+</div></pb:template>
+        </model>
+                </elementSpec>
+                <elementSpec ident="correspAction" mode="add">
+                    <modelSequence predicate="@type = &#34;sent&#34; and $parameters?view='metadata'">
+            <model behaviour="inline">
+                <param name="content" value="format-date(./date/@when, '[D1o] [MNn] [Y]', 'de', (), ())"/>
+                <pb:template xmlns="" xml:space="preserve"><div>
+  <div>Date</div>
+  <div>[[content]]</div>
+</div></pb:template>
+            </model>
+            <model behaviour="inline">
+                <param name="content" value="let $pers-id := ./persName/@ref let $place-id := ./place/@source let $person := doc(&#34;/db/apps/bullinger-data/data/index/persons.xml&#34;)//persName[@xml:id=$pers-id] let $place := doc(&#34;/db/apps/bullinger-data/data/index/places.xml&#34;)//place[@xml:id=$place-id]/settlement/text() return     &lt;span&gt;&lt;a href=&#34;&#34;&gt;{$person/forename/text() || &#34; &#34; || $person/surname/text()}&lt;/a&gt;{if($place) then (&#34;, &#34; || $place) else ()}&lt;/span&gt;"/>
+                <pb:template xmlns="" xml:space="preserve"><div>
+  <div>Absender</div>
+  <div>[[content]]</div>
+</div></pb:template>
+            </model>
+        </modelSequence>
+                    <model predicate="@type = &#34;received&#34; and $parameters?view='metadata'" behaviour="inline">
+            <param name="content" value="let $pers-id := ./persName/@ref let $place-id := ./place/@source let $person := doc(&#34;/db/apps/bullinger-data/data/index/persons.xml&#34;)//persName[@xml:id=$pers-id] let $place := doc(&#34;/db/apps/bullinger-data/data/index/places.xml&#34;)//place[@xml:id=$place-id]/settlement/text() return     &lt;span&gt;&lt;a href=&#34;&#34;&gt;{$person/forename/text() || &#34; &#34; || $person/surname/text()}&lt;/a&gt;{if($place) then (&#34;, &#34; || $place) else ()}&lt;/span&gt;"/>
+            <pb:template xmlns="" xml:space="preserve">    <div>
+      <div>Empfänger</div>
+      <div>[[recipient]]</div>
+    </div></pb:template>
+        </model>
+                </elementSpec>
+                <elementSpec ident="bibl" mode="change">
+                    <model predicate="@subtype=&#34;Teilübersetzung&#34; and $parameters?view='metadata'" behaviour="inline">
+            <param name="content" value="title/text()"/>
+            <pb:template xmlns="" xml:space="preserve">    <div>
+      <div>Gedruckt</div>
+      <div>[[content]]</div>
+    </div></pb:template>
+        </model>
+                    <model predicate="parent::listBibl" behaviour="listItem"/>
+                    <model behaviour="inline"/>
+                </elementSpec>
+                <elementSpec ident="repository" mode="add">
+                    <model predicate="$parameters?view='metadata' and exists($parameters?archive/idno[@subtype='url'])" behaviour="inline">
+            <param name="uri" value="$parameters?archive/idno[@subtype=&#34;url&#34;]/text()"/>
+            <param name="label" value="$parameters?archive/orgName/text()"/>
+            <pb:template xmlns="" xml:space="preserve"><a href="[[uri]]" target="_blank">[[label]]</a></pb:template>
+        </model>
+                    <model predicate="$parameters?view='metadata'" behaviour="inline">
+            <param name="label" value="$parameters?archive/orgName/text()"/>
+            <pb:template xmlns="" xml:space="preserve">[[label]]</pb:template>
+        </model>
                 </elementSpec>
             </schemaSpec>
         </body>
