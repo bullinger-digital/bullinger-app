@@ -1,11 +1,24 @@
 #sourceDesc * {
-    color:red;
+    color:blue;
+}
+
+#sourceDesc ul {
+    padding-left:1rem;
 }
 
 #sourceDesc > div {
     display:table-row;    
 } 
 
-#sourceDesc > div > div {
-    display:table-cell;    
+#sourceDesc > div:nth-child(odd) { 
+    background:rgb(248,245,242);
 } 
+
+#sourceDesc > div > div {
+    display:table-cell;
+    padding:0.3rem;
+} 
+#sourceDesc > div > div:nth-child(1) {
+    white-space:nowrap;
+    padding-right:1rem;
+}
