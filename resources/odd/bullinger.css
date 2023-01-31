@@ -1,0 +1,11 @@
+#sourceDesc * {
+    color:red;
+}
+
+#sourceDesc > div {
+    display:table-row;    
+} 
+
+#sourceDesc > div > div {
+    display:table-cell;    
+} 

@@ -29,7 +29,9 @@
             </sourceDesc>
         </fileDesc>
         <encodingDesc>
-            <tagsDecl/>
+            <tagsDecl>
+                <rendition source="bullinger.css"/>
+            </tagsDecl>
         </encodingDesc>
         <revisionDesc>
             <change when="2017-09-08">adjust metadata in teiHeader</change>
@@ -102,52 +104,45 @@
                     <model behaviour="document"/>
                 </elementSpec>
             <elementSpec ident="language" mode="add">
-                    <model predicate="$parameters?view='metadata'" behaviour="inline">
+                    <model predicate="$parameters?view='metadata'" behaviour="block">
             <param name="content" value="text()"/>
-            <pb:template xmlns="" xml:space="preserve">    <div>
-      <div>Sprache</div>
-      <div>[[content]]</div>
-    </div></pb:template>
+            <pb:template xmlns="" xml:space="preserve"><div>Sprache</div>
+<div>[[content]]</div></pb:template>
         </model>
                 </elementSpec>
                 <elementSpec ident="msIdentifier" mode="add"/>
                 <elementSpec ident="correspAction" mode="add">
                     <modelSequence predicate="@type = &#34;sent&#34; and $parameters?view='metadata'">
-            <model behaviour="inline">
+            <model behaviour="block">
                 <param name="content" value="if(exists(./date/@when)) then (format-date(./date/@when, '[D1o] [MNn] [Y]', 'de', (), ())) else if (exists(./date/@notBefore) and exists(./date/@notAfter)) then (&#34;Zwischen &#34; || format-date(./date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) || &#34; und &#34; || format-date(./date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ()))  else if(exists(./date/@notBefore)) then (&#34;Nach &#34; || format-date(./date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) ) else if(exists(./date/@notAfter)) then (&#34;Vor &#34; || format-date(./date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ())) else (&#34;Unbekannt&#34;)"/>
-                <pb:template xmlns="" xml:space="preserve"><div>
-  <div>Date</div>
-  <div>[[content]]</div>
-</div></pb:template>
+                <pb:template xmlns="" xml:space="preserve"><div>Date</div>
+<div>[[content]]</div>
+</pb:template>
             </model>
-            <model behaviour="inline">
+            <model behaviour="block">
                 <param name="content" value="*[local-name() != 'date']"/>
                 <pb:set-param name="place" value="let $place-id := ./place/@source  return doc('/db/apps/bullinger-data/data/index/places.xml')//place[@xml:id=$place-id]/settlement/text()"/>
-                <pb:template xmlns="" xml:space="preserve"><div>
-  <div>Absender</div>
-  <div>[[content]]</div>
-</div></pb:template>
+                <pb:template xmlns="" xml:space="preserve"><div>Absender</div>
+<div>[[content]]</div></pb:template>
             </model>
         </modelSequence>
-                    <model predicate="@type = &#34;received&#34; and $parameters?view='metadata'" behaviour="inline">
+                    <model predicate="@type = &#34;received&#34; and $parameters?view='metadata'" behaviour="block">
             <param name="content" value="*[local-name() != 'date']"/>
             <pb:set-param name="place" value="let $place-id := ./place/@source  return doc('/db/apps/bullinger-data/data/index/places.xml')//place[@xml:id=$place-id]/settlement/text()"/>
-            <pb:template xmlns="" xml:space="preserve">    <div>
-      <div>Empfänger</div>
-      <div>[[content]]</div>     
-    </div></pb:template>
+            <pb:template xmlns="" xml:space="preserve"><div>Empfänger</div>
+<div>[[content]]</div></pb:template>
         </model>
                 </elementSpec>
                 <elementSpec ident="bibl" mode="change">
-                    <model predicate="@subtype=&#34;Teilübersetzung&#34; and $parameters?view='metadata'" behaviour="inline">
-            <param name="content" value="title/text()"/>
-            <pb:template xmlns="" xml:space="preserve">    <div>
-      <div>Gedruckt</div>
-      <div>[[content]]</div>
-    </div></pb:template>
+                    <model predicate="$parameters?view='metadata' and not(@type='Gedruckt')" behaviour="omit">
+            <desc>don't display bibl items with type != "Gedruckt"</desc>
         </model>
+                    <model predicate="$parameters?view='metadata' and @type='Gedruckt' and @subtype='Erwähnung'" behaviour="listItem">
+            <param name="content" value="./title/text()"/>
+            <pb:template xmlns="" xml:space="preserve">Erwähnung: [[content]]</pb:template>
+        </model>
+                    <model predicate="$parameters?view='metadata' and @type='Gedruckt' and not(@subtype)" behaviour="listItem"/>
                     <model predicate="parent::listBibl" behaviour="listItem"/>
-                    <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="repository" mode="add">
                     <model predicate="$parameters?view='metadata' and exists($parameters?archive/idno[@subtype='url'])" behaviour="inline">
@@ -206,17 +201,14 @@
         </model>
                 </elementSpec>
                 <elementSpec ident="listBibl" mode="change">
-                    <model predicate="$parameters?view='metadata'" behaviour="inline">
+                    <model predicate="$parameters?view='metadata'" behaviour="block">
             <param name="bibl" value="bibl"/>
-            <pb:template xmlns="" xml:space="preserve"><div>
-  <div>Gedruckt</div>
-  <div>[[bibl]]</div>
-</div></pb:template>
+            <pb:template xmlns="" xml:space="preserve"><div>Gedruckt</div>
+<div><ul>[[bibl]]</ul></div></pb:template>
         </model>
                     <model predicate="bibl" behaviour="list">
             <param name="content" value="bibl"/>
         </model>
-                    <model behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="msDesc" mode="add">
                     <modelSequence predicate="$parameters?view='metadata'">
@@ -224,19 +216,15 @@
                 <param name="repository" value=".//repository"/>
                 <param name="idno" value="if(msIdentifier/idno/@subtype='Autograph') then (', ' || ./msIdentifier/idno[@subtype='Autograph']/text()) else ()"/>
                 <pb:set-param name="archive" value="let $archive-id := ./msIdentifier/repository/@ref return doc('/db/apps/bullinger-data/data/index/archives.xml')//org[@xml:id=$archive-id]"/>
-                <pb:template xmlns="" xml:space="preserve"><div>
-  <div>Autograph</div>
-  <div>[[repository]][[idno]]</div>
-</div></pb:template>
+                <pb:template xmlns="" xml:space="preserve"><div>Autograph</div>
+<div>[[repository]][[idno]]</div></pb:template>
             </model>
             <model predicate="@subtype='Kopie'" behaviour="block">
                 <param name="repository" value=".//repository"/>
                 <param name="idno" value="if(./msIdentifier/idno/@subtype='Kopie') then (', ' || ./msIdentifier/idno[@subtype='Kopie']/text()) else ()"/>
                 <pb:set-param name="archive" value="let $archive-id := ./msIdentifier/repository/@ref return doc('/db/apps/bullinger-data/data/index/archives.xml')//org[@xml:id=$archive-id]"/>
-                <pb:template xmlns="" xml:space="preserve"><div>
-  <div>Kopie</div>
-  <div>[[repository]][[idno]]</div>
-</div></pb:template>
+                <pb:template xmlns="" xml:space="preserve"><div>Kopie</div>
+<div>[[repository]][[idno]]</div></pb:template>
             </model>
         </modelSequence>
                 </elementSpec>
