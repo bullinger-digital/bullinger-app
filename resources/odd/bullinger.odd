@@ -68,9 +68,11 @@
                 <param name="senderAndRecipient" value=".//correspAction"/>
                 <param name="autograph" value=".//msIdentifier"/>
                 <param name="lang" value=".//langUsage/language"/>
-                <param name="printed" value=".//listBibl/bibl"/>
+                <param name="printed" value=".//listBibl"/>
                 <param name="hbbw-no" value="./@source/string() || &#34;, &#34; || ./@n/string()"/>
-                <pb:set-param name="foo" value="'foobar2'"/>
+                <pb:set-param name="persons" value="for $person in .//persName return   doc('/db/apps/bullinger-data/data/index/persons.xml')//person[persName/@xml:id = $person/@ref]"/>
+                <pb:set-param name="orgs" value="for $org in .//orgName return   doc('/db/apps/bullinger-data/data/index/orgs.xml')//org[@xml:id = $org/@ref]"/>
+                <pb:set-param name="roles" value="for $role in .//personGrp return   doc('/db/apps/bullinger-data/data/index/roles.xml')//personGrp[@xml:id = $role/@ref]"/>
                 <pb:template xmlns="" xml:space="preserve"><pb-collapse class="metadata" expand-icon="icons:chevron-right" collapse-icon="icons:expand-more">
   <div slot="collapse-trigger">
     <h4 class="block-title accordion">Metadata</h4>
@@ -123,14 +125,15 @@
                 <elementSpec ident="correspAction" mode="add">
                     <modelSequence predicate="@type = &#34;sent&#34; and $parameters?view='metadata'">
             <model behaviour="inline">
-                <param name="content" value="format-date(./date/@when, '[D1o] [MNn] [Y]', 'de', (), ())"/>
+                <param name="content" value="if(exists(./date/@when)) then (format-date(./date/@when, '[D1o] [MNn] [Y]', 'de', (), ())) else if (exists(./date/@notBefore) and exists(./date/@notAfter)) then (&#34;Zwischen &#34; || format-date(./date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) || &#34; und &#34; || format-date(./date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ()))  else if(exists(./date/@notBefore)) then (&#34;Nach &#34; || format-date(./date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) ) else if(exists(./date/@notAfter)) then (&#34;Vor &#34; || format-date(./date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ())) else (&#34;Unbekannt&#34;)"/>
                 <pb:template xmlns="" xml:space="preserve"><div>
   <div>Date</div>
   <div>[[content]]</div>
 </div></pb:template>
             </model>
             <model behaviour="inline">
-                <param name="content" value="let $pers-id := ./persName/@ref let $place-id := ./place/@source let $person := doc(&#34;/db/apps/bullinger-data/data/index/persons.xml&#34;)//persName[@xml:id=$pers-id] let $place := doc(&#34;/db/apps/bullinger-data/data/index/places.xml&#34;)//place[@xml:id=$place-id]/settlement/text() return     &lt;span&gt;&lt;a href=&#34;&#34;&gt;{$person/forename/text() || &#34; &#34; || $person/surname/text()}&lt;/a&gt;{if($place) then (&#34;, &#34; || $place) else ()}&lt;/span&gt;"/>
+                <param name="content" value="*[local-name() != 'date']"/>
+                <pb:set-param name="place" value="let $place-id := ./place/@source  return doc('/db/apps/bullinger-data/data/index/places.xml')//place[@xml:id=$place-id]/settlement/text()"/>
                 <pb:template xmlns="" xml:space="preserve"><div>
   <div>Absender</div>
   <div>[[content]]</div>
@@ -138,10 +141,11 @@
             </model>
         </modelSequence>
                     <model predicate="@type = &#34;received&#34; and $parameters?view='metadata'" behaviour="inline">
-            <param name="content" value="let $pers-id := ./persName/@ref let $place-id := ./place/@source let $person := doc(&#34;/db/apps/bullinger-data/data/index/persons.xml&#34;)//persName[@xml:id=$pers-id] let $place := doc(&#34;/db/apps/bullinger-data/data/index/places.xml&#34;)//place[@xml:id=$place-id]/settlement/text() return     &lt;span&gt;&lt;a href=&#34;&#34;&gt;{$person/forename/text() || &#34; &#34; || $person/surname/text()}&lt;/a&gt;{if($place) then (&#34;, &#34; || $place) else ()}&lt;/span&gt;"/>
+            <param name="content" value="*[local-name() != 'date']"/>
+            <pb:set-param name="place" value="let $place-id := ./place/@source  return doc('/db/apps/bullinger-data/data/index/places.xml')//place[@xml:id=$place-id]/settlement/text()"/>
             <pb:template xmlns="" xml:space="preserve">    <div>
       <div>Empfänger</div>
-      <div>[[recipient]]</div>
+      <div>[[content]]</div>     
     </div></pb:template>
         </model>
                 </elementSpec>
@@ -166,6 +170,64 @@
             <param name="label" value="$parameters?archive/orgName/text()"/>
             <pb:template xmlns="" xml:space="preserve">[[label]]</pb:template>
         </model>
+                </elementSpec>
+                <elementSpec ident="titleStmt" mode="change">
+                    <model output="latex" behaviour="meta">
+            <param name="content" value="."/>
+        </model>
+                    <model output="fo" behaviour="heading"/>
+                    <model predicate="$parameters?mode='title'" behaviour="heading">
+            <param name="content" value="title[not(@type)]"/>
+            <param name="level" value="5"/>
+        </model>
+                    <modelSequence output="web" predicate="$parameters?header='short'">
+            <model behaviour="link">
+                <param name="content" value="title[1]"/>
+                <param name="uri" value="$parameters?doc"/>
+            </model>
+            <model behaviour="block">
+                <param name="content" value="subsequence(title, 2)"/>
+            </model>
+            <model behaviour="block">
+                <param name="content" value="author"/>
+            </model>
+        </modelSequence>
+                    <model output="web" behaviour="block"/>
+                </elementSpec>
+                <elementSpec ident="persName" mode="add">
+                    <model predicate="$parameters?view='metadata'" behaviour="block" cssClass="persName">
+            <param name="forename" value="let $ref := ./@ref return $parameters?persons/persName[@xml:id = $ref]/forename"/>
+            <param name="surname" value="let $ref := ./@ref return $parameters?persons/persName[@xml:id = $ref]/surname"/>
+            <param name="place" value="if($parameters?place) then (&#34;, &#34; || $parameters?place ) else ()"/>
+            <pb:template xmlns="" xml:space="preserve">[[forename]] [[surname]][[place]]</pb:template>
+        </model>
+                </elementSpec>
+                <elementSpec ident="orgName" mode="add">
+                    <model predicate="$parameters?view='metadata'" behaviour="block">
+            <param name="org" value="let $ref := @ref return $parameters?orgs[@xml:id = $ref]/text()"/>
+            <param name="place" value="if($parameters?place) then (&#34;, &#34; || $parameters?place ) else ()"/>
+            <pb:template xmlns="" xml:space="preserve">[[org]][[place]]</pb:template>
+        </model>
+                </elementSpec>
+                <elementSpec ident="personGrp" mode="add">
+                    <model predicate="$parameters?view='metadata'" behaviour="block">
+            <param name="group" value="let $ref := @ref return $parameters?roles[@xml:id = $ref]/@role/string()"/>
+            <param name="place" value="if($parameters?place) then (&#34;, &#34; || $parameters?place ) else ()"/>
+            <pb:template xmlns="" xml:space="preserve">[[group]][[place]]</pb:template>
+        </model>
+                </elementSpec>
+                <elementSpec ident="listBibl" mode="change">
+                    <model predicate="$parameters?view='metadata'" behaviour="inline">
+            <param name="bibl" value="bibl"/>
+            <pb:template xmlns="" xml:space="preserve"><div>
+  <div>Gedruckt</div>
+  <div>[[bibl]]</div>
+</div></pb:template>
+        </model>
+                    <model predicate="bibl" behaviour="list">
+            <param name="content" value="bibl"/>
+        </model>
+                    <model behaviour="block"/>
                 </elementSpec>
             </schemaSpec>
         </body>
