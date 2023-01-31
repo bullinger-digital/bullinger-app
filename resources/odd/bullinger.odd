@@ -66,7 +66,7 @@
                     <modelSequence predicate="$parameters?view='metadata'">
             <model behaviour="block">
                 <param name="senderAndRecipient" value=".//correspAction"/>
-                <param name="autograph" value=".//msIdentifier"/>
+                <param name="msDesc" value=".//msDesc"/>
                 <param name="lang" value=".//langUsage/language"/>
                 <param name="printed" value=".//listBibl"/>
                 <param name="hbbw-no" value="./@source/string() || &#34;, &#34; || ./@n/string()"/>
@@ -79,7 +79,7 @@
   </div>
   <div id="sourceDesc" slot="collapse-content">  
     [[senderAndRecipient]]
-    [[autograph]]
+    [[msDesc]]
     [[lang]]
     [[printed]]
     <div>
@@ -110,18 +110,7 @@
     </div></pb:template>
         </model>
                 </elementSpec>
-                <elementSpec ident="msIdentifier" mode="add">
-                    <model predicate="$parameters?view='metadata'" behaviour="inline">
-            <param name="repository" value="repository"/>
-            <param name="idno" value="if(idno/@subtype='Autograph') then (', ' || ./idno[@subtype='Autograph']/text()) else ()"/>
-            <pb:set-param name="foo" value="'foobar1'"/>
-            <pb:set-param name="archive" value="let $archive-id := ./repository/@ref return doc('/db/apps/bullinger-data/data/index/archives.xml')//org[@xml:id=$archive-id]"/>
-            <pb:template xmlns="" xml:space="preserve"><div>
-  <div>Autograph</div>
-  <div>[[repository]][[idno]]</div>
-</div></pb:template>
-        </model>
-                </elementSpec>
+                <elementSpec ident="msIdentifier" mode="add"/>
                 <elementSpec ident="correspAction" mode="add">
                     <modelSequence predicate="@type = &#34;sent&#34; and $parameters?view='metadata'">
             <model behaviour="inline">
@@ -228,6 +217,28 @@
             <param name="content" value="bibl"/>
         </model>
                     <model behaviour="block"/>
+                </elementSpec>
+                <elementSpec ident="msDesc" mode="add">
+                    <modelSequence predicate="$parameters?view='metadata'">
+            <model predicate="@subtype='Autograph'" behaviour="block">
+                <param name="repository" value=".//repository"/>
+                <param name="idno" value="if(msIdentifier/idno/@subtype='Autograph') then (', ' || ./msIdentifier/idno[@subtype='Autograph']/text()) else ()"/>
+                <pb:set-param name="archive" value="let $archive-id := ./msIdentifier/repository/@ref return doc('/db/apps/bullinger-data/data/index/archives.xml')//org[@xml:id=$archive-id]"/>
+                <pb:template xmlns="" xml:space="preserve"><div>
+  <div>Autograph</div>
+  <div>[[repository]][[idno]]</div>
+</div></pb:template>
+            </model>
+            <model predicate="@subtype='Kopie'" behaviour="block">
+                <param name="repository" value=".//repository"/>
+                <param name="idno" value="if(./msIdentifier/idno/@subtype='Kopie') then (', ' || ./msIdentifier/idno[@subtype='Kopie']/text()) else ()"/>
+                <pb:set-param name="archive" value="let $archive-id := ./msIdentifier/repository/@ref return doc('/db/apps/bullinger-data/data/index/archives.xml')//org[@xml:id=$archive-id]"/>
+                <pb:template xmlns="" xml:space="preserve"><div>
+  <div>Kopie</div>
+  <div>[[repository]][[idno]]</div>
+</div></pb:template>
+            </model>
+        </modelSequence>
                 </elementSpec>
             </schemaSpec>
         </body>
