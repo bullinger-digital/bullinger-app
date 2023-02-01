@@ -56,28 +56,20 @@
         </model>
                 </elementSpec>
             <elementSpec ident="teiHeader" mode="change">
-                    <model output="latex" behaviour="metadata"/>
-                    <model output="fo" behaviour="omit"/>
-                    <model output="web" predicate="$parameters?header='short'" behaviour="block"/>
-                    <model output="web" behaviour="metadata"/>
-                </elementSpec>
-                <elementSpec ident="summary" mode="add">
-                    <model behaviour="block"/>
-                </elementSpec>
-                <elementSpec ident="TEI" mode="change">
                     <modelSequence predicate="$parameters?view='metadata'">
-            <model behaviour="inline">
-                <pb:template xmlns="" xml:space="preserve"><h1>Title goes here</h1></pb:template>
+            <desc>TEI Header Data for Bullinger Letters</desc>
+            <model behaviour="heading">
+                <desc>TEI Title</desc>
+                <param name="level" value="1"/>
+                <pb:template xmlns="" xml:space="preserve">Title goes here</pb:template>
             </model>
-            <model behaviour="block">
+            <model behaviour="section">
+                <desc>Bullinger Metadata</desc>
                 <param name="correspAction" value=".//correspAction"/>
                 <param name="msDesc" value=".//msDesc"/>
                 <param name="lang" value=".//langUsage/language"/>
                 <param name="printed" value=".//listBibl"/>
-                <param name="hbbw-no" value="./@source/string() || &#34;, &#34; || ./@n/string()"/>
-                <pb:set-param name="persons" value="for $person in .//persName return   doc('/db/apps/bullinger-data/data/index/persons.xml')//person[persName/@xml:id = $person/@ref]"/>
-                <pb:set-param name="orgs" value="for $org in .//orgName return   doc('/db/apps/bullinger-data/data/index/orgs.xml')//org[@xml:id = $org/@ref]"/>
-                <pb:set-param name="roles" value="for $role in .//personGrp return   doc('/db/apps/bullinger-data/data/index/roles.xml')//personGrp[@xml:id = $role/@ref]"/>
+                <param name="hbbw-no" value="$parameters?hbbw-no"/>
                 <pb:template xmlns="" xml:space="preserve"><h2>Metadata</h2>
 <div id="sourceDesc">
   [[correspAction]]
@@ -90,17 +82,39 @@
   </div>
 </div></pb:template>
             </model>
-            <model predicate="exists(.//msContents/summary/node())" behaviour="inline">
+            <model predicate="exists(.//msContents/summary/node())" behaviour="section" cssClass="regest">
+                <desc>Regest</desc>
                 <param name="content" value=".//msContents/summary"/>
                 <pb:template xmlns="" xml:space="preserve"><h2>Regest</h2>
 <div id="regest">[[content]]</div></pb:template>
             </model>
-            <model predicate="exists(.//msContents//incipit/node())" behaviour="inline">
+            <model predicate="exists(.//msContents//incipit/node())" behaviour="section" cssClass="incipit">
+                <desc>Incipit</desc>
                 <param name="content" value=".//msContents//incipit"/>
                 <pb:template xmlns="" xml:space="preserve"><h2>Incipit</h2>
 <div id="incipit">[[content]]</div></pb:template>
             </model>
         </modelSequence>
+                    <model output="latex" behaviour="metadata"/>
+                    <model output="fo" behaviour="omit"/>
+                    <model output="web" predicate="$parameters?header='short'" behaviour="block"/>
+                    <model output="web" behaviour="metadata"/>
+                </elementSpec>
+                <elementSpec ident="summary" mode="add">
+                    <model behaviour="block"/>
+                </elementSpec>
+                <elementSpec ident="TEI" mode="change">
+                    <model predicate="$parameters?view='metadata'" behaviour="inline">
+            <desc>Metadata Rendering (title, metadata, regest, incipit)</desc>
+            <param name="content" value="./teiHeader"/>
+            <pb:set-param name="hbbw-no" value="./@source/string() || &#34;, &#34; || ./@n/string()"/>
+            <pb:set-param name="persons" value="for $person in .//persName return   doc('/db/apps/bullinger-data/data/index/persons.xml')//person[persName/@xml:id = $person/@ref]"/>
+            <pb:set-param name="orgs" value="for $org in .//orgName return   doc('/db/apps/bullinger-data/data/index/orgs.xml')//org[@xml:id = $org/@ref]"/>
+            <pb:set-param name="roles" value="for $role in .//personGrp return   doc('/db/apps/bullinger-data/data/index/roles.xml')//personGrp[@xml:id = $role/@ref]"/>
+            <pb:template xmlns="" xml:space="preserve"><div id="metaWrapper">
+ [[content]]
+</div></pb:template>
+        </model>
                     <model behaviour="document"/>
                 </elementSpec>
             <elementSpec ident="language" mode="add">

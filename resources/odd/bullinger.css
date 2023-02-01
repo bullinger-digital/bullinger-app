@@ -18,3 +18,21 @@
     white-space:nowrap;
     padding-right:1rem;
 }
+
+@media (min-width: 769px) {
+    #metaWrapper {
+        display:grid;
+        grid-template-columns:repeat(2, 1fr);
+        grid-gap:0.8rem;
+        grid-template-areas:"one two" 
+                            "three four"
+                            "five six";
+    }
+    #metaWrapper > h1 {
+        grid-area:one;
+        grid-column:span 2 / auto;
+    }
+    .tei-teiHeader4 {
+        grid-area:six;
+    }
+}

@@ -16,9 +16,6 @@
     align-items: center;
     padding:1rem;
 }
-main .wrapper {
-    display:block;
-}
 
 .wrapper pb-search {
     width: 10rem;
@@ -36,5 +33,23 @@ pb-view {
 
 .card pb-facsimile {
     height:80vh;
+
 }
 
+#metadata {
+    max-width:100%;
+}
+
+@media (min-width: 769px) {
+    #faksimile {
+        align-self:start;    
+    }
+    main .wrapper {
+        display:grid;
+        grid-template-columns:repeat(2, 1fr);
+        grid-gap:0.8rem;
+    }
+    main .wrapper > header {
+        grid-column:span 2 / auto;
+    }
+}
