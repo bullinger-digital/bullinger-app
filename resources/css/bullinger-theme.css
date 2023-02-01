@@ -1,0 +1,40 @@
+
+.menubar {
+    width: 100%;
+    background:white;
+}
+.toolbar {
+    width: 100%;
+    height:3rem;
+    background:rgba(233,237,234);
+}
+
+.wrapper {
+    max-width:80rem;
+    margin:0 auto;
+    display:flex;
+    align-items: center;
+    padding:1rem;
+}
+main .wrapper {
+    display:block;
+}
+
+.wrapper pb-search {
+    width: 10rem;
+}
+
+.menubar .wrapper *,
+.menubar .wrapper a {
+    display:inline-block;
+}
+
+pb-view {
+    margin:0;
+    padding:0;
+}
+
+.card pb-facsimile {
+    height:80vh;
+}
+

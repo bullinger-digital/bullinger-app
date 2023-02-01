@@ -66,8 +66,11 @@
                 </elementSpec>
                 <elementSpec ident="TEI" mode="change">
                     <modelSequence predicate="$parameters?view='metadata'">
+            <model behaviour="inline">
+                <pb:template xmlns="" xml:space="preserve"><h1>Title goes here</h1></pb:template>
+            </model>
             <model behaviour="block">
-                <param name="senderAndRecipient" value=".//correspAction"/>
+                <param name="correspAction" value=".//correspAction"/>
                 <param name="msDesc" value=".//msDesc"/>
                 <param name="lang" value=".//langUsage/language"/>
                 <param name="printed" value=".//listBibl"/>
@@ -75,39 +78,27 @@
                 <pb:set-param name="persons" value="for $person in .//persName return   doc('/db/apps/bullinger-data/data/index/persons.xml')//person[persName/@xml:id = $person/@ref]"/>
                 <pb:set-param name="orgs" value="for $org in .//orgName return   doc('/db/apps/bullinger-data/data/index/orgs.xml')//org[@xml:id = $org/@ref]"/>
                 <pb:set-param name="roles" value="for $role in .//personGrp return   doc('/db/apps/bullinger-data/data/index/roles.xml')//personGrp[@xml:id = $role/@ref]"/>
-                <pb:template xmlns="" xml:space="preserve"><pb-collapse class="metadata" expand-icon="icons:chevron-right" collapse-icon="icons:expand-more">
-  <div slot="collapse-trigger">
-    <h4 class="block-title accordion">Metadata</h4>
+                <pb:template xmlns="" xml:space="preserve"><h2>Metadata</h2>
+<div id="sourceDesc">
+  [[correspAction]]
+  [[msDesc]]
+  [[lang]]
+  [[printed]]
+  <div>
+    <div>HBBW-Briefnummer</div>
+    <div>[[hbbw-no]]</div>
   </div>
-  <div id="sourceDesc" slot="collapse-content">  
-    [[senderAndRecipient]]
-    [[msDesc]]
-    [[lang]]
-    [[printed]]
-    <div>
-      <div>HBBW-Briefnummer</div>
-      <div>[[hbbw-no]]</div>
-    </div>
-  </div>
-</pb-collapse></pb:template>
+</div></pb:template>
             </model>
             <model predicate="exists(.//msContents/summary/node())" behaviour="inline">
                 <param name="content" value=".//msContents/summary"/>
-                <pb:template xmlns="" xml:space="preserve"><pb-collapse class="metadata" expand-icon="icons:chevron-right" collapse-icon="icons:expand-more">
-  <div slot="collapse-trigger">
-    <h4 class="block-title accordion">Regest</h4>
-  </div>
-  <div id="regest" slot="collapse-content">[[content]]</div>
-</pb-collapse></pb:template>
+                <pb:template xmlns="" xml:space="preserve"><h2>Regest</h2>
+<div id="regest">[[content]]</div></pb:template>
             </model>
             <model predicate="exists(.//msContents//incipit/node())" behaviour="inline">
                 <param name="content" value=".//msContents//incipit"/>
-                <pb:template xmlns="" xml:space="preserve"><pb-collapse class="incipit" expand-icon="icons:chevron-right" collapse-icon="icons:expand-more">
-  <div slot="collapse-trigger">
-    <h4 class="block-title accordion">Incipit</h4>
-  </div>
-  <div id="incipit" slot="collapse-content">[[content]]</div>
-</pb-collapse></pb:template>
+                <pb:template xmlns="" xml:space="preserve"><h2>Incipit</h2>
+<div id="incipit">[[content]]</div></pb:template>
             </model>
         </modelSequence>
                     <model behaviour="document"/>
@@ -242,8 +233,8 @@
             <model predicate="@subtype='Kopie'" behaviour="block">
                 <param name="repository" value=".//repository"/>
                 <param name="idno" value="if(./msIdentifier/idno/@subtype='Kopie') then (', ' || ./msIdentifier/idno[@subtype='Kopie']/text()) else ()"/>
-                <pb:set-param name="archive" value="let $archive-id := ./msIdentifier/repository/@ref return doc('/db/apps/bullinger-data/data/index/archives.xml')//org[@xml:id=$archive-id]"/>
                 <param name="note" value="./msIdentifier/idno[@subtype='Hinweis']/text()"/>
+                <pb:set-param name="archive" value="let $archive-id := ./msIdentifier/repository/@ref return doc('/db/apps/bullinger-data/data/index/archives.xml')//org[@xml:id=$archive-id]"/>
                 <pb:template xmlns="" xml:space="preserve"><div>Kopie</div>
 <div>[[repository]]<pb-popover>
     <span slot="default">[[idno]]</span>
