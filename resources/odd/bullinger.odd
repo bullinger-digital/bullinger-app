@@ -58,10 +58,22 @@
             <elementSpec ident="teiHeader" mode="change">
                     <modelSequence predicate="$parameters?view='metadata'">
             <desc>TEI Header Data for Bullinger Letters</desc>
-            <model behaviour="heading">
+            <model behaviour="section">
                 <desc>TEI Title</desc>
                 <param name="level" value="1"/>
-                <pb:template xmlns="" xml:space="preserve">Title goes here</pb:template>
+                <param name="sender" value="let $items := for $item in .//correspAction[@type = &#34;sent&#34;]/*   return typeswitch($item)      case element(persName)         return           let $persName := $parameters?persons/persName[@xml:id = $item/@ref]           return $persName/forename || &#34; &#34; || $persName/surname      case element (personGrp) return $parameters?roles[@xml:id = $item/@ref]/@role/string()      case element (orgName) return $parameters?orgs[@xml:id = $item/@ref]/text()      default return () return    string-join($items, ', ')"/>
+                <param name="receiver" value="let $items := for $item in .//correspAction[@type = &#34;received&#34;]/*   return typeswitch($item)      case element(persName)         return           let $persName := $parameters?persons/persName[@xml:id = $item/@ref]           return $persName/forename || &#34; &#34; || $persName/surname      case element (personGrp) return $parameters?roles[@xml:id = $item/@ref]/@role/string()      case element (orgName) return $parameters?orgs[@xml:id = $item/@ref]/text()      default return () return    string-join($items, ', ')"/>
+                <pb:set-param name="subview" value="heading"/>
+                <param name="date" value="let $date := .//correspAction[@type = &#34;sent&#34;]/date return if(exists($date/@when)) then (format-date($date/@when, '[D1o] [MNn] [Y]', 'de', (), ())) else if (exists($date/@notBefore) and exists($date/@notAfter)) then (&#34;Zwischen &#34; || format-date($date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) || &#34; und &#34; || format-date($date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ()))  else if(exists($date/@notBefore)) then (&#34;Nach &#34; || format-date($date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) ) else if(exists($date/@notAfter)) then (&#34;Vor &#34; || format-date($date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ())) else (&#34;Unbekannt&#34;)"/>
+                <param name="place" value="let $place-id := .//correspAction[@type = 'sent']/place/@source   let $place := doc('/db/apps/bullinger-data/data/index/places.xml')//place[@xml:id=$place-id]/settlement/text() return   if(string-length($place)&gt;0) then (', ' || $place) else () "/>
+                <pb:template xmlns="" xml:space="preserve"><h1><span>Von <span style="color:darkgoldenrod">[[sender]]</span> an <span style="color:darkgoldenrod;">[[receiver]]</span></span></h1>
+<div>[[date]][[place]]</div></pb:template>
+            </model>
+            <model behaviour="section">
+                <desc>Person Images</desc>
+                <param name="pictures" value="$parameters?persons[graphic]"/>
+                <pb:set-param name="subtype" value="'pictures'"/>
+                <pb:template xmlns="" xml:space="preserve"><div>[[pictures]]</div></pb:template>
             </model>
             <model behaviour="section">
                 <desc>Bullinger Metadata</desc>
@@ -128,6 +140,7 @@
                 <elementSpec ident="correspAction" mode="add">
                     <modelSequence predicate="@type = &#34;sent&#34; and $parameters?view='metadata'">
             <model predicate="exists(date/note)" behaviour="block">
+                <desc>Date with a Note</desc>
                 <param name="content" value="if(exists(./date/@when)) then (format-date(./date/@when, '[D1o] [MNn] [Y]', 'de', (), ())) else if (exists(./date/@notBefore) and exists(./date/@notAfter)) then (&#34;Zwischen &#34; || format-date(./date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) || &#34; und &#34; || format-date(./date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ()))  else if(exists(./date/@notBefore)) then (&#34;Nach &#34; || format-date(./date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) ) else if(exists(./date/@notAfter)) then (&#34;Vor &#34; || format-date(./date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ())) else (&#34;Unbekannt&#34;)"/>
                 <param name="note" value="./date/note/text()"/>
                 <pb:template xmlns="" xml:space="preserve"><div>Date</div>
@@ -138,12 +151,14 @@
 </pb:template>
             </model>
             <model predicate="not(exists(date/note))" behaviour="block">
+                <desc>Date without Note</desc>
                 <param name="content" value="if(exists(./date/@when)) then (format-date(./date/@when, '[D1o] [MNn] [Y]', 'de', (), ())) else if (exists(./date/@notBefore) and exists(./date/@notAfter)) then (&#34;Zwischen &#34; || format-date(./date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) || &#34; und &#34; || format-date(./date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ()))  else if(exists(./date/@notBefore)) then (&#34;Nach &#34; || format-date(./date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) ) else if(exists(./date/@notAfter)) then (&#34;Vor &#34; || format-date(./date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ())) else (&#34;Unbekannt&#34;)"/>
                 <pb:template xmlns="" xml:space="preserve"><div>Date</div>
 <div>[[content]]</div>
 </pb:template>
             </model>
             <model behaviour="block">
+                <desc>Sender</desc>
                 <param name="content" value="*[local-name() != 'date']"/>
                 <pb:set-param name="place" value="let $place-id := ./place/@source  return doc('/db/apps/bullinger-data/data/index/places.xml')//place[@xml:id=$place-id]/settlement/text()"/>
                 <pb:template xmlns="" xml:space="preserve"><div>Absender</div>
@@ -206,8 +221,7 @@
                     <model predicate="$parameters?view='metadata'" behaviour="block">
             <param name="name" value="let $ref := ./@ref  let $persName := $parameters?persons/persName[@xml:id = $ref] return   $persName/forename || &#34; &#34; || $persName/surname"/>
             <param name="place" value="if($parameters?place) then (&#34;, &#34; || $parameters?place ) else ()"/>
-            <param name="portrait" value="let $ref := ./@ref return $parameters?persons[persName/@xml:id = $ref]/graphic[@type='portrait']/@url"/>
-            <pb:template xmlns="" xml:space="preserve"><span data-portrait="[[portrait]]">[[name]][[place]]</span>
+            <pb:template xmlns="" xml:space="preserve">[[name]][[place]]
 </pb:template>
         </model>
                 </elementSpec>
@@ -263,6 +277,12 @@
             <pb:template xmlns="" xml:space="preserve"><div>Für diesen Brief ist keine Transkription verfügbar.</div></pb:template>
         </model>
                     <model behaviour="body"/>
+                </elementSpec>
+            <elementSpec ident="person" mode="add">
+                    <model predicate="$parameters?subtype = 'pictures'" behaviour="graphic" cssClass="portrait">
+            <param name="url" value="'../bullinger-data/data/portraits-100-q60/' || ./graphic/@url/string()"/>
+            <param name="title" value="./persName[@type='main']/forename || &#34; &#34; || ./persName[@type='main']/surname"/>
+        </model>
                 </elementSpec>
             </schemaSpec>
         </body>

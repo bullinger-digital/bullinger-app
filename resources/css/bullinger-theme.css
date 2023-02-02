@@ -8,6 +8,13 @@
     height:3rem;
     background:rgba(233,237,234);
 }
+.browseWrapper {
+    max-width:80rem;
+    margin:0 auto;
+    display:block;
+    align-items: center;
+    padding:1rem;
+}
 
 .wrapper {
     max-width:80rem;
