@@ -8,12 +8,14 @@
     height:3rem;
     background:rgba(233,237,234);
 }
-.browseWrapper {
+.browseWrapper,
+.searchWrapper {
     max-width:80rem;
     margin:0 auto;
     display:block;
     align-items: center;
     padding:1rem;
+    
 }
 
 .wrapper {
@@ -46,6 +48,9 @@ pb-view {
 #metadata {
     max-width:100%;
 }
+.search-panel {
+    align-self:start;
+}
 
 @media (min-width: 769px) {
     #faksimile {
@@ -58,5 +63,10 @@ pb-view {
     }
     main .wrapper > header {
         grid-column:span 2 / auto;
+    }
+        main .searchWrapper {
+        display:grid;
+        grid-template-columns: 20rem auto;
+        grid-gap:0.8rem;
     }
 }

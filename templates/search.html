@@ -12,6 +12,7 @@
         <link rel="stylesheet" type="text/css" href="resources/fonts/font.css"/>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald&amp;display=swap"/>
         <link rel="stylesheet" href="resources/css/theme.css"/>
+        <link rel="stylesheet" href="resources/css/bullinger-theme.css"/>
         <script type="module" src="pb-components-bundle.js" data-template="pages:load-components"/>
 
         <style>
@@ -107,17 +108,9 @@
 
     <body>
         <pb-page data-template="pages:pb-page" unresolved="unresolved">
-            <app-header-layout>
-                <app-header slot="header" reveals="reveals" fixed="fixed" effects="waterfall">
-                    <app-toolbar data-template="lib:include" data-template-path="templates/menu.html"/>
-                    <app-toolbar>
-                        <pb-paginate per-page="10" range="5" subscribe="results"/>
-                        <pb-progress indeterminate="indeterminate" bottom-item="bottom-item"/>
-                    </app-toolbar>
-                </app-header>
-
-                <main>
-                    <pb-load id="results" url="api/search" emit="results"/>
+            <header data-template="lib:include" data-template-path="templates/menu.html"/>
+            <main>
+                <div class="searchWrapper">
                     <div class="search-panel">
                         <paper-card>
                             <div class="card-content">
@@ -131,8 +124,10 @@
                             </div>
                         </paper-card>
                     </div>
-                </main>
-            </app-header-layout>
+                    <pb-load id="results" url="api/search" emit="results"/>
+                </div>
+            </main>
+            <footer data-template="lib:include" data-template-path="templates/footer.html"/>
         </pb-page>
         <script>
             const facets = document.getElementById('facets');

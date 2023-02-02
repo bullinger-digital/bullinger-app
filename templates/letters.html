@@ -268,43 +268,10 @@
                             </div>
                         </div>
                     </paper-card>
-                    <pb-restricted class="upload-panel" login="login">
-                        <aside>
-                            <paper-card class="upload" data-i18n="[heading]upload.upload" heading="Upload">
-                                <div class="card-content">
-                                    <pb-upload id="upload" emit="docs" subscribe="docs" accept=".xml, .tei, .odd, .docx, .mei"/>
-                                </div>
-                            </paper-card>
-                        </aside>
-                    </pb-restricted>
                 </section>
             </div>
         </main>
-        <footer data-template="lib:include" data-template-path="templates/footer.html"/> 
-        <paper-dialog id="downloadDialog">
-            <h2>
-                <pb-i18n key="dialogs.generatingFile">Generating File...</pb-i18n>
-            </h2>
-            <paper-dialog-scrollable>
-                <pb-i18n key="dialogs.downloadMessage"/>
-            </paper-dialog-scrollable>
-            <div class="buttons">
-                <paper-button dialog-confirm="dialog-confirm" autofocus="autofocus">
-                    <pb-i18n key="dialogs.close">Close</pb-i18n>
-                </paper-button>
-            </div>
-        </paper-dialog>
-        <paper-dialog id="errorDialog">
-            <h2>
-                    <pb-i18n key="dialogs.error">Error</pb-i18n>
-                </h2>
-            <paper-dialog-scrollable/>
-            <div class="buttons">
-                <paper-button dialog-confirm="dialog-confirm" autofocus="autofocus">
-                    <pb-i18n key="dialogs.close">Close</pb-i18n>
-                </paper-button>
-            </div>
-        </paper-dialog>
+        <footer data-template="lib:include" data-template-path="templates/footer.html"/>        
     </pb-page>
     <div class="splash"/>
     <script>
