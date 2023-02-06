@@ -38,3 +38,10 @@
         grid-area:six;
     }
 }
+
+.person {
+    color:darkgreen;
+}
+.place {
+    color:darkred;
+}

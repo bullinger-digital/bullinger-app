@@ -99,7 +99,7 @@
             <model predicate="exists(.//msContents/summary/node())" behaviour="section" cssClass="regest">
                 <desc>Regest</desc>
                 <param name="content" value=".//msContents/summary"/>
-                <param name="overlength" value="let $request := .//msContents/summary/p/text() let $text := string-join($request, &#34; &#34;) return   if(exists($request) and string-length($text) &lt; 300)    then ()   else (&#34;overlength&#34;)     "/>
+                <param name="overlength" value="let $request := .//msContents/summary/p/text() let $text := string-join($request, &#34; &#34;) return   if(exists($request) and string-length($text) &lt; 300)    then ()   else (&#34;overlength&#34;)"/>
                 <pb:template xmlns="" xml:space="preserve"><h2>Regest</h2>
 <div id="regest" class="metaregest [[overlength]]">[[content]]</div></pb:template>
             </model>
@@ -123,9 +123,10 @@
             <desc>Metadata Rendering (title, metadata, regest, incipit)</desc>
             <param name="content" value="./teiHeader"/>
             <pb:set-param name="hbbw-no" value="if(string-length(./@source/string())&gt; 0 and string-length(./@n/string()) &gt; 0) then ( string-join((./@source/string(), ./@n/string()),', ')) else (string-join((./@source/string(), ./@n/string())))"/>
-            <pb:set-param name="persons" value="for $person in .//persName return   doc('/db/apps/bullinger-data/data/index/persons.xml')//person[persName/@xml:id = $person/@ref]"/>
-            <pb:set-param name="orgs" value="for $org in .//orgName return   doc('/db/apps/bullinger-data/data/index/orgs.xml')//org[@xml:id = $org/@ref]"/>
-            <pb:set-param name="roles" value="for $role in .//personGrp return   doc('/db/apps/bullinger-data/data/index/roles.xml')//personGrp[@xml:id = $role/@ref]"/>
+            <pb:set-param name="persons" value="for $person in .//persName[@ref] return   doc('/db/apps/bullinger-data/data/index/persons.xml')//person[persName/@xml:id = $person/@ref]"/>
+            <pb:set-param name="orgs" value="for $org in .//orgName[@ref] return   doc('/db/apps/bullinger-data/data/index/orgs.xml')//org[@xml:id = $org/@ref]"/>
+            <pb:set-param name="roles" value="for $role in .//personGrp[@ref] return   doc('/db/apps/bullinger-data/data/index/roles.xml')//personGrp[@xml:id = $role/@ref]"/>
+            <pb:set-param name="places" value="for $place in .//placeName[@ref] return doc('/db/apps/bullinger-data/data/index/places.xml')//place[@xml:id = $place/@ref]"/>
             <pb:template xmlns="" xml:space="preserve"><div id="metaWrapper">
  [[content]]
 </div></pb:template>
@@ -227,6 +228,15 @@
             <pb:template xmlns="" xml:space="preserve">[[name]][[place]]
 </pb:template>
         </model>
+                    <model behaviour="inline" cssClass="person">
+            <desc>persName in TEI Text</desc>
+            <param name="content" value="./text()"/>
+            <param name="label" value="let $ref := ./@ref   let $persParam := $parameters?persons/persName[@xml:id = $ref] return   $persParam/forename/text() || &#34; &#34; || $persParam/surname/text()"/>
+            <pb:template xmlns="" xml:space="preserve"><pb-popover>
+  <span slot="default">[[content]]</span>
+  <span slot="alternate">[[label]]</span>
+</pb-popover></pb:template>
+        </model>
                 </elementSpec>
                 <elementSpec ident="orgName" mode="add">
                     <model predicate="$parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
@@ -279,7 +289,10 @@
                     <model predicate="not(exists(.//div))" behaviour="inline">
             <pb:template xmlns="" xml:space="preserve"><div>Für diesen Brief ist keine Transkription verfügbar.</div></pb:template>
         </model>
-                    <model behaviour="body"/>
+                    <model behaviour="body">
+            <pb:set-param name="persons" value="for $person in .//persName[@ref] return   doc('/db/apps/bullinger-data/data/index/persons.xml')//person[persName/@xml:id = $person/@ref]"/>
+            <pb:set-param name="places" value="for $place in .//placeName[@ref] return doc('/db/apps/bullinger-data/data/index/places.xml')//place[@xml:id = $place/@ref]"/>
+        </model>
                 </elementSpec>
             <elementSpec ident="person" mode="add">
                     <model predicate="$parameters?subtype = 'pictures'" behaviour="graphic" cssClass="portrait">
@@ -287,6 +300,18 @@
             <param name="title" value="./persName[@type='main']/forename || &#34; &#34; || ./persName[@type='main']/surname"/>
         </model>
                 </elementSpec>
+            <elementSpec ident="placeName" mode="add">
+                    <model behaviour="inline" cssClass="place">
+            <desc>placeName in TEI Text</desc>
+            <param name="content" value="./text()"/>
+            <param name="label" value="if(exists(@ref)) then (   let $ref := ./@ref     let $place := $parameters?places[@xml:id = $ref]       return string-join(($place/settlement/text(), $place/district, $place/country),&#34;, &#34;)  )  else ( ./text() )"/>
+            <pb:template xmlns="" xml:space="preserve"><pb-popover>
+  <span slot="default">[[content]]</span>
+  <span slot="alternate">[[label]]</span>
+</pb-popover></pb:template>
+        </model>
+                </elementSpec>
+                <elementSpec ident="body" mode="change"/>
             </schemaSpec>
         </body>
     </text>

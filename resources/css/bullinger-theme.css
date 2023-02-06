@@ -9,11 +9,11 @@
     background:rgba(233,237,234);
 }
 .browseWrapper,
-.searchWrapper {
+.searchWrapper,
+.pageWrapper {
     max-width:80rem;
     margin:0 auto;
     display:block;
-    align-items: center;
     padding:1rem;
     
 }
@@ -56,15 +56,17 @@ pb-view {
     #faksimile {
         align-self:start;    
     }
-    main .wrapper {
+    main .wrapper,
+    main .pageWrapper{
         display:grid;
         grid-template-columns:repeat(2, 1fr);
         grid-gap:0.8rem;
     }
-    main .wrapper > header {
+    
+    main .pageWrapper > header {
         grid-column:span 2 / auto;
     }
-        main .searchWrapper {
+    main .searchWrapper {
         display:grid;
         grid-template-columns: 20rem auto;
         grid-gap:0.8rem;
