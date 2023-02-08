@@ -65,10 +65,11 @@
                 <param name="sender" value="let $items := for $item in .//correspAction[@type = &#34;sent&#34;]/*   return typeswitch($item)      case element(persName)         return           let $persName := $parameters?persons/persName[@xml:id = $item/@ref]           return $persName/forename || &#34; &#34; || $persName/surname      case element (personGrp) return $parameters?roles[@xml:id = $item/@ref]/@role/string()      case element (orgName) return $parameters?orgs[@xml:id = $item/@ref]/text()      default return () return    string-join($items, ', ')"/>
                 <param name="receiver" value="let $items := for $item in .//correspAction[@type = &#34;received&#34;]/*   return typeswitch($item)      case element(persName)         return           let $persName := $parameters?persons/persName[@xml:id = $item/@ref]           return $persName/forename || &#34; &#34; || $persName/surname      case element (personGrp) return $parameters?roles[@xml:id = $item/@ref]/@role/string()      case element (orgName) return $parameters?orgs[@xml:id = $item/@ref]/text()      default return () return    string-join($items, ', ')"/>
                 <param name="date" value="let $date := .//correspAction[@type = &#34;sent&#34;]/date return if(exists($date/@when)) then (format-date($date/@when, '[D1o] [MNn] [Y]', 'de', (), ())) else if (exists($date/@notBefore) and exists($date/@notAfter)) then (&#34;Zwischen &#34; || format-date($date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) || &#34; und &#34; || format-date($date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ()))  else if(exists($date/@notBefore)) then (&#34;Nach &#34; || format-date($date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) ) else if(exists($date/@notAfter)) then (&#34;Vor &#34; || format-date($date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ())) else (&#34;Unbekannt&#34;)"/>
-                <param name="place" value="let $place-id := .//correspAction[@type = 'sent']/place/@source   let $place := doc('/db/apps/bullinger-data/data/index/places.xml')//place[@xml:id=$place-id]/settlement/text() return   if(string-length($place)&gt;0) then (', ' || $place) else ()"/>
+                <param name="place" value="let $place-id := .//correspAction[@type = 'sent']/place/@source   let $place := doc('/db/apps/bullinger-data/data/index/places.xml')//place[@xml:id=$place-id]/settlement/text() return  $place"/>
                 <pb:set-param name="subview" value="heading"/>
+                <param name="type" value="../@type/string()"/>
                 <pb:template xmlns="" xml:space="preserve"><h1><span>Von <span style="color:darkgoldenrod">[[sender]]</span> an <span style="color:darkgoldenrod;">[[receiver]]</span></span></h1>
-<div>[[date]][[place]]</div></pb:template>
+<div class="subtitle"><iron-icon id="date-range" icon="date-range"/>[[date]] <iron-icon id="map-near-me" icon="maps:near-me"/>[[place]] <span class="doc-type">[[type]]</span></div></pb:template>
             </model>
             <model behaviour="section">
                 <desc>Person Images</desc>
@@ -242,18 +243,12 @@
                 </elementSpec>
                 <elementSpec ident="orgName" mode="add">
                     <model predicate="$parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
-            <param name="org" value="let $ref := @ref return $parameters?orgs[@xml:id = $ref]/text()"/>
+            <param name="org" value="let $ref := @ref  let $type := @type return $parameters?orgs[@xml:id = $ref]/name[@xml:lang='de'][@type=$type]/text()"/>
             <param name="place" value="if($parameters?place) then (&#34;, &#34; || $parameters?place ) else ()"/>
             <pb:template xmlns="" xml:space="preserve">[[org]][[place]]</pb:template>
         </model>
                 </elementSpec>
-                <elementSpec ident="personGrp" mode="add">
-                    <model predicate="$parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
-            <param name="group" value="let $ref := @ref return $parameters?roles[@xml:id = $ref]/@role/string()"/>
-            <param name="place" value="if($parameters?place) then (&#34;, &#34; || $parameters?place ) else ()"/>
-            <pb:template xmlns="" xml:space="preserve">[[group]][[place]]</pb:template>
-        </model>
-                </elementSpec>
+                <elementSpec ident="personGrp" mode="add"/>
                 <elementSpec ident="listBibl" mode="change">
                     <model predicate="$parameters?view='metadata'" behaviour="block">
             <param name="bibl" value="bibl"/>

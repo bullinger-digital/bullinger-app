@@ -23,6 +23,26 @@
     width: 7rem;
     height: 7rem;
 }
+.subtitle { 
+    display: flex;
+    align-items: center;
+}
+
+.subtitle .doc-type {
+    border-radius: 0.75rem;
+    background-color: rgba(210,218,212,1);
+    margin-left: 1rem;
+    padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+}
+
+.subtitle #date-range {
+    padding-right: 0.5rem;
+}
+.subtitle #map-near-me {
+    padding-left:1rem;
+    padding-right: 0.5rem;
+    
+}
 
 @media (min-width: 769px) {
     #metaWrapper {
