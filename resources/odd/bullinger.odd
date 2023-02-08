@@ -43,9 +43,10 @@
                
             <elementSpec ident="graphic" mode="change">
                     <model predicate="$parameters?view = &#34;facsimile&#34;" behaviour="inline">
-            <param name="facs" value="encode-for-uri(@url)"/>
+            <param name="facs" value="@url"/>
             <param name="label" value="@n"/>
-            <pb:template xmlns="" xml:space="preserve"><pb-facs-link emit="transcription" facs="[[facs]]"/></pb:template>
+            <param name="id" value="@xml:id"/>
+            <pb:template xmlns="" xml:space="preserve"><pb-facs-link id="[[id]]" emit="transcription" facs="[[facs]]"/></pb:template>
         </model>
                     <model behaviour="graphic">
             <param name="url" value="@url"/>
@@ -101,7 +102,8 @@
                 <param name="content" value=".//msContents/summary"/>
                 <param name="overlength" value="let $request := .//msContents/summary/p/text() let $text := string-join($request, &#34; &#34;) return   if(exists($request) and string-length($text) &lt; 300)    then ()   else (&#34;overlength&#34;)"/>
                 <pb:template xmlns="" xml:space="preserve"><h2>Regest</h2>
-<div id="regest" class="metaregest [[overlength]]">[[content]]</div></pb:template>
+<div id="regest" class="metaregest [[overlength]]">[[content]]</div>
+<div><iron-icon icon="arrow-drop-down"/></div></pb:template>
             </model>
             <model predicate="exists(.//msContents//incipit/node())" behaviour="section" cssClass="incipit">
                 <desc>Incipit</desc>

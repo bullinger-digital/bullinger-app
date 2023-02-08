@@ -26,28 +26,46 @@
             
         
         <main>
-            <div class="pageWrapper">
+            <section class="pageWrapper">
                 <header>
                     <pb-view id="metadata" src="document1" view="single" use-language="use-language" emit="metadata" subscribe="transcription">
                         <pb-param name="view" value="metadata"/>
                     </pb-view>
                 </header>
-
-                <div class="card">
-                    <h2>Transkription</h2>
-                    <pb-view id="view1" src="document1" column-separator=".tei-cb" wait-for="#metadata" append-footnotes="append-footnotes" subscribe="transcription" emit="transcription"/>
-                    <pb-view id="facsimile-links" src="document1" xpath="//facsimile" view="single" wait-for="#facsimile" emit="transcription">
-                        <pb-param name="view" value="facsimile"/>
-                    </pb-view>
+            </section>
+            <section class="text">
+                <div class="pageWrapper">
+                    <div class="transkription card">
+                        <h2>Transkription</h2>
+                        <pb-view id="view1" src="document1" column-separator=".tei-cb" wait-for="#metadata" append-footnotes="append-footnotes" subscribe="transcription" emit="transcription"/>
+                        <pb-view id="facsimile-links" src="document1" xpath="//facsimile" view="single" wait-for="#facsimile" emit="transcription">
+                            <pb-param name="view" value="facsimile"/>
+                        </pb-view>
+                    </div>
+                    <div class="facsimile card">
+                        <h2>Faksimile</h2>
+                        <div id="status">Test</div>
+                        <pb-facsimile id="facsimile" base-uri="https://iiif.bullinger-digital.ch/iiif/3/" default-zoom-level="0" show-navigation-control="show-navigation-control" show-navigator="show-navigator" subscribe="transcription"/>
+                    </div>                                    
                 </div>
-                <div id="faksimile" class="card">
-                    <h2>Faksimile</h2>
-                    <pb-facsimile id="facsimile" base-uri="https://iiif.bullinger-digital.ch/iiif/3/" default-zoom-level="0" show-navigation-control="show-navigation-control" show-navigator="show-navigator" subscribe="transcription"/>
-                </div>                
-            </div>
+            </section>
         </main>
         <footer data-template="lib:include" data-template-path="templates/footer.html"/>    
     </pb-page>
     <div class="splash"/>
+    <script>
+        window.addEventListener('load', () => {
+            const viewer = document.querySelector('pb-facsimile');
+            const status = document.getElementById('status');
+            window.pbEvents.subscribe('pb-facsimile-status', null, (ev) => {
+                if (ev.detail.status === 'fail') {
+                    viewer.style.visibility = 'hidden';
+                } else {
+                    viewer.style.visibility = 'visible';
+                    status.innerHTML = ev.detail.status;
+                }
+            });
+        });
+    </script>
 </body>
 </html>
