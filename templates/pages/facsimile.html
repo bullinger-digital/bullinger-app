@@ -28,7 +28,7 @@
         <main>
             <section class="pageWrapper">
                 <header>
-                    <pb-view id="metadata" src="document1" view="single" use-language="use-language" emit="metadata" subscribe="transcription">
+                    <pb-view id="metadata" src="document1" view="single" use-language="use-language" emit="metadata" subscribe="transcription" load-css="resources/css/bullinger-shadow.css">
                         <pb-param name="view" value="metadata"/>
                     </pb-view>
                 </header>
@@ -53,19 +53,6 @@
         <footer data-template="lib:include" data-template-path="templates/footer.html"/>    
     </pb-page>
     <div class="splash"/>
-    <script>
-        window.addEventListener('load', () => {
-            const viewer = document.querySelector('pb-facsimile');
-            const status = document.getElementById('status');
-            window.pbEvents.subscribe('pb-facsimile-status', null, (ev) => {
-                if (ev.detail.status === 'fail') {
-                    viewer.style.visibility = 'hidden';
-                } else {
-                    viewer.style.visibility = 'visible';
-                    status.innerHTML = ev.detail.status;
-                }
-            });
-        });
-    </script>
+    <script src="resources/scripts/app.js"></script>
 </body>
 </html>

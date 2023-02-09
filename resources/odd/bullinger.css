@@ -43,6 +43,37 @@
     padding-right: 0.5rem;
     
 }
+#metaWrapper .overlength{
+    height:15rem;
+    overflow:hidden;
+}
+
+#metaWrapper .overlength ~ div{
+    width:100%;
+    /*background:lightgrey;*/
+    text-align:center;
+    cursor:pointer;
+
+}
+#metaWrapper .overlength ~ div::before{
+display: block;
+    width: 100%;
+    content: '';
+    background: rgb(119,119,119);
+    background: linear-gradient(0deg, rgba(200,200,200,-0.01) 0%, rgba(255,255,255,0.9) 100%);
+    position: absolute;
+    height: 9rem;
+    bottom: 4rem;
+}
+
+
+
+
+#metaWrapper .regest{
+    position:relative;
+}
+
+
 
 @media (min-width: 769px) {
     #metaWrapper {
