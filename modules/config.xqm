@@ -67,7 +67,7 @@ declare variable $config:enable-proxy-caching :=
 (:~
  : Should documents be located by xml:id or filename?
  :)
-declare variable $config:address-by-id := false();
+declare variable $config:address-by-id := true();
 
 (:~
  : Set default language for publisher app i18n
@@ -116,13 +116,52 @@ declare variable $config:pagination-fill := 5;
  : Display configuration for facets to be shown in the sidebar. The facets themselves
  : are configured in the index configuration, collection.xconf.
  :)
+declare variable $config:places := doc('/db/apps/bullinger-data/data/index/places.xml');
+declare variable $config:persons := doc('/db/apps/bullinger-data/data/index/persons.xml');
+
 declare variable $config:facets := [
     map {
-        "dimension": "genre",
-        "heading": "facets.genre",
+        "dimension": "date",
+        "heading": "facets.date",
         "max": 5,
         "hierarchical": true()
     },
+    map {
+        "dimension": "correspondent",
+        "heading": "facets.correspondent",
+        "max": 5,
+        "hierarchical": false(),
+        "output": function($label) {
+            let $person := $config:persons/id($label)/parent::tei:person/tei:persName[@type='main']
+            return 
+                if($person) 
+                then (
+                    string-join(($person/*),", ")
+                )
+                else ($label)                 
+        }
+    },    
+    map {
+        "dimension": "place",
+        "heading": "facets.place",
+        "max": 5,
+        "hierarchical": false(),
+        "output": function($label) {
+            let $place := $config:places/id($label)
+            return 
+                if($place) 
+                then (
+                    string-join(($place/*[local-name(.) != "location"]),", ")
+                )
+                else ($label)                 
+        }
+    },        
+        map {
+        "dimension": "number",
+        "heading": "facets.number",
+        "max": 5,
+        "hierarchical": false()
+    },        
     map {
         "dimension": "language",
         "heading": "facets.language",
@@ -130,14 +169,14 @@ declare variable $config:facets := [
         "hierarchical": false(),
         "output": function($label) {
             switch($label)
-                case "de" return "German"
-                case "es" return "Spanish"
-                case "la" return "Latin"
-                case "fr" return "French"
-                case "en" return "English"
+                case "de" return "Deutsch"
+                case "es" return "Spanisch"
+                case "la" return "Latein"
+                case "fr" return "Französisch"
+                case "en" return "Englisch"
                 default return $label
         }
-    }
+    }    
 ];
 
 (:
