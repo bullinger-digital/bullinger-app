@@ -1,17 +1,16 @@
-window.addEventListener('load', () => {
-    const viewer = document.querySelector('pb-facsimile');
-    const status = document.getElementById('status');
-    window.pbEvents.subscribe('pb-facsimile-status', null, (ev) => {
-        if (ev.detail.status === 'fail') {
-            viewer.style.visibility = 'hidden';
-        } else {
-            viewer.style.visibility = 'visible';
-            status.innerHTML = ev.detail.status;
+window.addEventListener('DOMContentLoaded', function() {
+    
+    pbEvents.subscribe('pb-update', 'transcription', ev => {
+        const shadowroot = ev.detail.root;
+        if(!(ev.target.id === "facsimile-links")) return;         
+        const pblinks = document.getElementById("facsimile-links")
+        const empty = pblinks.shadowRoot.querySelector('.content');
+        if(empty.textContent=== "") {
+            const viewer = document.querySelector('pb-facsimile').style.display = "none";
+            document.getElementById("facsimile-status").style.display ="block";
         }
     });
-});
 
-window.addEventListener('DOMContentLoaded', function() {
     pbEvents.subscribe('pb-update', 'metadata', ev => {
         const shadowroot = ev.detail.root;
         const metaView = ev.target;

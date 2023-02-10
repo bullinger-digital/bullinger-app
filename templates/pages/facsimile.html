@@ -43,9 +43,10 @@
                         </pb-view>
                     </div>
                     <div class="facsimile card">
-                        <h2>Faksimile</h2>                        
+                        <h2>Faksimile</h2>
+                        <div id="facsimile-status" style="display:none;">Für diesen Brief ist kein Facsimile verfügbar.</div>                        
                         <pb-facsimile id="facsimile" base-uri="https://iiif.bullinger-digital.ch/iiif/3/" default-zoom-level="0" show-navigation-control="show-navigation-control" show-navigator="show-navigator" subscribe="transcription">
-                            <div slot="after">Status: <span id="status"></span></div>
+                            
                         </pb-facsimile>
                     </div>                                    
                 </div>
