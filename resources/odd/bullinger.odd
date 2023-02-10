@@ -270,11 +270,18 @@
                 <pb:template xmlns="" xml:space="preserve"><div>Autograph</div>
 <div>[[repository]][[idno]]</div></pb:template>
             </model>
-            <model predicate="@subtype='Kopie'" behaviour="block">
+            <model predicate="@subtype='Kopie' and not(exists(./msIdentifier/idno[@subtype='Hinweis']))" behaviour="block">
+                <param name="repository" value=".//repository"/>
+                <param name="idno" value="if(./msIdentifier/idno/@subtype='Kopie') then (', ' || ./msIdentifier/idno[@subtype='Kopie']/text()) else ()"/>
+                <pb:set-param name="archive" value="let $archives := doc('/db/apps/bullinger-data/data/index/archives.xml') let $archive-id := ./msIdentifier/repository/@ref  return id($archive-id,$archives)"/>
+                <pb:template xmlns="" xml:space="preserve"><div>Kopie</div>
+<div>[[repository]][[idno]]</div></pb:template>
+            </model>
+            <model predicate="@subtype='Kopie' and exists(./msIdentifier/idno[@subtype='Hinweis'])" behaviour="block">
                 <param name="repository" value=".//repository"/>
                 <param name="idno" value="if(./msIdentifier/idno/@subtype='Kopie') then (', ' || ./msIdentifier/idno[@subtype='Kopie']/text()) else ()"/>
                 <param name="note" value="./msIdentifier/idno[@subtype='Hinweis']/text()"/>
-                <pb:set-param name="archive" value="let $archive-id := ./msIdentifier/repository/@ref return doc('/db/apps/bullinger-data/data/index/archives.xml')//org[@xml:id=$archive-id]"/>
+                <pb:set-param name="archive" value="let $archives := doc('/db/apps/bullinger-data/data/index/archives.xml') let $archive-id := ./msIdentifier/repository/@ref  return id($archive-id,$archives)"/>
                 <pb:template xmlns="" xml:space="preserve"><div>Kopie</div>
 <div>[[repository]]<pb-popover>
     <span slot="default">[[idno]]</span>
