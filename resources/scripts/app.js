@@ -16,13 +16,15 @@ window.addEventListener('DOMContentLoaded', function() {
         const shadowroot = ev.detail.root;
         const metaView = ev.target;
         if(!metaView) return;
-        const expander = metaView.shadowRoot.querySelector('.overlength ~ div');
+        const expander = metaView.shadowRoot.querySelector('.overlength .expander');
+        if(!expander) return;
         expander.addEventListener('click', ev =>  {
-            const regest = shadowroot.querySelector('#regest');
+            const regest = shadowroot.querySelector('.regesttext');
             const icon = ev.target.nodeName === 'IRON-ICON' ? ev.target : ev.target.firstElementChild;
             if(regest.classList.contains('overlength')){
                 regest.classList.remove('overlength');
                 icon.setAttribute('icon','arrow-drop-up');
+                expander.style.display="block";
             }else{
                 regest.classList.add('overlength');
                 icon.setAttribute('icon','arrow-drop-down');

@@ -18,7 +18,8 @@
     
 }
 
-.wrapper {
+.wrapper,
+footer {
     max-width:80rem;
     margin:0 auto;
     display:flex;
@@ -41,8 +42,11 @@ pb-view {
 }
 
 .card pb-facsimile {
-    height:80vh;
+    height:70vh;
 
+}
+#facsimile-links {
+    display:none;
 }
 
 #metadata {
@@ -55,12 +59,18 @@ pb-view {
 
 .text {
     background-color:rgb(243,244,246);    
+    height:80vh;
 }
 .transkription, 
 .facsimile {    
     box-shadow: 0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05);
     padding: 1rem;
     background-color: white;
+    height:75vh;
+}
+.transkription pb-view {
+    height:70vh;
+    overflow:auto;
 }
 
 .whitespace {
@@ -69,6 +79,10 @@ pb-view {
 }
 
 @media (min-width: 769px) {
+    main .card > pb-view {
+        
+    }
+
     #faksimile {
         align-self:start;    
     }
@@ -88,6 +102,6 @@ pb-view {
         grid-gap:0.8rem;
     }
     #metadata{
-        min-height:50vh;
+        min-height:30vh;
     }
 }

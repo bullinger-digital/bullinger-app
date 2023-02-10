@@ -1,24 +1,36 @@
 
-#metaWrapper .metaregest.overlength{
+#metaWrapper .overlength{
     height:15rem;
     overflow:hidden;
 }
 
-#metaWrapper .metaregest ~ div,
-#metaWrapper .overlength ~ div{
+#metaWrapper .expander {
     width:100%;
     text-align:center;
     cursor:pointer;
     margin-top:0.2rem;
     border-top:thin solid #ccc;
+    display:none;
 }
-#metaWrapper .metaregest ~ div:hover,
-#metaWrapper .overlength ~ div:hover{
+#metaWrapper .overlength .expander {
+    display:block;
+}
+
+#metaWrapper .expander:hover{
     background:#e9edea;
 }
 
+#metaWrapper .regesttext {
+    position: relative;
+    display: grid;
+    grid-template-rows: 1fr 2rem;
+}
+ 
+#metaWrapper .metaregest {
+    overflow:hidden;
+}
 
-#metaWrapper .overlength ~ div::before {
+#metaWrapper .expander::before {
     display: block;
     width: 100%;
     content: '';
@@ -26,12 +38,5 @@
     background: linear-gradient(180deg, rgba(200,200,200,-0.01) 0%, rgba(255,255,255,0.9) 100%);
     position: absolute;
     height: 6rem;
-    bottom: 2rem;
-}
-
-@media (min-width: 769px) {
-    #metaWrapper .overlength ~ div::before {
-        bottom: 9rem;
-    }
-
+    bottom: 0rem;
 }
