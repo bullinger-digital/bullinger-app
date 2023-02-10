@@ -103,8 +103,10 @@
                 <param name="content" value=".//msContents/summary"/>
                 <param name="overlength" value="let $request := .//msContents/summary/p/text() let $text := string-join($request, &#34; &#34;) return   if(exists($request) and string-length($text) &lt; 300)    then ()   else (&#34;overlength&#34;)"/>
                 <pb:template xmlns="" xml:space="preserve"><h2>Regest</h2>
-<div id="regest" class="metaregest [[overlength]]">[[content]]</div>
-<div><iron-icon icon="arrow-drop-down"/></div></pb:template>
+<div class="regesttext [[overlength]]">
+  <div id="regest" class="metaregest">[[content]]</div>
+  <div class="expander"><iron-icon icon="arrow-drop-down"/></div>
+</div></pb:template>
             </model>
             <model predicate="exists(.//msContents//incipit/node())" behaviour="section" cssClass="incipit">
                 <desc>Incipit</desc>
@@ -125,7 +127,7 @@
                     <model predicate="$parameters?view='metadata'" behaviour="inline">
             <desc>Metadata Rendering (title, metadata, regest, incipit)</desc>
             <param name="content" value="teiHeader"/>
-            <pb:set-param name="hbbw-no" value="if(string-length(./@source/string())&gt; 0 and string-length(./@n/string()) &gt; 0) then ( string-join((./@source/string(), ./@n/string()),', ')) else (string-join((./@source/string(), ./@n/string())))"/>
+            <pb:set-param name="hbbw-no" value="if(string-length(./@source/string())&gt; 0 and string-length(./@n/string()) &gt; 0) then ( string-join((./@source/string(), &#34;Nr. &#34; || ./@n/string()),', ')) else (string-join((./@source/string(), ./@n/string())))"/>
             <pb:set-param name="persons" value="for $person in .//persName[@ref] return   doc('/db/apps/bullinger-data/data/index/persons.xml')//person[persName/@xml:id = $person/@ref]"/>
             <pb:set-param name="orgs" value="for $org in .//orgName[@ref] return   doc('/db/apps/bullinger-data/data/index/orgs.xml')//org[@xml:id = $org/@ref]"/>
             <pb:set-param name="roles" value="for $role in .//personGrp[@ref] return   doc('/db/apps/bullinger-data/data/index/roles.xml')//personGrp[@xml:id = $role/@ref]"/>
