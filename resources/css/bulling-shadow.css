@@ -1,92 +1,37 @@
 
-.menubar {
+#metaWrapper .metaregest.overlength{
+    height:15rem;
+    overflow:hidden;
+}
+
+#metaWrapper .metaregest ~ div,
+#metaWrapper .overlength ~ div{
+    width:100%;
+    text-align:center;
+    cursor:pointer;
+    margin-top:0.2rem;
+    border-top:thin solid #ccc;
+}
+#metaWrapper .metaregest ~ div:hover,
+#metaWrapper .overlength ~ div:hover{
+    background:#e9edea;
+}
+
+
+#metaWrapper .overlength ~ div::before {
+    display: block;
     width: 100%;
-    background:white;
-}
-.toolbar {
-    width: 100%;
-    height:3rem;
-    background:rgba(233,237,234);
-}
-.browseWrapper,
-.searchWrapper,
-.pageWrapper {
-    max-width:80rem;
-    margin:0 auto;
-    display:block;
-    padding:1rem;
-
-}
-main section:nth-child(2){
-    display:none;
-}
-
-.wrapper {
-    max-width:80rem;
-    margin:0 auto;
-    display:flex;
-    align-items: center;
-    padding:1rem;
-}
-
-.wrapper pb-search {
-    width: 10rem;
-}
-
-.menubar .wrapper *,
-.menubar .wrapper a {
-    display:inline-block;
-}
-
-pb-view {
-    margin:0;
-    padding:0;
-}
-
-.card pb-facsimile {
-    height:80vh;
-
-}
-
-#metadata {
-    max-width:100%;
-    min-height:100vh;
-}
-.search-panel {
-    align-self:start;
-}
-
-.text {
-    background-color:rgb(243,244,246);
-}
-.transkription,
-.facsimile {
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05);
-    padding: 1rem;
-    background-color: white;
+    content: '';
+    background: rgb(119,119,119);
+    background: linear-gradient(180deg, rgba(200,200,200,-0.01) 0%, rgba(255,255,255,0.9) 100%);
+    position: absolute;
+    height: 6rem;
+    bottom: 2rem;
 }
 
 @media (min-width: 769px) {
-    #faksimile {
-        align-self:start;
-    }
-    main .wrapper,
-    main .pageWrapper{
-        display:grid;
-        grid-template-columns:repeat(2, 1fr);
-        grid-gap:0.8rem;
+    #metaWrapper .overlength ~ div::before {
+        bottom: 9rem;
     }
 
-    main .pageWrapper > header {
-        grid-column:span 2 / auto;
-    }
-    
-    main .searchWrapper {
-        display:grid;
-        grid-template-columns: 20rem auto;
-        grid-gap:0.8rem;
-    }
-    #metadata{
-        min-height:50vh;
-    }
 }
