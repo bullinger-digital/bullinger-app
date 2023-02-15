@@ -1,5 +1,14 @@
 {
-    "myapp": {
-        "title": "Foo"
+    "facets": {
+        "sender": "Absender",
+        "addressee": "Empfänger",
+        "correspondent": "Korrespondent",
+        "mentioned": "Erwähnte Person",
+        "place": "Ort",        
+        "keyword": "Schlagwort",
+        "date": "Datum",
+        "type": "Dokumenttyp",
+        "number": "Nummer",
+        "provenience": "Provenienz"
     }
 }
