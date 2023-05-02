@@ -108,3 +108,19 @@ pb-view {
         min-height:30vh;
     }
 }
+
+.logo {
+    background-image: url("../images/bullinger-digital.svg");
+}
+
+.splash {
+    background-image: url("../images/bullinger-digital.svg");
+}
+
+html body {
+    --pb-menubar-background-color: #d1dae0;
+    --pb-menubar-color: var(--pb-color-primary);
+    --pb-lang-input-color: var(--pb-color-primary);
+    --pb-lang-label-color: var(--pb-color-primary);
+
+}
