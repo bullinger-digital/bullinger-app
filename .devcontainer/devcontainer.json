@@ -7,7 +7,7 @@
             "HTTPS_PORT": "8443"
         }
     },
-    "forwardPorts": [ 8080 ],
+    "appPort": [ "8082:8080" ],
     "runArgs": [
         "--name=BullingerEdition"
     ],
