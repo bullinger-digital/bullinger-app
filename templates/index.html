@@ -16,8 +16,10 @@
 
 <body>
     <pb-page data-template="pages:pb-page" unresolved="unresolved">
-        <header data-template="lib:include" data-template-path="templates/menu.html" />
-        <header data-template="lib:include" data-template-path="templates/toolbar.html" />
+        <header>
+            <nav data-template="lib:include" data-template-path="templates/menu.html" />
+            <section data-template="lib:include" data-template-path="templates/toolbar.html" />
+        </header>
         <main>
             <div class="wrapper">
                 <div class="title">

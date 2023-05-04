@@ -108,7 +108,10 @@
 
     <body>
         <pb-page data-template="pages:pb-page" unresolved="unresolved" locales="resources/i18n/{{ns}}/{{lng}}.json" locale-fallback-ns="app">
-            <header data-template="lib:include" data-template-path="templates/menu.html"/>
+            <header>
+                <nav data-template="lib:include" data-template-path="templates/menu.html" />
+                <section data-template="lib:include" data-template-path="templates/toolbar.html" />
+            </header>
             <main>
                 <div class="searchWrapper">
                     <div class="search-panel">

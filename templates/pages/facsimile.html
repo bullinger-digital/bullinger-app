@@ -21,10 +21,10 @@
 <body>
     <pb-page data-template="pages:pb-page" unresolved="unresolved">
         <pb-document id="document1" data-template="pages:pb-document"/>
-        <header data-template="lib:include" data-template-path="templates/menu.html"/>
-        <header data-template="lib:include" data-template-path="templates/toolbar.html"/>
-            
-        
+        <header>
+            <nav data-template="lib:include" data-template-path="templates/menu.html" />
+            <section data-template="lib:include" data-template-path="templates/toolbar.html" />
+        </header>
         <main>
             <section class="pageWrapper">
                 <header>
