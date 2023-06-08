@@ -342,8 +342,8 @@ declare variable $config:context-path :=
  :)
 declare variable $config:data-root := "/db/apps/bullinger-data/data";
 
-declare variable $config:persons := doc($config:data-root || 'data/index/persons.xml');
-declare variable $config:localities := doc($config:data-root || 'data/index/localities.xml');
+declare variable $config:persons := doc($config:data-root || '/index/persons.xml');
+declare variable $config:localities := doc($config:data-root || '/index/localities.xml');
 
 
 (:~

@@ -36,18 +36,22 @@ declare function api:persons-all-list($request as map(*)) {
     let $items :=     
             if ($search and $search != '') 
             then (
-                $config:persons//tei:person[ft:query(., 'name:(' || $search || '*)')]
+                $config:persons//tei:persName[ft:query(., 'name:(' || $search || '*)')]
             ) 
             else (
                 $config:persons//tei:person
             )            
+    let $log := util:log("info", map {
+        "function":"api:names-all-list $search:",
+        "items count":count($items)
+    })             
     let $sorted_items := for $item in $items
                             order by $item/tei:persName[1] ascending
                             return
                                 $item
     let $log := util:log("info","api:names-all-list  found items:"||count($sorted_items) ) 
     let $byKey := for-each($sorted_items, function($item as element()) {
-        let $label := $item/tei:persName[1]/text()
+        let $label := $item/tei:persName[1]/@n/string()
         let $sortKey :=
             if (starts-with($label, "von ")) then
                 substring($label, 5)
@@ -92,7 +96,7 @@ declare function api:persons-all-list($request as map(*)) {
                     map {
                         "category": "[A-Z]",
                         "count": count($sorted),
-                        "label": <pb-i18n key="all"></pb-i18n>
+                        "label": <pb-i18n key="all">Alle</pb-i18n>
                     }
                 }
         }
@@ -101,11 +105,15 @@ declare function api:persons-all-list($request as map(*)) {
 declare function api:output-name($list, $letter as xs:string, $search as xs:string?) {
     array {
         for $item in $list
+            let $log := util:log("info", map {
+                "function":"api:output-name", 
+                "$item":$item?3
+            })
             return
             if(string-length($item?2)>0)
             then (
             let $type := local-name($item?3)   
-            let $letterParam := if ($letter = "[A-Z]") then substring(($item?3/tei:persName[1]/text()), 1, 1) else $letter
+            let $letterParam := if ($letter = "[A-Z]") then substring(($item?3/tei:persName[1]/@n/string()), 1, 1) else $letter
             let $params := "&amp;category=" || $letterParam || "&amp;search=" || $search
             return
                 <span class="{$type}List">
