@@ -1,30 +1,78 @@
-<nav class="menubar">
-    <div class="wrapper">
-        <a href="${app}/index.html" class="logo" data-template="lib:parse-params"/>
-        <pb-media-query query="min-width: 1024px">
-            <a href="${app}/index.html" data-template="lib:parse-params">Home</a>
-            <a href="${app}/letters.html" data-template="lib:parse-params">Briefe</a>
-                
-            <pb-restricted login="login">
-                <paper-menu-button>
-                    <a href="#" slot="dropdown-trigger"><pb-i18n key="menu.admin.title">Admin</pb-i18n></a>
-                    <paper-listbox slot="dropdown-content">
-                        <paper-item data-template="pages:edit-odd-list"/>
-                        <paper-item>
-                            <pb-download url="api/apps/download">
-                                <pb-i18n key="appgen.xar-download">Download App as .xar</pb-i18n>
-                            </pb-download>
-                        </paper-item>
-                        <paper-item>
-                            <a href="${app}/api.html" data-template="lib:parse-params" target="_blank">API Documentation</a>
-                        </paper-item>
-                    </paper-listbox>
-                </paper-menu-button>
-            </pb-restricted>
-        </pb-media-query>
+<nav class="menubar center-l" data-template="pages:parse-params">
+    <a href="${app}/index.html" class="logo" data-template="lib:parse-params"/>
+    <pb-media-query class="menubar-left desktop" query="min-width: 48.5rem">
+        <a href="${app}/letters.html">
+            <pb-i18n key="letters">Briefe</pb-i18n>            
+        </a>
+        <div class="dropdown-menu">
+            <div class="dropdown">
+                <label class="menu-label" for="m-register">
+                    <pb-i18n key="register">Register</pb-i18n>
+                </label>
+                <input id="m-register" name="register" type="checkbox"/>
+                <div class="menu-list">
+                    <ul>
+                        <li><a href="${app}/names/">
+                            <pb-i18n key="names">Names</pb-i18n>
+                        </a></li>
+                        <li><a href="${app}/places/">
+                            <pb-i18n key="places">Places</pb-i18n>
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </pb-media-query>
 
-        <!-- Search input -->
-        <pb-search action="${app}/search.html" data-template="lib:parse-params" value="${query}" redirect="redirect" label=""/>
-        <pb-login id="login" group="tei"> </pb-login>    
-    </div>
+    <!-- fx-fore src="${app}/fore-search.html" data-template="pages:parse-params"></fx-fore-->
+
+    <pb-media-query class="mobile" query="max-width: 48rem">
+        <details class="mobile-menu">
+            <summary>
+                <iron-icon icon="menu"></iron-icon>
+                <iron-icon icon="close"></iron-icon>
+            </summary>
+            <section>
+                <header><pb-i18n key="menu">Menu</pb-i18n></header>
+                <div>
+                    <a href="${app}/letters.html">
+                        <pb-i18n key="letters">Briefe</pb-i18n>            
+                    </a>            
+                    <p><pb-i18n key="register">Register</pb-i18n></p>
+                    <ul>
+                        <li><a href="${app}/names/">
+                            <pb-i18n key="names">Names</pb-i18n>
+                        </a></li>
+                        <li><a href="${app}/places/">
+                            <pb-i18n key="places">Places</pb-i18n>
+                        </a></li>
+                    </ul>
+                    <p><pb-i18n key="about-the-edition"></pb-i18n></p>
+                    <ul>
+                        <li><a href="${app}/content/about">
+                            <pb-i18n key="about">About</pb-i18n>
+                        </a></li>
+                    </ul>
+                </div>
+            </section>
+        </details>
+    </pb-media-query>
+
+    <pb-media-query class="desktop" query="min-width: 48.5rem">
+        <div class="menu-right dropdown-menu">
+            <div class="dropdown">
+                <label class="menu-label" for="m-about">
+                    <pb-i18n key="about-the-edition">About</pb-i18n>
+                </label>
+                <input id="m-about" name="about" type="checkbox"/>
+                <div class="menu-list">
+                    <ul>
+                        <li><a href="${app}/content/about">
+                            <pb-i18n key="about">About</pb-i18n>
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </pb-media-query>
 </nav>

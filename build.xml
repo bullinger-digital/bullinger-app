@@ -7,7 +7,8 @@
     <property name="app.build.dir" value="${build.dir}/${project.app}-${project.version}"/>    
     <property name="git.repo.path" value="${basedir}/.git"/>
     <available file="${git.repo.path}" type="dir" property="git.present"/>
-    <property name="scripts.dir" value="node_modules/@teipublisher/pb-components/dist"/>
+    <property name="tp.scripts.dir" value="node_modules/@teipublisher/pb-components/dist"/>
+    <property name="fore.scripts.dir" value="node_modules/@jinntec/fore/dist"/>
 
     <target name="clean">
         <delete includeemptydirs="true" failonerror="false">
@@ -41,7 +42,13 @@
           </copy>
 
         <copy todir="${app.build.dir}/resources/scripts">
-            <fileset dir="${scripts.dir}">
+            <fileset dir="${tp.scripts.dir}">
+                <include name="*.js"/>
+                <include name="*.map"/>
+            </fileset>
+        </copy>
+        <copy todir="${app.build.dir}/resources/scripts">
+            <fileset dir="${fore.scripts.dir}">
                 <include name="*.js"/>
                 <include name="*.map"/>
             </fileset>
