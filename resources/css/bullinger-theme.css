@@ -1,5 +1,5 @@
 @import "dropdown-css.css";
-@import "../scripts/fore/fore.css";
+@import "fore.css";
 @import "fore-custom.css";
 
 :root {

@@ -1,0 +1,35 @@
+fx-inspector{
+    position:fixed;
+    widtH:10%;
+    z-index:99999;
+    width: 33vw;
+}
+
+/* these styles are used by fore-search.html to expand/collapse the input*/
+fx-fore.search-component{
+    align-self: center;
+    padding:0 0.5rem;
+    margin-right:0.5rem;
+}
+
+ #menu-search input{
+     width:0;
+     transition:all 0.4s;
+     display:inline-block;
+     border:0;
+     border-bottom:thin solid;
+     padding:0;
+
+ }
+
+#menu-search iron-icon{
+    cursor: pointer;
+}
+#menu-search.open input{
+    width:12em;
+    font-size:1rem;
+}
+#menu-search:focus{
+    outline:none;
+}
+

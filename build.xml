@@ -47,12 +47,12 @@
                 <include name="*.map"/>
             </fileset>
         </copy>
-        <copy todir="${app.build.dir}/resources/scripts">
+        <!-- <copy todir="${app.build.dir}/resources/scripts">
             <fileset dir="${fore.scripts.dir}">
                 <include name="*.js"/>
                 <include name="*.map"/>
             </fileset>
-        </copy>
+        </copy> -->
         <copy todir="${app.build.dir}/resources/css">
             <fileset dir="node_modules/@teipublisher/pb-components/css">
             </fileset>

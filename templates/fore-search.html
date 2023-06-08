@@ -1,0 +1,55 @@
+<fx-fore class="search-component">
+    <fx-model>
+        <fx-instance>
+            <data>
+                <search></search>
+                <open></open>
+            </data>
+        </fx-instance>
+
+        <fx-instance id="suggestions" type="json">[{"text":"","value":""}]</fx-instance>
+    
+        <fx-submission id="get-suggestions"
+                       url="{app-root()}/api/search/autocomplete?query={search}"
+                       method="get"
+                       replace="instance"
+                       instance="suggestions"
+                       validate="false"></fx-submission>
+
+        <fx-submission id="s-search"
+                       url="{app-root()}/search.html?query={search}"
+                       method="get"
+                       replace="all"
+                       validate="false"></fx-submission>
+
+        <fx-function signature="app-root() as xs:string" type="text/javascript">
+            const pbpage = document.querySelector('pb-page');
+            return pbpage.getAttribute('app-root');
+        </fx-function>
+    </fx-model>
+
+    <fx-control ref="search" id="menu-search" update-event="input" class="{../open}">
+        <input list="l-suggestions" name="search" type="search"/>
+        <iron-icon id="icon" icon="search" tabindex="0">
+            <fx-action event="click">
+                <fx-setvalue ref="instance('default')/open" value="if(.='open') then '' else 'open'"></fx-setvalue>
+                <fx-send submission="s-search" if="string-length(.) != 0"></fx-send>
+                <fx-setfocus control="menu-search"></fx-setfocus>
+            </fx-action>
+        </iron-icon>
+        <datalist id="l-suggestions" data-ref="instance('suggestions')?*">
+            <template>
+                <option>{?text}</option>
+            </template>
+        </datalist>
+        <fx-action event="value-changed">
+            <fx-send submission="get-suggestions"></fx-send>
+            <fx-refresh force="force"></fx-refresh>
+        </fx-action>
+        <fx-action event="keydown" if="event('code') = 'Enter'">
+            <fx-setfocus control="dummy" delay="300"></fx-setfocus>
+            <fx-send submission="s-search" if="string-length(.) != 0"></fx-send>
+        </fx-action>
+    </fx-control>
+   <fx-inspector></fx-inspector>
+</fx-fore>

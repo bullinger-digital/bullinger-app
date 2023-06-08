@@ -116,8 +116,6 @@ declare variable $config:pagination-fill := 5;
  : Display configuration for facets to be shown in the sidebar. The facets themselves
  : are configured in the index configuration, collection.xconf.
  :)
-declare variable $config:places := doc('/db/apps/bullinger-data/data/index/places.xml');
-declare variable $config:persons := doc('/db/apps/bullinger-data/data/index/persons.xml');
 
 declare variable $config:facets := [
     map {
@@ -147,7 +145,7 @@ declare variable $config:facets := [
         "max": 5,
         "hierarchical": false(),
         "output": function($label) {
-            let $place := $config:places/id($label)
+            let $place := $config:localities/id($label)
             return 
                 if($place) 
                 then (
@@ -342,13 +340,17 @@ declare variable $config:context-path :=
 (:~
  : The root of the collection hierarchy containing data.
  :)
-declare variable $config:data-root := "/db/apps/bullinger-data/data/letters";
+declare variable $config:data-root := "/db/apps/bullinger-data/data";
+
+declare variable $config:persons := doc($config:data-root || 'data/index/persons.xml');
+declare variable $config:localities := doc($config:data-root || 'data/index/localities.xml');
+
 
 (:~
  : The root of the collection hierarchy whose files should be displayed
  : on the entry page. Can be different from $config:data-root.
  :)
-declare variable $config:data-default := $config:data-root;
+declare variable $config:data-default := $config:data-root || "/letters";
 
 (:~
  : A sequence of root elements which should be excluded from the list of
