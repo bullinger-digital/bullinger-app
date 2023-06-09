@@ -17,7 +17,7 @@
                     <paper-card class="doclist" data-i18n="[heading]browse.documents" heading="documents">
                         <div class="card-content">
                             <div class="browse" slot="page">
-                                <pb-custom-form id="facets" url="api/search/facets" event="pb-results-received" subscribe="docs" emit="docs"/>
+                                <pb-custom-form id="facets" class="facets" url="api/search/facets" event="pb-results-received" subscribe="docs" emit="docs"/>
                                 <pb-browse-docs id="document-list" url="api/collection" sort-options="[{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;},{&#34;label&#34;: &#34;browse.author&#34;, &#34;value&#34;: &#34;author&#34;}]" sort-by="title" filter-options="[{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;},{&#34;label&#34;: &#34;browse.author&#34;, &#34;value&#34;: &#34;author&#34;},{&#34;label&#34;: &#34;browse.file&#34;, &#34;value&#34;: &#34;file&#34;}]" filter-by="title" auto="auto" history="history" login="login" emit="docs" subscribe="docs">
                                     <pb-paginate slot="toolbar" id="paginate" per-page="10" range="5" emit="docs" subscribe="docs"/>
                                     <pb-restricted login="login" slot="toolbar">
@@ -38,27 +38,7 @@
         <footer data-template="lib:include" data-template-path="templates/footer.html"/>        
     </pb-page>
     <div class="splash"/>
-    <script>
-        const facets = document.getElementById('facets');
-        if (facets) {
-            facets.addEventListener('pb-custom-form-loaded', function(ev) {
-                const elems = ev.detail.querySelectorAll('.facet');
-                elems.forEach(facet =&gt; {
-                    facet.addEventListener('change', () =&gt; {
-                        const table = facet.closest('table');
-                        if (table) {
-                            const nested = table.querySelectorAll('.nested .facet').forEach(nested =&gt; {
-                                if (nested != facet) {
-                                    nested.checked = false;
-                                }
-                            });
-                        }
-                        facets.submit();
-                    });
-                });
-            });
-        }
-    </script>
+    <script src="resources/scripts/browse.js"></script>
 </body>
 
 </html>
