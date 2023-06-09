@@ -383,17 +383,17 @@ pb-view {
     width: 100%;
 }
 
-.register__places {
+.register__localities {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 5rem;
 }
 
-.register__places .register-list {
+.register__localities .register-list {
     --pb-categorized-list-columns: 1;
 }
 
-.register__places pb-leaflet-map {
+.register__localities pb-leaflet-map {
     margin-top: 5rem;
     width: 100%;
     height: 50vh;
