@@ -64,7 +64,58 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Names to display",
+                        "description": "Persons to display",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/localities-all-list": {
+            "get": {
+                "summary": "List localities",
+                "description": "Retrieve list of pllocalitiesaces in format required by pb-split-list",
+                "operationId": "custom:localities-all-list",
+                "parameters": [
+					{
+						"name": "category",
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					},					
+                    {
+                        "name": "dir",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": "asc"
+                        }
+                    },					
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "default": 50
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "localities to display",
                         "content": {
                             "application/json": {
                                 "schema":{

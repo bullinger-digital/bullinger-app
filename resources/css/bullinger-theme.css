@@ -365,6 +365,89 @@ pb-view {
     padding-right: 0.5rem;
 }
 
+.register-list {
+    display: grid;
+    --pb-categorized-list-columns: 3;
+}
+
+.register-list iron-icon {
+    --iron-icon-height: 22px;
+    --iron-icon-fill-color: var(--gf-light-gray);
+    --iron-icon-stroke-color: transparent;
+    float:left;
+}
+
+.register-list pb-custom-form {
+    justify-self: start;
+    max-width: 25rem;
+    width: 100%;
+}
+
+.register__places {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 5rem;
+}
+
+.register__places .register-list {
+    --pb-categorized-list-columns: 1;
+}
+
+.register__places pb-leaflet-map {
+    margin-top: 5rem;
+    width: 100%;
+    height: 50vh;
+}
+
+[slot=controls] {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+pb-split-list {
+    min-height: 50vh;
+}
+
+pb-split-list::part(items),
+pb-split-list::part(category),
+pb-split-list::part(active-category) {
+    font-family: var(--pb-base-font-family);
+}
+
+/* Q: how to narrow space between header items?
+pb-split-list::part(category),
+pb-split-list::part(active-category) {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    width: 1rem;
+    background: green;
+} */
+
+pb-split-list::part(category) {
+    color: var(--gf-gray-3);
+}
+
+pb-split-list::part(active-category) {
+    color: var(--gf-black);
+}
+
+pb-split-list::part(items) {
+    margin-top: 1em;
+}
+
+.itemList {
+    max-width: 24rem;
+}
+
+
+.place pb-leaflet-map {
+    height: 30vh;
+    width: 100%;
+}
+
 @media (min-width: 769px) {
     main .card > pb-view {
         

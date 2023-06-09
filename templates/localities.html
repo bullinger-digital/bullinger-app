@@ -1,0 +1,68 @@
+<html data-template="lib:parse-params">
+    <head data-template="lib:include" data-template-path="templates/header.html">
+        <title data-target="title-template" data-template-page="localities">Localities</title>
+        <meta data-target="title-template" name="pb-template" content="localities.html"/>
+        <script data-target="script-preload" type="module" src="pb-leaflet-map.js" data-template="pages:load-components"></script>
+    </head>
+
+    <body>
+        <pb-page data-template="pages:pb-page" locales="resources/i18n/{{ns}}/{{lng}}.json" require-language="require-language" unresolved="unresolved" api-version="1.0.0">
+            <header class="top-header">
+                <nav data-template="lib:include" data-template-path="templates/menu.html"></nav>
+            </header>
+            <div class="center-l breadcrumbs">
+                <pb-i18n key="register">register</pb-i18n> > <pb-i18n key="localities">localities</pb-i18n>
+            </div>
+            <main class="register register__localities center-l">
+                <div class="register-list">
+                    <pb-custom-form id="options" auto-submit="paper-input,paper-icon-button" emit="transcription">
+                        <paper-input id="query" name="search" label="Suche" data-template="templates:form-control">
+                            <paper-icon-button icon="search" slot="suffix"/>
+                        </paper-input>                        
+                    </pb-custom-form>
+                    <pb-split-list class="register-split-list" url="api/localities-all-list" subforms="#options" selected="A" emit="transcription" subscribe="transcription" data-template="pages:parse-params"/>
+                </div>
+
+                <pb-leaflet-map id="map" subscribe="map" emit="map" zoom="10" cluster=""
+                    latitude="47.69732" longitude="8.63493">
+                    <pb-map-layer show="" base="" label="Stadia Map" url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png?api_key=a21d202c-6d45-46a8-aab2-b8bfbfeb23a4"
+                        attribution="(c) &lt;a href=&quot;https://stadiamaps.com/&quot;&gt;Stadia Maps&lt;/a&gt;, (c) &lt;a href=&quot;https://openmaptiles.org/&quot;&gt;OpenMapTiles&lt;/a&gt; (c) &lt;a href=&quot;http://openstreetmap.org&quot;&gt;OpenStreetMap&lt;/a&gt; contributors"></pb-map-layer>
+                    <pb-map-layer base="" label="ESRI World Imagery" url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                        attribution="Tiles (C) Esri - Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"></pb-map-layer>
+                    <pb-map-layer base="" label="Carto DB Voyager" url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+                        attribution="(C) &lt;a href=&quot;https://www.openstreetmap.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors &lt;a href=&quot;https://carto.com/attributions&quot;&gt;CARTO&lt;/a&gt;">
+                    </pb-map-layer>
+                </pb-leaflet-map>
+            </main>
+        </pb-page>
+        <footer data-template="templates:include" data-template-path="templates/footer.html"/>
+        <div class="splash"></div>
+        <script>
+            window.addEventListener('load', function() {
+                const map = document.querySelector('pb-leaflet-map');
+                map.addEventListener('pb-ready', function() {
+                    const endpoint = document.querySelector("pb-page").getEndpoint();
+                    
+                    const url = `${endpoint}/api/places-all`;
+                    console.log(`fetching places from: ${url}`);
+                    
+                    fetch(url)
+                        .then(function(response) {
+                            return response.json();
+                        })
+                        .then(function(json) {
+                            pbEvents.emit("pb-update-map", "map", json)
+                        });
+                });
+
+                pbEvents.subscribe('pb-leaflet-marker-click', 'map', function(ev) {
+                    const label = ev.detail.label;
+                    const key = ev.detail.id;
+                    const category = label.substring(0, 1);
+                    window.location = `${label}?key=${key}&amp;category=${category}`;
+                });
+            });
+        </script>
+    </body>
+
+</html>
