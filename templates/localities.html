@@ -41,10 +41,12 @@
             window.addEventListener('load', function() {
                 const map = document.querySelector('pb-leaflet-map');
                 map.addEventListener('pb-ready', function() {
-                    const endpoint = document.querySelector("pb-page").getEndpoint();
-                    
-                    const url = `${endpoint}/api/places-all`;
-                    console.log(`fetching places from: ${url}`);
+                    const pbPage = document.querySelector("pb-page")
+                    console.log(`pbPage:`, pbPage);
+                    const endpoint = pbPage.getEndpoint();                    
+                    console.log(`endpoint:`, endpoint);
+                    const url = endpoint + "/api/localities-all";
+                    console.log(`fetching localities from:`, url);
                     
                     fetch(url)
                         .then(function(response) {

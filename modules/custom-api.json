@@ -126,7 +126,27 @@
                     }
                 }
             }
-        }        
+        },
+        "/api/localities-all": {
+            "get": {
+                "summary": "List all places",
+                "description": "Retrieve list of all places",
+                "operationId": "custom:localities-all",
+                "parameters": [],
+				"responses": {
+                    "200": {
+                        "description": "List of all places",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    }
+				}
+			}
+		}        
     },
     "security": [
         {

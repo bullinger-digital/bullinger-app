@@ -240,6 +240,31 @@ declare function api:output-locality($list, $letter as xs:string, $search as xs:
     }
 };
 
+declare function api:localities-all($request as map(*)) {    
+    let $places :=
+        for $place in $config:localities//tei:place
+            order by $place/tei:settlement,$place/tei:district, $place/tei:country 
+        return
+            $place
+    return
+        array {
+            for $place in $places
+            return
+                if(string-length(normalize-space($place/tei:location/tei:geo)) > 0)
+                then (
+                    let $tokenized := tokenize($place/tei:location/tei:geo)
+                    return
+                        map {
+                            "latitude":$tokenized[1],
+                            "longitude":$tokenized[2],
+                            "label":$place/tei:settlement/text() || " / " || $place/tei:district/text() || " / " || $place/tei:country/text(),
+                            "id":$place/@xml:id/string()
+                        }
+                ) else()
+            }
+};
+
+
 declare function api:sort($persons as array(*)*, $dir as xs:string) {        
     let $sorted :=
         sort($persons,"?", function($entry) {
