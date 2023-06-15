@@ -62,7 +62,7 @@
             <model behaviour="section" pb:mode="header">
                 <desc>TEI Title</desc>
                 <param name="level" value="1"/>
-                <param name="sender" value="let $items :=     for $item in .//correspAction[@type = &#34;sent&#34;]/(persName,orgName,roleName)     return         typeswitch ($item)             case element(persName)                 return                     let $persName := $parameters?persons/persName[@xml:id = $item/@ref]                     return $persName/forename || &#34; &#34; || $persName/surname             case element(orgName)                 return $parameters?orgs[@xml:id = $item/@ref]/text()             case element(roleName)                 return $parameters?roles[@xml:id = $item/@ref]/form[@xml:lang=&#34;de&#34;][@type=$item/@type]             default                 return () return string-join($items, ', ')"/>
+                <param name="sender" value="let $items := for $item in .//correspAction[@type = &#34;sent&#34;]/(persName,orgName,roleName)      return typeswitch ($item) case element(persName) return let $persName := $parameters?persons/persName[@xml:id = $item/@ref] return $persName/forename || &#34; &#34; || $persName/surname case element(orgName) return $parameters?orgs[@xml:id = $item/@ref]/name[@xml:lang='de'][@type=$item/@type] case element(roleName) return $parameters?roles[@xml:id = $item/@ref]/form[@xml:lang=&#34;de&#34;][@type=$item/@type]             default                 return () return string-join($items, ', ')"/>
                 <param name="receiver" value="let $items :=     for $item in .//correspAction[@type = &#34;received&#34;]/*     return         typeswitch ($item)             case element(persName)                 return                     let $persName := $parameters?persons/persName[@xml:id = $item/@ref]                     return $persName/forename || &#34; &#34; || $persName/surname             case element(orgName)                 return $parameters?orgs[@xml:id = $item/@ref]             case element(roleName)                 return $parameters?roles[@xml:id = $item/@ref]/form[@xml:lang=&#34;de&#34;][@type=$item/@type]             default                 return () return string-join($items, ', ')"/>
                 <param name="date" value="let $date := .//correspAction[@type = &#34;sent&#34;]/date return if(exists($date/@when)) then (format-date($date/@when, '[D1o] [MNn] [Y]', 'de', (), ())) else if (exists($date/@notBefore) and exists($date/@notAfter)) then (&#34;Zwischen &#34; || format-date($date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) || &#34; und &#34; || format-date($date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ()))  else if(exists($date/@notBefore)) then (&#34;Nach &#34; || format-date($date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) ) else if(exists($date/@notAfter)) then (&#34;Vor &#34; || format-date($date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ())) else (&#34;Unbekannt&#34;)"/>
                 <param name="place" value="let $place-id := .//correspAction[@type = 'sent']/placeName/@source return $parameters?places[@xml:id=$place-id]"/>
@@ -225,7 +225,7 @@
                     <model output="web" behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="persName" mode="add">
-                    <model predicate="$parameters?view='metadata'" behaviour="block">
+                    <model predicate="$parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
             <param name="name" value="let $ref := ./@ref  let $persName := $parameters?persons/persName[@xml:id = $ref] return   $persName/forename/text() || &#34; &#34; || $persName/surname/text()"/>
             <param name="place" value="let $placeref := ../placeName/@source  return if($parameters?places[@xml:id=$placeref])  then ( (&#34;, &#34;, $parameters?places[@xml:id=$placeref]) ) else ()"/>
             <pb:template xmlns="" xml:space="preserve">[[name]][[place]]</pb:template>
@@ -328,7 +328,7 @@
         </model>
                 </elementSpec>
                 <elementSpec ident="roleName" mode="add">
-                    <model behaviour="block">
+                    <model predicate="$parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
             <param name="name" value="let $ref := @ref let $type := @type return $parameters?roles[@xml:id=$ref]/form[@xml:lang='de'][@type=$type]/text()"/>
             <param name="place" value="let $placeref := ../placeName/@source  return if($parameters?places[@xml:id=$placeref])  then ( (&#34;, &#34;, $parameters?places[@xml:id=$placeref]) ) else ()"/>
             <pb:template xmlns="" xml:space="preserve">[[name]][[place]]</pb:template>
