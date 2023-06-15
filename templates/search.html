@@ -5,23 +5,19 @@
     </head>
     <body>
         <pb-page data-template="pages:pb-page" unresolved="unresolved" locales="resources/i18n/{{ns}}/{{lng}}.json" locale-fallback-ns="app">
-            <header>
+            <header class="top-header">
                 <nav data-template="lib:include" data-template-path="templates/menu.html" />                
             </header>
-            <main>
+            <main class="center-l">
                 <div class="searchWrapper">
                     <div class="search-panel">
-                        <paper-card>
-                            <div class="card-content">
-                                <pb-search id="search-form" subscribe="search" data-template="lib:parse-params" value="${query}" submit-on-load="submit-on-load">
-                                    <div class="targets">
-                                        <paper-checkbox name="field" value="text">Search sections</paper-checkbox>
-                                        <paper-checkbox name="field" value="head">Search headings</paper-checkbox>
-                                    </div>
-                                    <pb-custom-form id="facets" url="api/search/facets" subscribe="results" event="pb-results-received" emit="search"/>
-                                </pb-search>
+                        <pb-search id="search-form" subscribe="search" data-template="lib:parse-params" value="${query}" submit-on-load="submit-on-load">
+                            <div class="targets">
+                                <paper-checkbox name="field" value="text">Search sections</paper-checkbox>
+                                <paper-checkbox name="field" value="head">Search headings</paper-checkbox>
                             </div>
-                        </paper-card>
+                            <pb-custom-form id="facets" url="api/search/facets" subscribe="results" event="pb-results-received" emit="search"/>
+                        </pb-search>
                     </div>
                     <pb-load id="results" url="api/search" emit="results"/>
                 </div>

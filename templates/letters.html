@@ -3,42 +3,45 @@
         <title data-target="title-template" data-template-page="letters">Briefe</title>
         <meta data-target="title-template" name="pb-template" content="letters.html"/>
     </head>
-<body>
-    <pb-page data-template="pages:pb-page" unresolved="unresolved" locales="resources/i18n/{{ns}}/{{lng}}.json" locale-fallback-ns="app">
-        <header>
-            <nav data-template="lib:include" data-template-path="templates/menu.html" />            
-        </header>
-        <main>
-            <div class="browseWrapper">
+    <body>
+        <pb-page data-template="pages:pb-page" unresolved="unresolved" locales="resources/i18n/{{ns}}/{{lng}}.json" locale-fallback-ns="app">
+            <header class="top-header">
+                <nav data-template="lib:include" data-template-path="templates/menu.html" />
+            </header>
+            <main class="center-l">
                 <section>
                     <h1 class="tp-title" data-template="config:app-title"/>
                 </section>
                 <section class="panels">
-                    <paper-card class="doclist" data-i18n="[heading]browse.documents" heading="documents">
-                        <div class="card-content">
-                            <div class="browse" slot="page">
-                                <pb-custom-form id="facets" class="facets" url="api/search/facets" event="pb-results-received" subscribe="docs" emit="docs"/>
-                                <pb-browse-docs id="document-list" url="api/collection" sort-options="[{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;},{&#34;label&#34;: &#34;browse.author&#34;, &#34;value&#34;: &#34;author&#34;}]" sort-by="title" filter-options="[{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;},{&#34;label&#34;: &#34;browse.author&#34;, &#34;value&#34;: &#34;author&#34;},{&#34;label&#34;: &#34;browse.file&#34;, &#34;value&#34;: &#34;file&#34;}]" filter-by="title" auto="auto" history="history" login="login" emit="docs" subscribe="docs">
-                                    <pb-paginate slot="toolbar" id="paginate" per-page="10" range="5" emit="docs" subscribe="docs"/>
-                                    <pb-restricted login="login" slot="toolbar">
-                                        <pb-ajax emit="docs" url="api/odd" method="post" data-template="lib:parse-params" event="pb-search-resubmit" title="Recompile ODD" data-i18n="[title]odd.manage.regenerate-all">
-                                            <h3 slot="title">
-                                                <pb-i18n key="odd.manage.regenerate-all"/>
-                                            </h3>
-                                            <paper-icon-button icon="icons:update"/>
-                                        </pb-ajax>
-                                    </pb-restricted>
-                                </pb-browse-docs>
-                            </div>
-                        </div>
-                    </paper-card>
+                    <aside data-template="browse:form">
+                        <!--pb-custom-form class="options" auto-submit="[name=sort]" emit="search"-->
+                        <pb-custom-form class="options">
+                            <input type="hidden" name="collection" value="${collection}" data-template="pages:parse-params"/>
+                            <pb-select label="browse.sort" name="sort" value="${sort}" data-template="pages:parse-params">
+                                <paper-item value="title"><pb-i18n key="browse.title"></pb-i18n></paper-item>
+                                <paper-item value="author"><pb-i18n key="browse.author"></pb-i18n></paper-item>
+                            </pb-select>
+                            <pb-select label="search.scope" name="field" value="${field}" data-template="pages:parse-params">
+                                <paper-item value="text"><pb-i18n key="search.content"></pb-i18n></paper-item>
+                                <paper-item value="title"><pb-i18n key="search.title"></pb-i18n></paper-item>
+                            </pb-select>
+                        </pb-custom-form>
+                        <pb-search id="search-form" subscribe="docs" data-template="pages:parse-params" value="${query}"
+                            subforms=".facets,.options" submit-on-load="submit-on-load">
+                            <paper-button slot="searchButton"><pb-i18n key="search.search">Search</pb-i18n></paper-button>
+                        </pb-search>
+                        <pb-custom-form id="facets" class="facets" url="api/search/facets" event="pb-results-received" subscribe="docs" emit="docs"></pb-custom-form>
+                    </aside>
+                    <div id="document-list">
+                        <pb-paginate id="paginate" per-page="10" range="5" subscribe="docs" emit="docs"></pb-paginate>
+                        <pb-load url="api/collection/{collection}" expand="" emit="search"></pb-load>
+                        <!--pb-browse url="api/collection" emit="search"></pb-browse-->
+                    </div>
                 </section>
-            </div>
-        </main>        
-        <footer data-template="lib:include" data-template-path="templates/footer.html"/>        
-    </pb-page>
-    <div class="splash"/>
-    <script src="resources/scripts/browse.js"></script>
-</body>
-
+            </main>
+            <footer data-template="lib:include" data-template-path="templates/footer.html"></footer>
+        </pb-page>
+        <div class="splash"></div>
+        <script src="resources/scripts/browse.js"></script>
+    </body>
 </html>

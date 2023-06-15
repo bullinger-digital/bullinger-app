@@ -18,7 +18,7 @@
                     <pb-custom-form id="options" auto-submit="paper-input,paper-icon-button" emit="transcription">
                         <paper-input id="query" name="search" label="Suche" data-template="templates:form-control">
                             <paper-icon-button icon="search" slot="suffix"/>
-                        </paper-input>                        
+                        </paper-input>
                     </pb-custom-form>
                     <pb-split-list class="register-split-list" url="api/localities-all-list" subforms="#options" selected="A" emit="transcription" subscribe="transcription" data-template="pages:parse-params"/>
                 </div>
@@ -43,7 +43,7 @@
                 map.addEventListener('pb-ready', function() {
                     const pbPage = document.querySelector("pb-page")
                     console.log(`pbPage:`, pbPage);
-                    const endpoint = pbPage.getEndpoint();                    
+                    const endpoint = pbPage.getEndpoint();
                     console.log(`endpoint:`, endpoint);
                     const url = endpoint + "/api/localities-all";
                     console.log(`fetching localities from:`, url);

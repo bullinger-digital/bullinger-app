@@ -32,7 +32,7 @@ This file should be kept separate.
     display: inline-block;
 }
 .dropdown-menu .dropdown {
-    background:white;
+    background: transparent;
     position:relative;
     transition-duration: 0.2s;
     -webkit-transition-duration: 0.2s;
@@ -77,8 +77,9 @@ This file should be kept separate.
     margin-top: 2.1rem;
     min-width: 12rem;
 }
-.dropdown-menu .menu-label span {
-    padding: 0 1rem;
+.dropdown-menu .menu-label {
+    /* padding: 0 1rem; */
+    font-family: var(--pb-base-font-family);
 }
 .dropdown-menu .menu-list{
     display:block;
@@ -94,7 +95,7 @@ This file should be kept separate.
 }
 .dropdown-menu .menu-list ul {
     background:white;
-    margin:0 0 0 -1rem;
+    margin:0 0 0 -0.5rem;
     padding: 0;
     list-style-type: none;
 }
