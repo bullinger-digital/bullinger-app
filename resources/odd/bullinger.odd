@@ -59,21 +59,20 @@
             <elementSpec ident="teiHeader" mode="change">
                     <modelSequence predicate="$parameters?view='metadata'">
             <desc>TEI Header Data for Bullinger Letters</desc>
-            <model behaviour="section">
+            <model behaviour="section" pb:mode="header">
                 <desc>TEI Title</desc>
                 <param name="level" value="1"/>
-                <param name="sender" value="let $items := for $item in .//correspAction[@type = &#34;sent&#34;]/*   return typeswitch($item)      case element(persName)         return           let $persName := $parameters?persons/persName[@xml:id = $item/@ref]           return $persName/forename || &#34; &#34; || $persName/surname      case element (personGrp) return $parameters?roles[@xml:id = $item/@ref]/@role/string()      case element (orgName) return $parameters?orgs[@xml:id = $item/@ref]/text()      default return () return    string-join($items, ', ')"/>
-                <param name="receiver" value="let $items := for $item in .//correspAction[@type = &#34;received&#34;]/*   return typeswitch($item)      case element(persName)         return           let $persName := $parameters?persons/persName[@xml:id = $item/@ref]           return $persName/forename || &#34; &#34; || $persName/surname      case element (personGrp) return $parameters?roles[@xml:id = $item/@ref]/@role/string()      case element (orgName) return $parameters?orgs[@xml:id = $item/@ref]/text()      default return () return    string-join($items, ', ')"/>
+                <param name="sender" value="let $items :=     for $item in .//correspAction[@type = &#34;sent&#34;]/(persName,orgName,roleName)     return         typeswitch ($item)             case element(persName)                 return                     let $persName := $parameters?persons/persName[@xml:id = $item/@ref]                     return $persName/forename || &#34; &#34; || $persName/surname             case element(orgName)                 return $parameters?orgs[@xml:id = $item/@ref]/text()             case element(roleName)                 return $parameters?roles[@xml:id = $item/@ref]/form[@xml:lang=&#34;de&#34;][@type=$item/@type]             default                 return () return string-join($items, ', ')"/>
+                <param name="receiver" value="let $items :=     for $item in .//correspAction[@type = &#34;received&#34;]/*     return         typeswitch ($item)             case element(persName)                 return                     let $persName := $parameters?persons/persName[@xml:id = $item/@ref]                     return $persName/forename || &#34; &#34; || $persName/surname             case element(orgName)                 return $parameters?orgs[@xml:id = $item/@ref]             case element(roleName)                 return $parameters?roles[@xml:id = $item/@ref]/form[@xml:lang=&#34;de&#34;][@type=$item/@type]             default                 return () return string-join($items, ', ')"/>
                 <param name="date" value="let $date := .//correspAction[@type = &#34;sent&#34;]/date return if(exists($date/@when)) then (format-date($date/@when, '[D1o] [MNn] [Y]', 'de', (), ())) else if (exists($date/@notBefore) and exists($date/@notAfter)) then (&#34;Zwischen &#34; || format-date($date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) || &#34; und &#34; || format-date($date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ()))  else if(exists($date/@notBefore)) then (&#34;Nach &#34; || format-date($date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) ) else if(exists($date/@notAfter)) then (&#34;Vor &#34; || format-date($date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ())) else (&#34;Unbekannt&#34;)"/>
-                <param name="place" value="let $place-id := .//correspAction[@type = 'sent']/place/@source   let $place := doc('/db/apps/bullinger-data/data/index/localities.xml')//place[@xml:id=$place-id]/settlement/text() return  $place"/>
+                <param name="place" value="let $place-id := .//correspAction[@type = 'sent']/placeName/@source return $parameters?places[@xml:id=$place-id]"/>
                 <param name="type" value="../@type/string()"/>
-                <pb:set-param name="subview" value="heading"/>
                 <pb:template xmlns="" xml:space="preserve"><h1><span>Von <span style="color:darkgoldenrod">[[sender]]</span> an <span style="color:darkgoldenrod;">[[receiver]]</span></span></h1>
 <div class="subtitle"><iron-icon id="date-range" icon="date-range"/>[[date]] <iron-icon id="map-near-me" icon="maps:near-me"/>[[place]] <span class="doc-type">[[type]]</span></div></pb:template>
             </model>
             <model behaviour="section">
                 <desc>Person Images</desc>
-                <param name="pictures" value="$parameters?persons[graphic]"/>
+                <param name="pictures" value="$parameters?persons[idno/@subtype=&#34;portrait&#34;]"/>
                 <pb:set-param name="subtype" value="'pictures'"/>
                 <pb:template xmlns="" xml:space="preserve"><div>[[pictures]]</div></pb:template>
             </model>
@@ -129,9 +128,10 @@
             <param name="content" value="teiHeader"/>
             <pb:set-param name="hbbw-no" value="if(string-length(./@source/string())&gt; 0 and string-length(./@n/string()) &gt; 0) then ( string-join((./@source/string(), &#34;Nr. &#34; || ./@n/string()),', ')) else (string-join((./@source/string(), ./@n/string())))"/>
             <pb:set-param name="persons" value="let $persons := doc('/db/apps/bullinger-data/data/index/persons.xml') return     for $person in .//teiHeader//persName[@ref]      group by $persref := $person/@ref     return         id($persref,$persons)/ancestor::person"/>
-            <pb:set-param name="orgs" value="let $orgs := doc('/db/apps/bullinger-data/data/index/orgs.xml') return  for $org in .//teiHeader//orgName[@ref]  group by $orgref := $org/@ref return     id($orgref,$orgs)"/>
-            <pb:set-param name="roles" value="let $roles := doc('/db/apps/bullinger-data/data/index/roles.xml')  return  for $role in .//teiHeader//personGrp[@ref]    group by $roleref := $role/@ref return id($roleref,$roles)"/>
-            <pb:set-param name="places" value="let $places := doc('/db/apps/bullinger-data/data/index/localities.xml')  return   for $place in .//teiHeader//placeName[@ref]   group by $placeref := $place/@ref  return id($placeref,$places)"/>
+            <pb:set-param name="orgs" value="let $orgs := doc('/db/apps/bullinger-data/data/index/institutions.xml') return  for $org in .//teiHeader//orgName[@ref]  group by $orgref := $org/@ref return id($orgref,$orgs)"/>
+            <pb:set-param name="roles" value="let $roles := doc('/db/apps/bullinger-data/data/index/groups.xml')  return  for $role in .//teiHeader//roleName[@ref] group by $roleref := $role/@ref return id($roleref,$roles)"/>
+            <pb:set-param name="places" value="let $places := doc('/db/apps/bullinger-data/data/index/localities.xml')  return   for $place in .//teiHeader//placeName[@source] group by $placeref := $place/@source  return id($placeref,$places)"/>
+            <pb:set-param name="archives" value="let $archives := doc('/db/apps/bullinger-data/data/index/archives.xml')  return   for $archive in .//teiHeader//repository[@ref] group by $archiveref := $archive/@ref  return id($archiveref,$archives)"/>
             <pb:template xmlns="" xml:space="preserve"><div id="metaWrapper">
  [[content]]
 </div></pb:template>
@@ -166,19 +166,17 @@
 <div>[[content]]</div>
 </pb:template>
             </model>
-            <model behaviour="block">
+            <model behaviour="block" pb:mode="metadata">
                 <desc>Sender</desc>
-                <param name="content" value="*[local-name() != 'date']"/>
-                <pb:set-param name="place" value="let $place-id := ./place/@source  return doc('/db/apps/bullinger-data/data/index/localities.xml')//place[@xml:id=$place-id]/settlement/text()"/>
+                <param name="sender" value="(persName,orgName,roleName)"/>
                 <pb:template xmlns="" xml:space="preserve"><div>Absender</div>
-<div>[[content]]</div></pb:template>
+<div>[[sender]]</div></pb:template>
             </model>
         </modelSequence>
                     <model predicate="@type = &#34;received&#34; and $parameters?view='metadata'" behaviour="block">
-            <param name="content" value="*[local-name() != 'date']"/>
-            <pb:set-param name="place" value="let $place-id := ./place/@source  return doc('/db/apps/bullinger-data/data/index/localities.xml')//place[@xml:id=$place-id]/settlement/text()"/>
+            <param name="receiver" value="(persName,orgName,roleName)"/>
             <pb:template xmlns="" xml:space="preserve"><div>Empfänger</div>
-<div>[[content]]</div></pb:template>
+<div>[[receiver]]</div></pb:template>
         </model>
                 </elementSpec>
                 <elementSpec ident="bibl" mode="change">
@@ -227,18 +225,18 @@
                     <model output="web" behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="persName" mode="add">
-                    <model predicate="$parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
-            <param name="name" value="let $ref := ./@ref  let $persName := $parameters?persons/persName[@xml:id = $ref] return   $persName/forename || &#34; &#34; || $persName/surname"/>
-            <param name="place" value="if($parameters?place) then (&#34;, &#34; || $parameters?place ) else ()"/>
-            <pb:template xmlns="" xml:space="preserve">[[name]][[place]]
-</pb:template>
+                    <model predicate="$parameters?view='metadata'" behaviour="block">
+            <param name="name" value="let $ref := ./@ref  let $persName := $parameters?persons/persName[@xml:id = $ref] return   $persName/forename/text() || &#34; &#34; || $persName/surname/text()"/>
+            <param name="place" value="let $placeref := ../placeName/@source  return if($parameters?places[@xml:id=$placeref])  then ( (&#34;, &#34;, $parameters?places[@xml:id=$placeref]) ) else ()"/>
+            <pb:template xmlns="" xml:space="preserve">[[name]][[place]]</pb:template>
         </model>
                     <model behaviour="inline" cssClass="person">
             <desc>persName in TEI Text</desc>
             <param name="content" value="./text()"/>
             <param name="label" value="let $ref := ./@ref   let $persParam := $parameters?persons/persName[@xml:id = $ref] return   $persParam/forename/text() || &#34; &#34; || $persParam/surname/text()"/>
+            <param name="mode" value="$parameters?mode"/>
             <pb:template xmlns="" xml:space="preserve"><pb-popover>
-  <span slot="default">[[content]]</span>
+  <span slot="default">Test:[[mode]] [[content]]</span>
   <span slot="alternate">[[label]]</span>
 </pb-popover></pb:template>
         </model>
@@ -246,7 +244,7 @@
                 <elementSpec ident="orgName" mode="add">
                     <model predicate="$parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
             <param name="org" value="let $ref := @ref  let $type := @type return $parameters?orgs[@xml:id = $ref]/name[@xml:lang='de'][@type=$type]/text()"/>
-            <param name="place" value="if($parameters?place) then (&#34;, &#34; || $parameters?place ) else ()"/>
+            <param name="place" value="let $placeref := ../placeName/@source  return if($parameters?places[@xml:id=$placeref])  then ( (&#34;, &#34;, $parameters?places[@xml:id=$placeref]) ) else ()"/>
             <pb:template xmlns="" xml:space="preserve">[[org]][[place]]</pb:template>
         </model>
                 </elementSpec>
@@ -302,11 +300,16 @@
                 </elementSpec>
             <elementSpec ident="person" mode="add">
                     <model predicate="$parameters?subtype = 'pictures'" behaviour="graphic" cssClass="portrait">
-            <param name="url" value="'../bullinger-data/data/portraits-100-q60/' || ./graphic/@url/string()"/>
+            <param name="url" value="'../bullinger-data/data/portraits/' || ./idno[@subtype='portrait']/text()"/>
             <param name="title" value="./persName[@type='main']/forename || &#34; &#34; || ./persName[@type='main']/surname"/>
+            <pb:template xmlns="" xml:space="preserve"><img src="[[url]]" alt="[[title]]"/></pb:template>
         </model>
                 </elementSpec>
             <elementSpec ident="placeName" mode="add">
+                    <model predicate="@source and $parameters?view='metadata'" behaviour="pass-through">
+            <param name="placename" value="let $source := @source return $parameters?places[@xml:id=$source]"/>
+            <pb:template xmlns="" xml:space="preserve">[[placename]]</pb:template>
+        </model>
                     <model behaviour="inline" cssClass="place">
             <desc>placeName in TEI Text</desc>
             <param name="content" value="./text()"/>
@@ -318,6 +321,19 @@
         </model>
                 </elementSpec>
                 <elementSpec ident="body" mode="change"/>
+            <elementSpec ident="place" mode="add">
+                    <model behaviour="pass-through">
+            <param name="place" value="if(./settlement)  then (./settlement/text())  else if(./district)  then (./district/text()) else (./country/text())"/>
+            <pb:template xmlns="" xml:space="preserve">[[place]]</pb:template>
+        </model>
+                </elementSpec>
+                <elementSpec ident="roleName" mode="add">
+                    <model behaviour="block">
+            <param name="name" value="let $ref := @ref let $type := @type return $parameters?roles[@xml:id=$ref]/form[@xml:lang='de'][@type=$type]/text()"/>
+            <param name="place" value="let $placeref := ../placeName/@source  return if($parameters?places[@xml:id=$placeref])  then ( (&#34;, &#34;, $parameters?places[@xml:id=$placeref]) ) else ()"/>
+            <pb:template xmlns="" xml:space="preserve">[[name]][[place]]</pb:template>
+        </model>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>
