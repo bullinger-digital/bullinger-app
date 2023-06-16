@@ -6,37 +6,29 @@
     <body>
         <pb-page data-template="pages:pb-page" unresolved="unresolved" locales="resources/i18n/{{ns}}/{{lng}}.json" locale-fallback-ns="app">
             <header class="top-header">
-                <nav data-template="lib:include" data-template-path="templates/menu.html" />
+                <nav data-template="lib:include" data-template-path="templates/menu.html"></nav>
             </header>
             <main class="center-l">
-                <section>
-                    <h1 class="tp-title" data-template="config:app-title"/>
-                </section>
+                <h1 class="tp-title" data-template="config:app-title"></h1>
                 <section class="panels">
                     <aside data-template="browse:form">
-                        <!--pb-custom-form class="options" auto-submit="[name=sort]" emit="search"-->
-                        <pb-custom-form class="options">
-                            <input type="hidden" name="collection" value="${collection}" data-template="pages:parse-params"/>
-                            <pb-select label="browse.sort" name="sort" value="${sort}" data-template="pages:parse-params">
-                                <paper-item value="title"><pb-i18n key="browse.title"></pb-i18n></paper-item>
-                                <paper-item value="author"><pb-i18n key="browse.author"></pb-i18n></paper-item>
-                            </pb-select>
-                            <pb-select label="search.scope" name="field" value="${field}" data-template="pages:parse-params">
-                                <paper-item value="text"><pb-i18n key="search.content"></pb-i18n></paper-item>
-                                <paper-item value="title"><pb-i18n key="search.title"></pb-i18n></paper-item>
-                            </pb-select>
-                        </pb-custom-form>
-                        <pb-search id="search-form" subscribe="docs" data-template="pages:parse-params" value="${query}"
-                            subforms=".facets,.options" submit-on-load="submit-on-load">
-                            <paper-button slot="searchButton"><pb-i18n key="search.search">Search</pb-i18n></paper-button>
-                        </pb-search>
-                        <pb-custom-form id="facets" class="facets" url="api/search/facets" event="pb-results-received" subscribe="docs" emit="docs"></pb-custom-form>
+
+                    <!-- <paper-card class="doclist" data-i18n="[heading]browse.documents" heading="documents"> -->
+                                <pb-search id="search-form" subscribe="search" data-template="pages:parse-params" value="${query}"
+                                    subforms=".facets,.options" submit-on-load="submit-on-load">
+                                    <paper-button slot="searchButton"><pb-i18n key="search.search">Search</pb-i18n></paper-button>
+                                </pb-search>
+    
+                                <pb-custom-form id="facets" class="facets" url="api/search/facets" event="pb-results-received" subscribe="search" emit="search"/>
                     </aside>
-                    <div id="document-list">
-                        <pb-paginate id="paginate" per-page="10" range="5" subscribe="docs" emit="docs"></pb-paginate>
-                        <pb-load url="api/collection/{collection}" expand="" emit="search"></pb-load>
-                        <!--pb-browse url="api/collection" emit="search"></pb-browse-->
-                    </div>
+
+                            <div id="document-list">
+                                <pb-paginate id="paginate" per-page="10" range="5" subscribe="search" emit="search"></pb-paginate>
+                                <pb-load url="api/collection/{collection}" expand="" emit="search"></pb-load>
+                                <!--pb-browse url="api/collection" emit="search"></pb-browse-->
+                            </div>
+        
+                    <!-- </paper-card> -->
                 </section>
             </main>
             <footer data-template="lib:include" data-template-path="templates/footer.html"></footer>
@@ -44,4 +36,5 @@
         <div class="splash"></div>
         <script src="resources/scripts/browse.js"></script>
     </body>
+
 </html>
