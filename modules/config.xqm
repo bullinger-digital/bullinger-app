@@ -132,11 +132,9 @@ declare variable $config:facets := [
         "output": function($label) {
             let $person := $config:persons/id($label)/parent::tei:person/tei:persName[@type='main']
             return 
-                if($person) 
-                then (
-                    string-join(($person/*),", ")
-                )
-                else ($label)                 
+                if ($person) 
+                then (string-join(($person/*),", "))
+                else ($label)
         }
     },    
     map {
@@ -147,34 +145,11 @@ declare variable $config:facets := [
         "output": function($label) {
             let $place := $config:localities/id($label)
             return 
-                if($place) 
-                then (
-                    string-join(($place/*[local-name(.) != "location"]),", ")
-                )
-                else ($label)                 
+                if ($place) 
+                then (string-join(($place/*[local-name(.) != "location"]),", "))
+                else ($label)
         }
-    },        
-        map {
-        "dimension": "number",
-        "heading": "facets.number",
-        "max": 5,
-        "hierarchical": false()
-    },        
-    map {
-        "dimension": "language",
-        "heading": "facets.language",
-        "max": 5,
-        "hierarchical": false(),
-        "output": function($label) {
-            switch($label)
-                case "de" return "Deutsch"
-                case "es" return "Spanisch"
-                case "la" return "Latein"
-                case "fr" return "Französisch"
-                case "en" return "Englisch"
-                default return $label
-        }
-    }    
+    }
 ];
 
 (:
