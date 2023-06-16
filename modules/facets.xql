@@ -37,7 +37,7 @@ declare function facets:sort($facets as map(*)?) {
 };
 
 declare function facets:print-table($config as map(*), $nodes as element()+, $values as xs:string*, $params as xs:string*) {
-    let $all := exists($config?max) and request:get-parameter("all-" || $config?dimension, ())
+    let $all := exists($config?max) and facets:get-parameter("all-" || $config?dimension)
     let $count := if ($all) then 50 else $config?max
     let $facets :=
         if (exists($values)) then
@@ -86,24 +86,85 @@ declare function facets:print-table($config as map(*), $nodes as element()+, $va
 };
 
 declare function facets:display($config as map(*), $nodes as element()+) {
-    let $params := request:get-parameter("facet-" || $config?dimension, ())
-    let $table := facets:print-table($config, $nodes, (), $params)
-    where $table
+    if (map:contains($config, "select")) then
+        if ($config?select instance of map(*) and map:contains($config?select, "source")) then
+            <pb-combo-box source="{$config?select?source}" close-after-select="">
+                <select name="facet-{$config?dimension}" placeholder="{$config?heading}" multiple=""
+                    on-change="pb-search-resubmit">
+                {
+                    for $param in facets:get-parameter("facet-" || $config?dimension)
+                    return
+                        <option value="{$param}" selected="">
+                        {
+                            if (map:contains($config, "output")) then
+                                $config?output($param)
+                            else
+                                $param
+                        }
+                        </option>     
+                }
+                </select>
+            </pb-combo-box>
+        else
+            <pb-combo-box close-after-select="">
+                <select name="facet-{$config?dimension}" placeholder="{$config?heading}" multiple=""
+                    on-change="pb-search-resubmit">
+                {
+                    let $hits := session:get-attribute($config:session-prefix || ".hits")
+                    where count($hits) > 0
+                    let $params := facets:get-parameter("facet-" || $config?dimension)
+                    let $facets := ft:facets($hits, "volume", ())
+                    for $facet in map:keys($facets)
+                    return
+                        <option value="{$facet}">
+                        {
+                            if ($facet = $params) then attribute selected { "selected" } else ()
+                        }
+                        {
+                            if (map:contains($config, "output")) then
+                                $config?output($facet)
+                            else
+                                $facet
+                        }
+                        </option>
+                }
+                </select>
+            </pb-combo-box>
+    else
+        let $params := facets:get-parameter("facet-" || $config?dimension)
+        let $_ := util:log("info", ("facets:display before print-table dim:", $config?dimension, " parameters:", $params))
+        let $table := facets:print-table($config, $nodes, (), $params)
+        let $_ := util:log("info", ("facets:display after print-table table:", $table))
+        where $table
+        return
+            <div>
+                <h3><pb-i18n key="{$config?heading}">{$config?heading}</pb-i18n>
+                {
+                    if (exists($config?max)) then
+                        <paper-checkbox class="facet" name="all-{$config?dimension}">
+                            { if (facets:get-parameter("all-" || $config?dimension)) then attribute checked { "checked" } else () }
+                            <pb-i18n key="facets.show">Show top 50</pb-i18n>
+                        </paper-checkbox>
+                    else
+                        ()
+                }
+                </h3>
+                {
+                    $table
+                }
+            </div>
+};
+
+declare function facets:get-parameter($name as xs:string) {
+    let $param := request:get-parameter($name, ())
     return
-        <div>
-            <h3><pb-i18n key="{$config?heading}">{$config?heading}</pb-i18n>
-            {
-                if (exists($config?max)) then
-                    <paper-checkbox class="facet" name="all-{$config?dimension}">
-                        { if (request:get-parameter("all-" || $config?dimension, ())) then attribute checked { "checked" } else () }
-                        <pb-i18n key="facets.show">Show top 50</pb-i18n>
-                    </paper-checkbox>
+        if (exists($param)) then
+            $param
+        else
+            let $fromSession := session:get-attribute($config:session-prefix || '.params')
+            return
+                if (exists($fromSession)) then
+                    $fromSession?($name)
                 else
                     ()
-            }
-            </h3>
-            {
-                $table
-            }
-        </div>
 };
