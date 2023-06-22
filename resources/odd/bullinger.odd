@@ -236,7 +236,7 @@
             <param name="label" value="let $ref := ./@ref   let $persParam := $parameters?persons/persName[@xml:id = $ref] return   $persParam/forename/text() || &#34; &#34; || $persParam/surname/text()"/>
             <param name="mode" value="$parameters?mode"/>
             <pb:template xmlns="" xml:space="preserve"><pb-popover>
-  <span slot="default">Test:[[mode]] [[content]]</span>
+  <span slot="default">[[mode]] [[content]]</span>
   <span slot="alternate">[[label]]</span>
 </pb-popover></pb:template>
         </model>
