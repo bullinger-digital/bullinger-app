@@ -1,40 +1,37 @@
 <html>
-    <head data-template="lib:include" data-template-path="templates/header.html">
-        <title data-target="title-template" data-template-page="letters">Briefe</title>
-        <meta data-target="title-template" name="pb-template" content="letters.html"/>
-    </head>
-    <body>
-        <pb-page data-template="pages:pb-page" unresolved="unresolved" locales="resources/i18n/{{ns}}/{{lng}}.json" locale-fallback-ns="app">
-            <header class="top-header">
-                <nav data-template="lib:include" data-template-path="templates/menu.html"></nav>
-            </header>
-            <main class="center-l">
-                <h1 class="tp-title" data-template="config:app-title"></h1>
-                <section class="panels">
-                    <aside data-template="browse:form">
 
-                    <!-- <paper-card class="doclist" data-i18n="[heading]browse.documents" heading="documents"> -->
-                                <pb-search id="search-form" subscribe="search" data-template="pages:parse-params" value="${query}"
-                                    subforms=".facets,.options" submit-on-load="submit-on-load">
-                                    <paper-button slot="searchButton"><pb-i18n key="search.search">Search</pb-i18n></paper-button>
-                                </pb-search>
-    
-                                <pb-custom-form id="facets" class="facets" url="api/search/facets" event="pb-results-received" subscribe="search" emit="search"/>
-                    </aside>
+<head data-template="lib:include" data-template-path="templates/header.html">
+    <title data-target="title-template" data-template-page="letters">Briefe</title>
+    <meta data-target="title-template" name="pb-template" content="letters.html" />
+</head>
+<body>
+    <pb-page data-template="pages:pb-page" unresolved="unresolved" locales="resources/i18n/{{ns}}/{{lng}}.json"
+        locale-fallback-ns="app">
+        <header class="top-header">
+            <nav data-template="lib:include" data-template-path="templates/menu.html"></nav>
+        </header>
+        <main class="center-l">
+            <h1 class="tp-title" data-template="config:app-title"></h1>
+            <section class="panels">
+                <aside data-template="browse:form">
+                    <pb-search id="search-form" subscribe="search" data-template="pages:parse-params" value="${query}"
+                        subforms=".facets,.options" submit-on-load="submit-on-load">
+                        <paper-button slot="searchButton"><pb-i18n key="search.search">Search</pb-i18n></paper-button>
+                    </pb-search>
 
-                            <div id="document-list">
-                                <pb-paginate id="paginate" per-page="10" range="5" subscribe="search" emit="search"></pb-paginate>
-                                <pb-load url="api/collection/{collection}" expand="" emit="search"></pb-load>
-                                <!--pb-browse url="api/collection" emit="search"></pb-browse-->
-                            </div>
-        
-                    <!-- </paper-card> -->
-                </section>
-            </main>
-            <footer data-template="lib:include" data-template-path="templates/footer.html"></footer>
-        </pb-page>
-        <div class="splash"></div>
-        <script src="resources/scripts/browse.js"></script>
-    </body>
+                    <pb-custom-form id="facets" class="facets" url="api/search/facets" event="pb-results-received"
+                        subscribe="search" emit="search" />
+                </aside>
 
+                <div id="document-list">
+                    <pb-paginate id="paginate" per-page="10" range="5" subscribe="search" emit="search"></pb-paginate>
+                    <pb-load url="api/collection/{collection}" expand="" emit="search"></pb-load>
+                </div>
+            </section>
+        </main>
+        <footer data-template="lib:include" data-template-path="templates/footer.html"></footer>
+    </pb-page>
+    <div class="splash"></div>
+    <script src="resources/scripts/browse.js"></script>
+</body>
 </html>
