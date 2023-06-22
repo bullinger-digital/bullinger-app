@@ -25,6 +25,126 @@
         }
     },
     "paths": {
+		"/persons/": {
+            "get": {
+				"summary": "Landing page for names",
+				"description": "Retrieve an HTML page expanded through eXist templating.",
+				"tags": ["view"],
+				"operationId": "vapi:html",
+				"x-error-handler": "vapi:handle-error",
+				"parameters": [
+					{
+						"name": "file",
+						"in": "query",
+						"schema": {
+							"type": "string",
+                            "default": "persons"
+						}
+					},
+					{
+						"name": "uri",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"default": "/names/"
+						}					
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "HTML of the page",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The document was not found",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An error occurred",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+        },
+        "/persons/{key}": {
+            "get": {
+				"summary": "Retrieve the HTML template used for displaying person metadata",
+				"description": "Get the HTML template associated with the given document.",
+				"tags": ["view"],
+				"operationId": "vapi:html",	
+				"parameters": [
+					{
+						"name": "key",
+						"in": "path",
+						"description": "ID of the person",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"example": ""
+						},
+						"allowReserved": true
+					},
+					{ 
+						"name":"file",
+						"in":"query",
+						"schema":{
+							"type": "string",
+							"default":"pages/person"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "HTML view for the document",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The document was not found",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An error occurred",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+        },        
         "/api/persons-all-list": {
             "get": {
                 "summary": "List names",
@@ -76,6 +196,126 @@
                 }
             }
         },
+		"/localities/": {
+            "get": {
+				"summary": "Landing page for localities",
+				"description": "Retrieve an HTML page expanded through eXist templating.",
+				"tags": ["view"],
+				"operationId": "vapi:html",
+				"x-error-handler": "vapi:handle-error",
+				"parameters": [
+					{
+						"name": "file",
+						"in": "query",
+						"schema": {
+							"type": "string",
+                            "default": "localities"
+						}
+					},
+					{
+						"name": "uri",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"default": "/localities/"
+						}					
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "HTML of the page",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The document was not found",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An error occurred",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+        },
+        "/localities/{key}": {
+            "get": {
+				"summary": "Retrieve the HTML template used for displaying locality metadata",
+				"description": "Get the HTML template associated with the given document.",
+				"tags": ["view"],
+				"operationId": "vapi:html",	
+				"parameters": [
+					{
+						"name": "key",
+						"in": "path",
+						"description": "ID of the person",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"example": ""
+						},
+						"allowReserved": true
+					},
+					{ 
+						"name":"file",
+						"in":"query",
+						"schema":{
+							"type": "string",
+							"default":"pages/locality"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "HTML view for the document",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The document was not found",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An error occurred",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+        },          
         "/api/localities-all-list": {
             "get": {
                 "summary": "List localities",

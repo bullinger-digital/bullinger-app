@@ -1,0 +1,25 @@
+<html data-template="lib:parse-params">
+    <head data-template="lib:include" data-template-path="templates/header.html">
+        <title data-target="title-template" data-template-page="persons">Ort</title>
+        <meta data-target="title-template" name="pb-template" content="locality.html"/>
+    </head>
+
+    <body>
+        <pb-page data-template="pages:pb-page" locales="resources/i18n/{{ns}}/{{lng}}.json" require-language="require-language" unresolved="unresolved" api-version="1.0.0">
+            <header class="top-header">
+                <nav data-template="lib:include" data-template-path="templates/menu.html"></nav>
+            </header>
+            <div class="center-l breadcrumbs">
+                <pb-i18n key="register">register</pb-i18n> > <pb-i18n key="locality">locality</pb-i18n>
+            </div>
+            <main class="center-l people register">
+                <div class="register-list">
+                    <h1>Locality</h1>
+                </div>
+            </main>
+        </pb-page>
+        <footer data-template="templates:include" data-template-path="templates/footer.html"/>
+        <div class="splash"></div>
+    </body>
+
+</html>
