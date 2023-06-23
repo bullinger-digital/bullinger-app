@@ -399,6 +399,15 @@
 							"type": "string",
 							"example": "test"
 						}
+					},
+					{
+						"name": "field",
+						"in": "query",
+						"description": "The field to query",
+						"schema": {
+							"type": "string",
+							"default": "text"
+						}
 					}
 				],
 				"responses": {
@@ -420,6 +429,17 @@
 				"summary": "Get formatted overview of documents in the collection",
 				"tags": ["collection"],
 				"operationId": "capi:list",
+				"parameters": [
+					{
+						"name": "field",
+						"in": "query",
+						"description": "The field to query",
+						"schema": {
+							"type": "string",
+							"default": "text"
+						}
+					}
+				],				
 				"responses": {
 					"200": {
 						"description": "Returns HTML describing the collection",

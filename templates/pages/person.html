@@ -20,6 +20,33 @@
                     <h1 id="person">
                         <span data-template="app:person-name-full"> </span>
                     </h1>
+                    <h2>Key <span data-template="pages:parse-params">${key}</span></h2>
+                    <div data-template="app:name-alternatives"/>
+                    <details>
+                        <summary><pb-i18n key="letteros-from">Briefe von</pb-i18n> <span data-template="app:person-name-full"/></summary>
+                        <pb-table-grid source="api/person/sent/${key}" resizable="" emit="grid" subscribe="grid" per-page="5" data-template="pages:parse-params">                        
+                            <pb-table-column label="Brief" property="title"></pb-table-column>
+                            <pb-table-column label="Absender Ort" property="place"></pb-table-column>
+                            <pb-table-column label="Datum" property="date"></pb-table-column>
+                            <pb-table-column label="Empfänger" property="recipients"></pb-table-column>
+                            <pb-table-column label="Empfänger Ort" property="recipients-place"></pb-table-column>                            
+                        </pb-table-grid>
+                    </details>
+                    <details>
+                        <summary><pb-i18n key="letteros-to">Briefe an</pb-i18n> <span data-template="app:person-name-full"/></summary>
+                        <pb-table-grid source="api/person/received/${key}" resizable="" emit="grid" subscribe="grid" per-page="5" data-template="pages:parse-params">                        
+                            <pb-table-column label="Brief" property="title"></pb-table-column>
+                            <pb-table-column label="Absender" property="senders"></pb-table-column>
+                            <pb-table-column label="Absender Ort " property="place"></pb-table-column>
+                            <pb-table-column label="Datum" property="date"></pb-table-column>                            
+                            <pb-table-column label="Empfänger Ort" property="recipients-place"></pb-table-column>                            
+                        </pb-table-grid>
+                    </details>
+                    <div data-template="app:further-information"/>
+
+                </section>
+                <section class="right">
+                    <div data-template="app:image"/>
                 </section>
             </main>
         </pb-page>

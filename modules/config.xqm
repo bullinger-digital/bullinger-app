@@ -40,7 +40,7 @@ declare variable $config:webcomponents :="local";
  : CDN URL to use for loading webcomponents. Could be changed if you created your
  : own library extending pb-components and published it to a CDN.
  :)
-declare variable $config:webcomponents-cdn := "https://unpkg.com/@teipublisher/pb-components";
+declare variable $config:webcomponents-cdn := "https://cdn.jsdelivr.net/npm/@teipublisher/pb-components";
 (: declare variable $config:webcomponents-cdn := "http://localhost:8000"; :)
 
 (:~~
@@ -91,7 +91,7 @@ declare variable $config:default-template :="letter.html";
 (:
  : The element to search by default, either 'tei:div' or 'tei:text'.
  :)
-declare variable $config:search-default :="tei:div";
+declare variable $config:search-default :="tei:text";
 
 (:
  : Defines which nested divs will be displayed as single units on one
@@ -319,7 +319,9 @@ declare variable $config:data-root := "/db/apps/bullinger-data/data";
 
 declare variable $config:persons := doc($config:data-root || '/index/persons.xml');
 declare variable $config:localities := doc($config:data-root || '/index/localities.xml');
-
+declare variable $config:orgs := doc($config:data-root || '/index/institutions.xml');
+declare variable $config:roles := doc($config:data-root || '/index/groups.xml');
+declare variable $config:archives := doc($config:data-root || '/index/archives.xml');
 
 (:~
  : The root of the collection hierarchy whose files should be displayed
@@ -371,7 +373,7 @@ declare variable $config:expath-descriptor := doc(concat($config:app-root, "/exp
 
 declare variable $config:session-prefix := $config:expath-descriptor/@abbrev/string();
 
-declare variable $config:default-fields := ();
+declare variable $config:default-fields := ("text");
 
 declare variable $config:dts-collections := map {
     "id": "default",
