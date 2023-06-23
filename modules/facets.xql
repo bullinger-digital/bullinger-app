@@ -132,9 +132,9 @@ declare function facets:display($config as map(*), $nodes as element()+) {
             </pb-combo-box>
     else
         let $params := facets:get-parameter("facet-" || $config?dimension)
-        let $_ := util:log("info", ("facets:display before print-table dim:", $config?dimension, " parameters:", $params))
+        (: let $_ := util:log("info", ("facets:display before print-table dim:", $config?dimension, " parameters:", $params)) :)
         let $table := facets:print-table($config, $nodes, (), $params)
-        let $_ := util:log("info", ("facets:display after print-table table:", $table))
+        (: let $_ := util:log("info", ("facets:display after print-table table:", $table)) :)
         where $table
         return
             <div>
