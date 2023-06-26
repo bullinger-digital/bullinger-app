@@ -110,21 +110,17 @@ declare function api:persons-all-list($request as map(*)) {
 
 declare function api:output-name($list, $letter as xs:string, $search as xs:string?) {
     array {
-        for $item in $list
-            let $log := util:log("info", map {
-                "function":"api:output-name", 
-                "$item":$item?3
-            })
+        for $item in $list            
             return
             if(string-length($item?2)>0)
             then (
-            let $type := local-name($item?3)   
-            let $letterParam := if ($letter = "[A-Z]") then substring(($item?3/tei:persName[@type='main']/@n/string()), 1, 1) else $letter
-            let $params := "&amp;category=" || $letterParam || "&amp;search=" || $search
-            return
-                <span class="{$type}List">
-                    <a href="{$item?3/@xml:id}?{$params}">{$item?2}</a>                    
-                </span>
+                let $type := local-name($item?3)   
+                let $letterParam := if ($letter = "[A-Z]") then substring(($item?3/tei:persName[@type='main']/@n/string()), 1, 1) else $letter
+                let $params := "&amp;category=" || $letterParam || "&amp;search=" || $search
+                return
+                    <span class="{$type}List">
+                        <a href="{$item?3/@xml:id}?{$params}">{$item?2}</a>                    
+                    </span>
             ) else()
     }
 };
