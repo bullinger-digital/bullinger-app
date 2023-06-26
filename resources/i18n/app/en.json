@@ -1,14 +1,15 @@
 {
     "facets": {
-        "sender": "Absender",
         "addressee": "Empfänger",
+        "archive":"Archiv",                
         "correspondent": "Korrespondent",
-        "mentioned": "Erwähnte Person",
-        "place": "Ort",        
-        "keyword": "Schlagwort",
         "date": "Datum",
-        "type": "Dokumenttyp",
+        "keyword": "Schlagwort",
+        "mentioned": "Erwähnte Person",
         "number": "Nummer",
-        "provenience": "Provenienz"
+        "place": "Ort",
+        "provenience": "Provenienz",
+        "sender": "Absender",
+        "type": "Dokumenttyp"  
     }
 }
