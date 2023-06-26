@@ -806,6 +806,15 @@ pb-view {
     height: 50vh;
 }
 
+.detail-locality pb-leaflet-map {    
+    width: 100%;
+    height: 50vh;
+}
+
+.detail .right {
+    max-width: 32rem;
+}
+
 [slot=controls] {
     display: flex;
     justify-content: space-between;

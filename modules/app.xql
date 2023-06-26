@@ -13,6 +13,17 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
+declare %templates:wrap    
+function app:page-title($node as node(), $model as map(*), $page as xs:string) {    
+    (: let $json := json-doc($config:app-root || "/resources/i18n/app/" || $lang || ".json")
+    let $title := map:get($json, "title-" || $page)
+    (: let $log := util:log("info", "page:title for '" || $page || "' is '" || $title || "'") :)
+    return
+        $title || " - " || map:get($json, "title-suffix") :)
+    $page
+};
+
+
 declare
     %templates:wrap    
     %templates:default("key","")
@@ -26,6 +37,42 @@ function app:load-person($node as node(), $model as map(*), $key as xs:string) {
                 "type":local-name($person),              
                 "data":$person
         }    
+};
+
+declare
+    %templates:wrap    
+    %templates:default("key","")
+function app:load-locality($node as node(), $model as map(*), $key as xs:string) {
+    let $place := id(xmldb:decode($key), $config:localities)
+    (: let $log := util:log("info", "app:load-actor $name: " || $actor/tei:*[@type="full"]/text() || " - $key:" || $key) :)
+    let $settlement := $place//tei:settlement/text()
+    let $district := $place//tei:district/text()
+    let $country := $place//tei:country/text()
+    let $place-name := if($settlement) then ($settlement) else if ($district) then ($district) else ($country)
+    let $model-metadata := 
+        map {  
+                "key":$key,
+                "data":$place,
+                "name":$place-name
+        }
+    let $additional-model-data := 
+        if (string-length(normalize-space($place//tei:geo/text())) > 1)
+        then (
+            let $geo-token := tokenize($place//tei:geo/text(), " ")
+            return 
+                map {
+                    "latitude": $geo-token[1],
+                    "longitude": $geo-token[2]                    
+                }
+        )
+        else ()
+    let $log := util:log("info", ("$additional-model-data", $additional-model-data))
+
+    return map:merge((
+        $model,
+        $model-metadata, 
+        $additional-model-data
+    ))
 };
 
 declare %templates:wrap    
@@ -175,4 +222,37 @@ function app:image($node as node(), $model as map(*)) {
                 }
             }
         else ()
+};
+
+declare %templates:wrap    
+function app:locality-name($node as node(), $model as map(*)) {
+    $model?name
+};
+
+declare 
+    %templates:replace    
+function app:pb-geolocation($node as node(), $model as map(*)) {
+    element pb-geolocation {
+        attribute latitude {$model?latitude},
+        attribute longitude {$model?longitude},
+        attribute label {$model?name},
+        attribute auto {},
+        $model?name
+    }
+
+};
+
+declare 
+    %templates:wrap    
+function app:show-map($node as node(), $model as map(*)) {
+    let $place := $model?data
+    return
+        if(string-length(normalize-space($place//tei:geo/text() ) ) > 1)
+        then (
+            let $log := util:log("info", "show map" )
+            return
+                templates:process($node/*, $model)
+        ) else (
+            <div style="text-align:center;font-style:italic;"><pb-i18n key="no-geo-data">Keine Geodaten verfügbar</pb-i18n></div>
+        ) 
 };

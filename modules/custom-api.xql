@@ -199,10 +199,10 @@ declare function api:localities-all-list($request as map(*)) {
 declare function api:output-locality($list, $letter as xs:string, $search as xs:string?) {
     array {
         for $item in $list
-            let $log := util:log("info", map {
+            (: let $log := util:log("info", map {
                 "function":"api:output-name", 
                 "$item":$item
-            })            
+            }) :)
             return
                 if(string-length($item?2)>0)
                 then (

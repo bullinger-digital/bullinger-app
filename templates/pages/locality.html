@@ -1,25 +1,66 @@
 <html data-template="lib:parse-params">
     <head data-template="lib:include" data-template-path="templates/header.html">
-        <title data-target="title-template" data-template-page="persons">Ort</title>
+        <title data-target="title-template" data-template="app:page-title" data-template-page="locality"> </title>
         <meta data-target="title-template" name="pb-template" content="locality.html"/>
+        <script data-target="script-preload" type="module" src="pb-leaflet-map.js" data-template="pages:load-components"></script>
     </head>
 
-    <body>
+    <body data-template="app:load-locality">
         <pb-page data-template="pages:pb-page" locales="resources/i18n/{{ns}}/{{lng}}.json" require-language="require-language" unresolved="unresolved" api-version="1.0.0">
             <header class="top-header">
                 <nav data-template="lib:include" data-template-path="templates/menu.html"></nav>
             </header>
             <div class="center-l breadcrumbs">
-                <pb-i18n key="register">register</pb-i18n> > <pb-i18n key="locality">locality</pb-i18n>
+                <pb-i18n key="register">register</pb-i18n>
+                > <a href="./"><pb-i18n key="localities">Localities</pb-i18n></a>
+                > <pb-geolocation data-template="app:pb-geolocation"/>
             </div>
-            <main class="center-l people register">
-                <div class="register-list">
-                    <h1>Locality</h1>
-                </div>
+            <main class="detail detail-locality center-l">
+                <section class="left">
+                    <h1 id="locality">
+                        <span data-template="app:locality-name"> </span>
+                    </h1>
+                    <!-- <div data-template="app:name-alternatives"/>
+                    <div data-template="app:mentions"/>
+                    <details data-template="app:person-is-sender">
+                        <summary><pb-i18n key="letters-from">Briefe von</pb-i18n> <span data-template="app:person-name-full"/></summary>
+                        <pb-table-grid source="api/person/sent/${key}" resizable="" emit="grid" subscribe="grid" per-page="5" data-template="pages:parse-params">                        
+                            <pb-table-column label="Brief" property="title"></pb-table-column>
+                            <pb-table-column label="Absender Ort" property="place"></pb-table-column>
+                            <pb-table-column label="Datum" property="date"></pb-table-column>
+                            <pb-table-column label="Empfänger" property="recipients"></pb-table-column>
+                            <pb-table-column label="Empfänger Ort" property="recipients-place"></pb-table-column>                            
+                        </pb-table-grid>
+                    </details>
+                    <details data-template="app:person-is-recipient">
+                        <summary><pb-i18n key="letters-to">Briefe an</pb-i18n> <span data-template="app:person-name-full"/></summary>
+                        <pb-table-grid source="api/person/received/${key}" resizable="" emit="grid" subscribe="grid" per-page="5" data-template="pages:parse-params">                        
+                            <pb-table-column label="Brief" property="title"></pb-table-column>
+                            <pb-table-column label="Absender" property="senders"></pb-table-column>
+                            <pb-table-column label="Absender Ort " property="place"></pb-table-column>
+                            <pb-table-column label="Datum" property="date"></pb-table-column>                            
+                            <pb-table-column label="Empfänger Ort" property="recipients-place"></pb-table-column>                            
+                        </pb-table-grid>
+                    </details>
+                    <div data-template="app:further-information"/> -->
+                </section>
+                <section class="right">
+                    <div data-template="app:show-map">                        
+                        <pb-leaflet-map id="map" zoom="13">
+                            <pb-map-layer show="" 
+                                base="" 
+                                label="HikeBike Map" 
+                                url="https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}" 
+                                max-zoom="19" 
+                                access-token="pk.eyJ1Ijoid29sZmdhbmdtbSIsImEiOiJjam1kMjVpMnUwNm9wM3JwMzdsNGhhcnZ0In0.v65crewF-dkNsPF3o1Q4uw" 
+                                attribution="© Mapbox © OpenStreetMap">
+                            </pb-map-layer>
+                        </pb-leaflet-map>
+                    </div>
+                </section>
             </main>
         </pb-page>
         <footer data-template="templates:include" data-template-path="templates/footer.html"/>
         <div class="splash"></div>
     </body>
-
 </html>
