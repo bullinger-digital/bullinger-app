@@ -19,33 +19,31 @@
                 <section class="left">
                     <h1 id="locality">
                         <span data-template="app:locality-name"> </span>
-                    </h1>
-                    <!-- <div data-template="app:name-alternatives"/>
-                    <div data-template="app:mentions"/>
-                    <details data-template="app:person-is-sender">
-                        <summary><pb-i18n key="letters-from">Briefe von</pb-i18n> <span data-template="app:person-name-full"/></summary>
-                        <pb-table-grid source="api/person/sent/${key}" resizable="" emit="grid" subscribe="grid" per-page="5" data-template="pages:parse-params">                        
+                    </h1>                    
+                    <!-- div data-template="app:mentions"/-->
+                    <details data-template="app:locality-is-sender">
+                        <summary><pb-i18n key="letters-from">Sendeort ist </pb-i18n> <span data-template="app:locality-name"/></summary>
+                        <pb-table-grid source="api/locality/sent/${key}" resizable="" emit="grid" subscribe="grid" per-page="5" data-template="pages:parse-params">                        
                             <pb-table-column label="Brief" property="title"></pb-table-column>
-                            <pb-table-column label="Absender Ort" property="place"></pb-table-column>
+                            <pb-table-column label="Absender" property="senders"></pb-table-column>
                             <pb-table-column label="Datum" property="date"></pb-table-column>
                             <pb-table-column label="Empfänger" property="recipients"></pb-table-column>
-                            <pb-table-column label="Empfänger Ort" property="recipients-place"></pb-table-column>                            
+                            <pb-table-column label="Empfänger Ort" property="recipients-place"></pb-table-column> 
                         </pb-table-grid>
                     </details>
-                    <details data-template="app:person-is-recipient">
-                        <summary><pb-i18n key="letters-to">Briefe an</pb-i18n> <span data-template="app:person-name-full"/></summary>
-                        <pb-table-grid source="api/person/received/${key}" resizable="" emit="grid" subscribe="grid" per-page="5" data-template="pages:parse-params">                        
+                    <details data-template="app:locality-is-recipient">
+                        <summary><pb-i18n key="letters-to">Empfangsort</pb-i18n> <span data-template="app:locality-name"/></summary>
+                        <pb-table-grid source="api/locality/received/${key}" resizable="" emit="grid" subscribe="grid" per-page="5" data-template="pages:parse-params">                        
                             <pb-table-column label="Brief" property="title"></pb-table-column>
                             <pb-table-column label="Absender" property="senders"></pb-table-column>
                             <pb-table-column label="Absender Ort " property="place"></pb-table-column>
-                            <pb-table-column label="Datum" property="date"></pb-table-column>                            
-                            <pb-table-column label="Empfänger Ort" property="recipients-place"></pb-table-column>                            
+                            <pb-table-column label="Datum" property="date"></pb-table-column>
+                            <pb-table-column label="Empfänger" property="recipients"></pb-table-column>
                         </pb-table-grid>
-                    </details>
-                    <div data-template="app:further-information"/> -->
+                    </details>                    
                 </section>
                 <section class="right">
-                    <div data-template="app:show-map">                        
+                    <div data-template="app:show-map">
                         <pb-leaflet-map id="map" zoom="13">
                             <pb-map-layer show="" 
                                 base="" 

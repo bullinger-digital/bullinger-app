@@ -289,7 +289,7 @@ declare function api:person-filter($filter as xs:string?, $key as xs:string, $ro
                 return
                     collection($config:data-default)/tei:TEI//tei:correspAction[@type=$role]//tei:persName[@ref = $id]
             )
-    let $log := util:log("info", "app:mentions: $matches: " || count($matches) || " in " || $config:data-default)
+    let $log := util:log("info", "api:person-filter: $matches: " || count($matches) || " in " || $config:data-default)
     return
         for $match in $matches
             let $root := root($match)
@@ -310,8 +310,8 @@ declare function api:person-is-sender($request as map(*)) {
     let $entries := api:person-filter($filter,$key, "sent")    
     let $subset := subsequence($entries, $start, $limit)
     return (
-        session:set-attribute($config:session-prefix || ".sender.hits", $entries),
-        session:set-attribute($config:session-prefix || ".sender.hitCount", count($entries)),
+        session:set-attribute($config:session-prefix || ".pers-sender.hits", $entries),
+        session:set-attribute($config:session-prefix || ".pers-sender.hitCount", count($entries)),
         map {
             "count": count($entries),
             "results":
@@ -390,7 +390,7 @@ declare function api:get-correspAction($corresp as element(tei:correspAction)?){
 
 declare function api:get-persName($persName as element(tei:persName)?){
     let $person := id($persName/@ref, $config:persons)    
-    (: let $log := util:log("info", "api:get-persName persName/@ref: " || $persName/@ref) :)
+    let $log := util:log("info", "api:get-persName persName/@ref: " || $persName/@ref)
     return  
         $person/tei:forename/text() || " " || $person/tei:surname/text()
 };
@@ -455,6 +455,96 @@ declare function api:format-date($date as xs:string?){
     else
         format-date(xs:date($date), '[D]. [MNn] [Y]', "de", (), ())
 };
+
+declare function api:locality-filter($filter as xs:string?, $key as xs:string, $role as xs:string) {
+    let $place := id(xmldb:decode($key), $config:localities)
+    let $log := util:log("info", "api:locality-filter: found locality: " || $place/@xml:id/string())
+    let $matches := collection($config:data-default)/tei:TEI//tei:correspAction[@type=$role]//tei:placeName[@source = $place/@xml:id]
+    let $log := util:log("info", "api:locality-filter: $matches: " || count($matches) || " in " || $config:data-default)
+    return
+        for $match in $matches
+            let $root := root($match)
+            group by $id := $root//tei:TEI/@xml:id/string()
+            order by $id ascending
+            return
+                $root[1]//tei:TEI
+};
+
+declare function api:locality-is-sender($request as map(*)) {    
+    let $key := $request?parameters?key
+    let $sortBy := $request?parameters?order
+    let $sortDir := $request?parameters?dir
+    let $limit := $request?parameters?limit
+    let $start := $request?parameters?start    
+    let $filter := $request?parameters?search
+    let $log := util:log("info", "api:locality-is-sender " || $key)
+    let $entries := api:locality-filter($filter,$key, "sent")
+    let $subset := subsequence($entries, $start, $limit)
+    return (
+        session:set-attribute($config:session-prefix || ".locality-sender.hits", $entries),
+        session:set-attribute($config:session-prefix || ".locality-sender.hitCount", count($entries)),
+        map {
+            "count": count($entries),
+            "results":
+                array {
+                    for $letter in $subset
+                        let $id := $letter/@xml:id/string()
+                        let $title := $letter//tei:titleStmt/tei:title/text()
+                        let $log := util:log("info", ("api:locality-is-sender $correspAction: ",$letter//tei:correspAction[@type="sent"]))
+                        let $senders := api:get-correspAction($letter//tei:correspAction[@type="sent"])
+                        let $log := util:log("info", ("api:locality-is-sender $senders: ",$senders))
+                        let $date := api:handle-date($letter//tei:correspAction[@type="sent"]/tei:date)
+                        let $recipients := api:get-correspAction($letter//tei:correspAction[@type="received"])
+                        let $recipients-place := id($letter//tei:correspAction[@type="received"]/tei:placeName/@source/string(), $config:localities)
+                        let $recipients-place-name := api:get-place-name($recipients-place)
+                        return
+                            map {                            
+                                "title": <a href="../{$id}">{$title}</a>,
+                                "senders": $senders,
+                                "date":$date,
+                                "recipients":$recipients,
+                                "recipients-place":$recipients-place-name
+                            }
+                }
+        }
+)};
+
+declare function api:locality-is-recipient($request as map(*)) {    
+    let $key := $request?parameters?key
+    let $sortBy := $request?parameters?order
+    let $sortDir := $request?parameters?dir
+    let $limit := $request?parameters?limit
+    let $start := $request?parameters?start    
+    let $filter := $request?parameters?search
+    let $log := util:log("info", "api:locality-is-recipient " || $key)
+    let $entries := api:locality-filter($filter,$key, "received")    
+    let $subset := subsequence($entries, $start, $limit)
+    return (
+        session:set-attribute($config:session-prefix || ".locality-receiver.hits", $entries),
+        session:set-attribute($config:session-prefix || ".locality-receiver.hitCount", count($entries)),
+        map {
+            "count": count($entries),
+            "results":
+                array {
+                    for $letter in $subset
+                        let $id := $letter/@xml:id/string()
+                        let $title := $letter//tei:titleStmt/tei:title/text()
+                        let $send-place := id($letter//tei:correspAction[@type="sent"]/tei:placeName/@source/string(), $config:localities)
+                        let $send-place-name := api:get-place-name($send-place)
+                        let $date := api:handle-date($letter//tei:correspAction[@type="sent"]/tei:date)
+                        let $senders := api:get-correspAction($letter//tei:correspAction[@type="sent"])
+                        let $recipients := api:get-correspAction($letter//tei:correspAction[@type="received"])
+                        return
+                            map {                            
+                                "title": <a href="../{$id}">{$title}</a>,
+                                "senders":$senders,
+                                "place": $send-place-name,
+                                "date":$date,                                
+                                "recipients":$recipients
+                            }
+                }
+        }
+)};
 
 declare function api:cleanup-register-data($request as map(*)) {
     let $log := util:log("info", "api:cleanup-register-data - register: " || $request?parameters?file)    

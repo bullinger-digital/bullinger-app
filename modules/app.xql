@@ -107,7 +107,7 @@ function app:mentions($node as node(), $model as map(*)) {
     let $type := $model?type    
     (: let $log := util:log("info", "app:mentions: $key: " || $key || " type: " || $type || " lang: " || $lang ) :)
     let $person := id(xmldb:decode($key), $config:persons)
-    let $log := util:log("info", "api:person-filter: found person: " || $person/@xml:id/string())
+    let $log := util:log("info", "app:mentions: found person: " || $person/@xml:id/string())
     let $matches := 
         for $id in $person//tei:persName/@xml:id
             return (
@@ -149,7 +149,7 @@ declare %templates:replace
 function app:person-is-sender($node as node(), $model as map(*)) {
     let $key := $model?key        
     let $person := id(xmldb:decode($key), $config:persons)
-    let $log := util:log("info", "api:person-filter: found person: " || $person/@xml:id/string())
+    let $log := util:log("info", "app:person-is-sender: found person: " || $person/@xml:id/string())
     return 
         app:person-in-corresp-action($node, $model, $person, "sent")
 };
@@ -158,7 +158,7 @@ declare %templates:replace
 function app:person-is-recipient($node as node(), $model as map(*)) {
     let $key := $model?key        
     let $person := id(xmldb:decode($key), $config:persons)
-    let $log := util:log("info", "api:person-filter: found person: " || $person/@xml:id/string())
+    let $log := util:log("info", "app:person-is-recipient: found person: " || $person/@xml:id/string())
     return 
         app:person-in-corresp-action($node, $model, $person, "received")
 
@@ -171,6 +171,39 @@ declare function app:person-in-corresp-action($node, $model, $person, $type) {
                     collection($config:data-default)//tei:correspAction[@type=$type]//tei:persName[@ref = $id]
             )
     let $log := util:log("info", "app:person-in-corresp-action: $matches: " || count($matches) || " in type " || $type)    
+    return
+        if (count($matches) eq 0)
+        then ()
+        else (
+            element details {
+                templates:process($node/node(), $model)
+            }
+        )
+};
+
+
+declare %templates:replace
+function app:locality-is-sender($node as node(), $model as map(*)) {
+    let $key := $model?key        
+    let $place := id(xmldb:decode($key), $config:localities)
+    let $log := util:log("info", "app:locality-is-sender: found locality: " || $place/@xml:id/string())
+    return 
+        app:locality-in-corresp-action($node, $model, $place, "sent")
+};
+
+declare %templates:replace
+function app:locality-is-recipient($node as node(), $model as map(*)) {
+    let $key := $model?key        
+    let $place := id(xmldb:decode($key), $config:localities)
+    let $log := util:log("info", "app:locality-is-recipient: found locality: " || $place/@xml:id/string())
+    return 
+        app:locality-in-corresp-action($node, $model, $place, "received")
+
+};
+
+declare function app:locality-in-corresp-action($node, $model, $person, $type) {
+    let $matches := collection($config:data-default)//tei:correspAction[@type=$type]//tei:placeName[@source = $person/@xml:id]
+    let $log := util:log("info", "app:locality-in-corresp-action: $matches: " || count($matches) || " in type " || $type)    
     return
         if (count($matches) eq 0)
         then ()
