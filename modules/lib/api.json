@@ -1800,7 +1800,7 @@
 						"description": "Number of items to show on one page",
 						"schema": {
 							"type": "integer",
-							"default": 10
+							"default": 20
 						}
 					},
 					{

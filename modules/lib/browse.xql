@@ -80,7 +80,7 @@ declare function app:parent-collection($node as node(), $model as map(*)) {
 declare
     %templates:wrap
     %templates:default("start", 1)
-    %templates:default("per-page", 10)
+    %templates:default("per-page", 20)
 function app:browse($node as node(), $model as map(*), $start as xs:int, $per-page as xs:int, $filter as xs:string?) {
     let $total := count($model?all)
     let $start :=

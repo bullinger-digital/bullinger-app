@@ -171,7 +171,25 @@ declare variable $config:facets := [
         "output": function($label) {
             $config:archives/id($label)/tei:orgName/text()           
         }
-    }
+    },
+    map {
+        "dimension": "group",
+        "heading": "facets.group",
+        "max": 5,
+        "hierarchical": false(),
+        "output": function($label) {
+            $config:roles/id($label)/tei:form[@xml:lang="de"][@type="sg"]/text()
+        }
+    },
+    map {
+        "dimension": "institution",
+        "heading": "facets.institution",
+        "max": 5,
+        "hierarchical": false(),
+        "output": function($label) {
+            $config:orgs/id($label)/tei:name[@xml:lang="de"][@type="sg"]/text()
+        }
+    }    
 ];
 
 (:

@@ -35,17 +35,18 @@ declare function cr:remove-not-referenced-persons($register-path, $register-file
     let $store := xmldb:store($register-path, $register-filename, $persons-data)
     (: remove persName type main only if there is no alias anymore :)
     let $remove-main-persnames := 
-        for $person in $persons-data//tei:persName[@type="main"]
-            let $refs :=  $letters//tei:persName[@ref = $person/@xml:id] 
+        for $personName in $persons-data//tei:persName[@type="main"]
+            let $person := $personName/parent::tei:person
+            let $refs :=  $letters//tei:persName[@ref = $personName/@xml:id] 
             return
-                if(count($refs) = 0 and not(id($person/@ref, $persons-data)/tei:persName[@type="alias"]))
+                if(count($refs) = 0 and exists($person) and not(exists($person/tei:persName[@type="alias"])))
                 then (
-                    update delete $person
+                    update delete $personName
                 ) 
                 else ()
     let $store := xmldb:store($register-path, $register-filename, $persons-data)
     let $check-person := 
-                for $noPersName in $persons-data//tei:person[not(tei:persName)]
+                for $noPersName in $persons-data//tei:person[not(exists(tei:persName))]
                     return
                         if(count($letters//tei:persName[@ref = $noPersName/@xml:id]) = 0)
                         then (

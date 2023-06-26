@@ -4,6 +4,8 @@
         "archive":"Archiv",                
         "correspondent": "Korrespondent",
         "date": "Datum",
+        "group":"Gruppe",
+        "institution":"Institution",
         "keyword": "Schlagwort",
         "mentioned": "Erwähnte Person",
         "number": "Nummer",
