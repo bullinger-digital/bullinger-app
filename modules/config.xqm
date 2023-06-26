@@ -125,8 +125,8 @@ declare variable $config:facets := [
         "hierarchical": true()
     },
     map {
-        "dimension": "correspondent",
-        "heading": "facets.correspondent",
+        "dimension": "sender",
+        "heading": "facets.sender",
         "max": 5,
         "hierarchical": false(),
         "output": function($label) {
@@ -136,7 +136,20 @@ declare variable $config:facets := [
                 then (string-join(($person/*),", "))
                 else ($label)
         }
-    },    
+    },
+    map {
+        "dimension": "recipient",
+        "heading": "facets.addressee",
+        "max": 5,
+        "hierarchical": false(),
+        "output": function($label) {
+            let $person := $config:persons/id($label)/parent::tei:person/tei:persName[@type='main']
+            return 
+                if ($person) 
+                then (string-join(($person/*),", "))
+                else ($label)
+        }
+    },
     map {
         "dimension": "place",
         "heading": "facets.place",
@@ -148,6 +161,15 @@ declare variable $config:facets := [
                 if ($place) 
                 then (string-join(($place/*[local-name(.) != "location"]),", "))
                 else ($label)
+        }
+    },
+    map {
+        "dimension": "archive",
+        "heading": "facets.archive",
+        "max": 5,
+        "hierarchical": false(),
+        "output": function($label) {
+            $config:archives/id($label)/tei:orgName/text()           
         }
     }
 ];

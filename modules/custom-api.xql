@@ -12,6 +12,7 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 (: Add your own module imports here :)
 import module namespace app="teipublisher.com/app" at "app.xql";
+import module namespace cr="jinntec.de/cleanup-register-data" at "util/cleanup-register-data.xqm";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
 
@@ -457,4 +458,12 @@ declare function api:format-date($date as xs:string?){
         format-date(xs:date($date || '-01'), '[MNn] [Y]', "de", (), ())
     else
         format-date(xs:date($date), '[D]. [MNn] [Y]', "de", (), ())
+};
+
+declare function api:cleanup-register-data($request as map(*)) {
+    let $log := util:log("info", "api:cleanup-register-data - register: " || $request?parameters?file)    
+    return
+        cr:cleanup-register($request?parameters?file)
+
+    
 };

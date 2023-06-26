@@ -27,7 +27,7 @@
     "paths": {
 		"/persons/": {
             "get": {
-				"summary": "Landing page for names",
+				"summary": "Landing page for persons",
 				"description": "Retrieve an HTML page expanded through eXist templating.",
 				"tags": ["view"],
 				"operationId": "vapi:html",
@@ -46,7 +46,7 @@
 						"in": "query",
 						"schema": {
 							"type": "string",
-							"default": "/names/"
+							"default": "/persons/"
 						}					
 					}
 				],
@@ -195,8 +195,8 @@
                     }
                 }
             }
-        },
-		"/localities/": {
+        },  
+        "/localities/": {
             "get": {
 				"summary": "Landing page for localities",
 				"description": "Retrieve an HTML page expanded through eXist templating.",
@@ -542,7 +542,55 @@
                     }
                 }
             }
-        }		
+        },
+		"/api/cleanup-register-data/{file}": {
+            "get": {
+                "summary": "Remove all unused register entries",
+                "description": "Cleanup all register data",
+                "operationId": "custom:cleanup-register-data",
+				"parameters": [
+                    {
+                        "name": "file",
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+				],
+				"responses": {
+					"200": {
+						"description": "Static page",
+						"content": {
+							"application/xml": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The document was not found",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An error occurred",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+            }
+        }
     },
     "security": [
         {
