@@ -21,8 +21,9 @@
                         <span data-template="app:person-name-full"> </span>
                     </h1>
                     <div data-template="app:name-alternatives"/>
-                    <details>
-                        <summary><pb-i18n key="letteros-from">Briefe von</pb-i18n> <span data-template="app:person-name-full"/></summary>
+                    <div data-template="app:mentions"/>
+                    <details data-template="app:person-is-sender">
+                        <summary><pb-i18n key="letters-from">Briefe von</pb-i18n> <span data-template="app:person-name-full"/></summary>
                         <pb-table-grid source="api/person/sent/${key}" resizable="" emit="grid" subscribe="grid" per-page="5" data-template="pages:parse-params">                        
                             <pb-table-column label="Brief" property="title"></pb-table-column>
                             <pb-table-column label="Absender Ort" property="place"></pb-table-column>
@@ -31,8 +32,8 @@
                             <pb-table-column label="Empfänger Ort" property="recipients-place"></pb-table-column>                            
                         </pb-table-grid>
                     </details>
-                    <details>
-                        <summary><pb-i18n key="letteros-to">Briefe an</pb-i18n> <span data-template="app:person-name-full"/></summary>
+                    <details data-template="app:person-is-recipient">
+                        <summary><pb-i18n key="letters-to">Briefe an</pb-i18n> <span data-template="app:person-name-full"/></summary>
                         <pb-table-grid source="api/person/received/${key}" resizable="" emit="grid" subscribe="grid" per-page="5" data-template="pages:parse-params">                        
                             <pb-table-column label="Brief" property="title"></pb-table-column>
                             <pb-table-column label="Absender" property="senders"></pb-table-column>
