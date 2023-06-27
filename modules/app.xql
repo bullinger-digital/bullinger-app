@@ -105,15 +105,18 @@ declare %templates:replace
 function app:mentions($node as node(), $model as map(*)) {
     let $key := $model?key
     let $type := $model?type    
-    (: let $log := util:log("info", "app:mentions: $key: " || $key || " type: " || $type || " lang: " || $lang ) :)
+    let $log := util:log("info", "app:mentions: $key: " || $key || " type: " || $type )
     let $person := id(xmldb:decode($key), $config:persons)
     let $log := util:log("info", "app:mentions: found person: " || $person/@xml:id/string())
     let $matches := 
         for $id in $person//tei:persName/@xml:id
             return (
                 let $log := util:log("info", "find letters with id : " || $id)
-                return
-                    collection($config:data-default)//tei:text//tei:persName[@ref = $id]
+                return (
+                    collection($config:data-default)//tei:text//tei:persName[@ref = $id],
+                    collection($config:data-default)//tei:msContents//tei:persName[@ref = $id]
+                )
+
             )
     let $log := util:log("info", "app:mentions: $matches: " || count($matches) || " in " || $config:data-default)
     (: let $log := util:log("info", "app:mentions: $matches: " || count($matches) || " in " || $config:data-default) :)
