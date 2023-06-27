@@ -49,6 +49,7 @@ function app:load-locality($node as node(), $model as map(*), $key as xs:string)
     let $district := $place//tei:district/text()
     let $country := $place//tei:country/text()
     let $place-name := if($settlement) then ($settlement) else if ($district) then ($district) else ($country)
+    
     let $model-metadata := 
         map {  
                 "key":$key,
@@ -123,29 +124,36 @@ function app:mentions($node as node(), $model as map(*)) {
     return
         if (count($matches) eq 0)
         then ()
+        else if (count($matches) <= 5)
+        then (
+            app:print-mentions($matches)
+        )
         else (
             element details {
-                element summary {
-                    element pb-i18n { 
-                        attribute key {"mentions-of"},
-                        "Erwähnungen in Briefen"
-                    }
-                },
-                for $match in $matches
-                    group by $file := util:document-name($match)
-                    order by $file ascending 
-                    let $root := root($match[1])
-                    let $title := $root//tei:titleStmt/tei:title/string()
-                    let $id := $root/tei:TEI/@xml:id/string()
-                    let $log := util:log("info", "app:mentions: $id: '" || $id || "' title:  '" || $title || "'")
-                    return
-                        element div {
-                            element a  {
-                                attribute href { $config:context-path || "/" || $id },
-                                $title
-                            }
-                        }
+                app:print-mentions($matches)
             })
+};
+declare function app:print-mentions($matches) {
+    element summary {
+        element pb-i18n { 
+            attribute key {"mentions-of"},
+            "Erwähnungen in Briefen"
+        }
+    },
+    for $match in $matches
+        group by $file := util:document-name($match)
+        order by $file ascending 
+        let $root := root($match[1])
+        let $title := $root//tei:titleStmt/tei:title/string()
+        let $id := $root/tei:TEI/@xml:id/string()
+        let $log := util:log("info", "app:mentions: $id: '" || $id || "' title:  '" || $title || "'")
+        return
+            element div {
+                element a  {
+                    attribute href { $config:context-path || "/" || $id },
+                    $title
+                }
+            }
 };
 
 declare %templates:replace

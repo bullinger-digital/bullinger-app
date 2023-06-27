@@ -159,7 +159,13 @@ declare variable $config:facets := [
             let $place := $config:localities/id($label)
             return 
                 if ($place) 
-                then (string-join(($place/*[local-name(.) != "location"]),", "))
+                then (
+                    let $settlement := $place//tei:settlement/text()
+                    let $district := $place//tei:district/text()
+                    let $country := $place//tei:country/text()
+                    return
+                        if($settlement) then ($settlement) else if ($district) then ($district) else ($country)
+                )
                 else ($label)
         }
     },
