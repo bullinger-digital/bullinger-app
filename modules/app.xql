@@ -67,7 +67,7 @@ function app:load-locality($node as node(), $model as map(*), $key as xs:string)
                 }
         )
         else ()
-    let $log := util:log("info", ("$additional-model-data", $additional-model-data))
+    (: let $log := util:log("info", ("$additional-model-data", $additional-model-data)) :)
 
     return map:merge((
         $model,
@@ -104,23 +104,17 @@ function app:name-alternatives($node as node(), $model as map(*)) {
 
 declare %templates:replace
 function app:mentions($node as node(), $model as map(*)) {
-    let $key := $model?key
-    let $type := $model?type    
-    let $log := util:log("info", "app:mentions: $key: " || $key || " type: " || $type )
+    let $key := $model?key    
+    (: let $log := util:log("info", "app:mentions: $key: " || $key ) :)
     let $person := id(xmldb:decode($key), $config:persons)
-    let $log := util:log("info", "app:mentions: found person: " || $person/@xml:id/string())
+    (: let $log := util:log("info", "app:mentions: found person: " || $person/@xml:id/string()) :)
     let $matches := 
         for $id in $person//tei:persName/@xml:id
             return (
-                let $log := util:log("info", "find letters with id : " || $id)
-                return (
-                    collection($config:data-default)//tei:text//tei:persName[@ref = $id],
-                    collection($config:data-default)//tei:msContents//tei:persName[@ref = $id]
-                )
-
+                collection($config:data-default)//tei:text//tei:persName[@ref = $id],
+                collection($config:data-default)//tei:msContents//tei:persName[@ref = $id]
             )
-    let $log := util:log("info", "app:mentions: $matches: " || count($matches) || " in " || $config:data-default)
-    (: let $log := util:log("info", "app:mentions: $matches: " || count($matches) || " in " || $config:data-default) :)
+    (: let $log := util:log("info", "app:mentions: $matches: " || count($matches) || " in " || $config:data-default)     :)
     return
         if (count($matches) eq 0)
         then ()
@@ -146,7 +140,7 @@ declare function app:print-mentions($matches) {
         let $root := root($match[1])
         let $title := $root//tei:titleStmt/tei:title/string()
         let $id := $root/tei:TEI/@xml:id/string()
-        let $log := util:log("info", "app:mentions: $id: '" || $id || "' title:  '" || $title || "'")
+        (: let $log := util:log("info", "app:mentions: $id: '" || $id || "' title:  '" || $title || "'") :)
         return
             element div {
                 element a  {
@@ -160,7 +154,7 @@ declare %templates:replace
 function app:person-is-sender($node as node(), $model as map(*)) {
     let $key := $model?key        
     let $person := id(xmldb:decode($key), $config:persons)
-    let $log := util:log("info", "app:person-is-sender: found person: " || $person/@xml:id/string())
+    (: let $log := util:log("info", "app:person-is-sender: found person: " || $person/@xml:id/string()) :)
     return 
         app:person-in-corresp-action($node, $model, $person, "sent")
 };
@@ -169,7 +163,7 @@ declare %templates:replace
 function app:person-is-recipient($node as node(), $model as map(*)) {
     let $key := $model?key        
     let $person := id(xmldb:decode($key), $config:persons)
-    let $log := util:log("info", "app:person-is-recipient: found person: " || $person/@xml:id/string())
+    (: let $log := util:log("info", "app:person-is-recipient: found person: " || $person/@xml:id/string()) :)
     return 
         app:person-in-corresp-action($node, $model, $person, "received")
 
@@ -181,7 +175,7 @@ declare function app:person-in-corresp-action($node, $model, $person, $type) {
             return (
                     collection($config:data-default)//tei:correspAction[@type=$type]//tei:persName[@ref = $id]
             )
-    let $log := util:log("info", "app:person-in-corresp-action: $matches: " || count($matches) || " in type " || $type)    
+    (: let $log := util:log("info", "app:person-in-corresp-action: $matches: " || count($matches) || " in type " || $type)     :)
     return
         if (count($matches) eq 0)
         then ()
@@ -197,7 +191,7 @@ declare %templates:replace
 function app:locality-is-sender($node as node(), $model as map(*)) {
     let $key := $model?key        
     let $place := id(xmldb:decode($key), $config:localities)
-    let $log := util:log("info", "app:locality-is-sender: found locality: " || $place/@xml:id/string())
+    (: let $log := util:log("info", "app:locality-is-sender: found locality: " || $place/@xml:id/string()) :)
     return 
         app:locality-in-corresp-action($node, $model, $place, "sent")
 };
@@ -206,7 +200,7 @@ declare %templates:replace
 function app:locality-is-recipient($node as node(), $model as map(*)) {
     let $key := $model?key        
     let $place := id(xmldb:decode($key), $config:localities)
-    let $log := util:log("info", "app:locality-is-recipient: found locality: " || $place/@xml:id/string())
+    (: let $log := util:log("info", "app:locality-is-recipient: found locality: " || $place/@xml:id/string()) :)
     return 
         app:locality-in-corresp-action($node, $model, $place, "received")
 
@@ -214,7 +208,7 @@ function app:locality-is-recipient($node as node(), $model as map(*)) {
 
 declare function app:locality-in-corresp-action($node, $model, $person, $type) {
     let $matches := collection($config:data-default)//tei:correspAction[@type=$type]//tei:placeName[@source = $person/@xml:id]
-    let $log := util:log("info", "app:locality-in-corresp-action: $matches: " || count($matches) || " in type " || $type)    
+    (: let $log := util:log("info", "app:locality-in-corresp-action: $matches: " || count($matches) || " in type " || $type)     :)
     return
         if (count($matches) eq 0)
         then ()
@@ -292,11 +286,8 @@ function app:show-map($node as node(), $model as map(*)) {
     let $place := $model?data
     return
         if(string-length(normalize-space($place//tei:geo/text() ) ) > 1)
-        then (
-            let $log := util:log("info", "show map" )
-            return
-                templates:process($node/*, $model)
-        ) else (
+        then ( templates:process($node/*, $model) ) 
+        else (
             <div style="text-align:center;font-style:italic;"><pb-i18n key="no-geo-data">Keine Geodaten verfügbar</pb-i18n></div>
         ) 
 };

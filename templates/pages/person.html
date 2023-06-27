@@ -23,23 +23,23 @@
                     <div data-template="app:name-alternatives"/>
                     <div data-template="app:mentions"/>
                     <details data-template="app:person-is-sender">
-                        <summary><pb-i18n key="letters-from">Briefe von</pb-i18n> <span data-template="app:person-name-full"/></summary>
-                        <pb-table-grid source="api/person/sent/${key}" resizable="" emit="grid" subscribe="grid" per-page="5" data-template="pages:parse-params">                        
-                            <pb-table-column label="Brief" property="title"></pb-table-column>
-                            <pb-table-column label="Absender Ort" property="place"></pb-table-column>
-                            <pb-table-column label="Datum" property="date"></pb-table-column>
-                            <pb-table-column label="Empfänger" property="recipients"></pb-table-column>
-                            <pb-table-column label="Empfänger Ort" property="recipients-place"></pb-table-column>                            
+                        <summary><pb-i18n key="letters-from">Briefe von</pb-i18n> <span data-template="app:person-name-full"/></summary>                        
+                        <pb-table-grid source="api/person/sent/${key}" resizable="" emit="grid" subscribe="grid" per-page="10" data-template="pages:parse-params">
+                            <pb-table-column label="Brief" property="title" sort=""></pb-table-column>
+                            <pb-table-column label="Absender Ort" property="place" sort=""></pb-table-column>
+                            <pb-table-column label="Datum" property="date" sort=""></pb-table-column>
+                            <pb-table-column label="Empfänger" property="recipients" sort=""></pb-table-column>
+                            <pb-table-column label="Empfänger Ort" property="recipients-place" sort=""></pb-table-column>
                         </pb-table-grid>
                     </details>
                     <details data-template="app:person-is-recipient">
                         <summary><pb-i18n key="letters-to">Briefe an</pb-i18n> <span data-template="app:person-name-full"/></summary>
-                        <pb-table-grid source="api/person/received/${key}" resizable="" emit="grid" subscribe="grid" per-page="5" data-template="pages:parse-params">                        
-                            <pb-table-column label="Brief" property="title"></pb-table-column>
-                            <pb-table-column label="Absender" property="senders"></pb-table-column>
-                            <pb-table-column label="Absender Ort " property="place"></pb-table-column>
-                            <pb-table-column label="Datum" property="date"></pb-table-column>                            
-                            <pb-table-column label="Empfänger Ort" property="recipients-place"></pb-table-column>                            
+                        <pb-table-grid source="api/person/received/${key}" resizable="" emit="grid" subscribe="grid" per-page="10" data-template="pages:parse-params">                        
+                            <pb-table-column label="Brief" property="title" sort=""></pb-table-column>
+                            <pb-table-column label="Absender" property="senders" sort=""></pb-table-column>
+                            <pb-table-column label="Absender Ort " property="place" sort=""></pb-table-column>
+                            <pb-table-column label="Datum" property="date" sort=""></pb-table-column>
+                            <pb-table-column label="Empfänger Ort" property="recipients-place" sort=""></pb-table-column> 
                         </pb-table-grid>
                     </details>
                     <div data-template="app:further-information"/>
@@ -50,8 +50,8 @@
                 </section>
             </main>
         </pb-page>
-        <footer data-template="templates:include" data-template-path="templates/footer.html"/>
-        <div class="splash"></div>
+        <footer data-template="templates:include" data-template-path="templates/footer.html"/>        
+        <div class="splash"></div>        
     </body>
 
 </html>

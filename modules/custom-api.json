@@ -435,6 +435,14 @@
                         }
                     },
                     {
+                        "name": "order",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": "title"
+                        }
+                    },
+                    {
                         "name": "limit",
                         "in": "query",
                         "schema": {
@@ -496,6 +504,14 @@
                         "schema": {
                             "type": "string",
                             "default": "asc"
+                        }
+                    },
+                    {
+                        "name": "order",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": "title"
                         }
                     },
                     {
@@ -584,6 +600,14 @@
                         }
                     },
                     {
+                        "name": "order",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": "title"
+                        }
+                    },                    
+                    {
                         "name": "search",
                         "in": "query",
                         "schema": {
@@ -659,6 +683,14 @@
                         "in": "query",
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "order",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": "title"
                         }
                     },
                     {
