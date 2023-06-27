@@ -33,7 +33,7 @@ declare function api:lookup($name as xs:string, $arity as xs:integer) {
 };
 
 declare function api:persons-all-list($request as map(*)) {
-    let $log := util:log("info","api:persons-all-list") 
+    (: let $log := util:log("info","api:persons-all-list")  :)
     let $search := normalize-space($request?parameters?search)
     let $letterParam := $request?parameters?category    
     let $sortDir := $request?parameters?dir
@@ -51,15 +51,14 @@ declare function api:persons-all-list($request as map(*)) {
                 })]
             )
 
-    let $log := util:log("info", map {
+    (: let $log := util:log("info", map {
         "function":"api:names-all-list $search:",
         "items count":count($items)
-    })         
+    })          :)
     let $byLetter := 
         map:merge(
             for $item in $items
-                let $name := ft:field($item, 'name')[1]
-                let $log := util:log("info", "api:persons-all-list: name: " || $name)
+                let $name := ft:field($item, 'name')[1]                
                 order by $name
                 group by $letter := substring($name, 1, 1) => upper-case()
                 return
