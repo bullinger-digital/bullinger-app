@@ -16,17 +16,11 @@
                 <aside data-template="browse:form">
                     <pb-custom-form class="options">
                         <input type="hidden" name="collection" value="${collection}" data-template="pages:parse-params"/>
-                        <!-- <input type="hidden" name="field" value="${field}" data-template="pages:parse-params"/>
-                        
-                        <pb-select label="browse.sort" name="sort" value="${sort}" data-template="pages:parse-params">
-                            <paper-item value="title"><pb-i18n key="browse.title"></pb-i18n></paper-item>
-                            <paper-item value="author"><pb-i18n key="browse.author"></pb-i18n></paper-item>
-                        </pb-select> -->
                         <pb-select label="search.scope" name="field" value="${field}" data-template="pages:parse-params">
                             <paper-item value="title">Titel</paper-item>
-                            <paper-item value="text" selected="">Volltext</paper-item>                            
+                            <paper-item value="text" selected="">Volltext</paper-item>
                         </pb-select>
-                    </pb-custom-form>                    
+                    </pb-custom-form>
                     <pb-search id="search-form" subscribe="search" data-template="pages:parse-params" value="${query}"
                         subforms=".facets,.options" submit-on-load="submit-on-load">
                         <paper-button slot="searchButton"><pb-i18n key="search.search">Search</pb-i18n></paper-button>

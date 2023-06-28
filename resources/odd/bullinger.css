@@ -66,14 +66,9 @@ display: block;
     bottom: 4rem;
 }
 
-
-
-
 #metaWrapper .regest{
     position:relative;
 }
-
-
 
 @media (min-width: 769px) {
     #metaWrapper {
