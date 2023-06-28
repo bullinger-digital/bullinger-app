@@ -336,6 +336,20 @@
             <pb:template xmlns="" xml:space="preserve">[[name]][[place]][[org]]</pb:template>
         </model>
                 </elementSpec>
+            <elementSpec ident="s" mode="change">
+        <model output="web" behaviour="pass-through">
+            <desc>Render language specific s as spans in paragraphs</desc>
+            <param name="language" value="@xml:lang/string()"/>
+            <pb:template xmlns="" xml:space="preserve"><span class="lang-[[language]]">[[content]]</span></pb:template>
+        </model>
+    </elementSpec>
+            <elementSpec ident="foreign" mode="change">
+        <model output="web" behaviour="pass-through">
+            <desc>Render language specific foreign as spans in paragraphs</desc>
+            <param name="language" value="@xml:lang/string()"/>
+            <pb:template xmlns="" xml:space="preserve"><span class="lang-[[language]]">[[content]]</span></pb:template>
+        </model>
+    </elementSpec>
             </schemaSpec>
         </body>
     </text>

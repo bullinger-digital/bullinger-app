@@ -96,3 +96,33 @@ display: block;
 .place {
     color:darkred;
 }
+
+.tei-p.tei-p {
+    text-align: left;
+    line-height: 1.337;
+}
+
+[class*='lang-']::before,
+[class*='lang-']::after {
+    content: "";
+    box-sizing: border-box;
+    border: 0 solid gray;
+}
+
+.lang-de {
+    background-color: var(--lang-de-color, 'transparent');
+    box-shadow: var(--lang-de-color, 'transparent') 0.15em 0px 0px 2px,
+                var(--lang-de-color, 'transparent') -0.15em 0px 0px 2px;
+}
+
+.lang-el {
+    background-color: var(--lang-el-color, 'transparent');
+    box-shadow: var(--lang-el-color, 'transparent') 0.15em 0px 0px 2px,
+                var(--lang-el-color, 'transparent') -0.15em 0px 0px 2px;
+}
+
+.lang-la {
+    background-color: var(--lang-la-color, 'transparent');
+    box-shadow: var(--lang-la-color, 'transparent') 0.15em 0px 0px 2px,
+                var(--lang-la-color, 'transparent') -0.15em 0px 0px 2px;
+}

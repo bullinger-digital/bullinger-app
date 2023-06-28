@@ -44,6 +44,9 @@
     --bb-field-gray: rgb(233,237,234);
     --bb-beige: rgba(170,129,90);
     --bb-footer-color: var(--bb-white);
+    --bb-lang-de-color: rgb(220, 249, 222);
+    --bb-lang-el-color: rgb(250, 229, 235);
+    --bb-lang-la-color: rgb(250, 244, 229);
 
     --pb-link-color: var(--bb-black);
     --pb-color-inverse: var(--bb-white);
@@ -680,6 +683,10 @@ h6 {
 h5 {
     font-size: 1rem;
     margin: 0;
+}
+
+.small-t {
+    font-size: var(--bb-font-size-small);
 }
 
 .github{
