@@ -117,7 +117,10 @@
                     <model output="latex" behaviour="metadata"/>
                     <model output="fo" behaviour="omit"/>
                     <model output="web" predicate="$parameters?header='short'" behaviour="block"/>
-                    <model output="web" behaviour="metadata"/>
+                    <model output="web" behaviour="pass-through">
+            <param name="content" value="sort(.//language, (), function ($lang as element(language)) { -number($lang/@usage) })"/>
+            <pb:template xmlns="" xml:space="preserve"><div class="lang-usage">Farblegende: [[content]]</div></pb:template>
+        </model>
                 </elementSpec>
                 <elementSpec ident="summary" mode="add">
                     <model behaviour="block"/>
@@ -143,6 +146,12 @@
             <param name="content" value="text()"/>
             <pb:template xmlns="" xml:space="preserve"><div>Sprache</div>
 <div>[[content]]</div></pb:template>
+        </model>
+                    <model output="web" behaviour="pass-through">
+            <desc>output specific language usage percentage </desc>
+            <param name="id" value="@ident"/>
+            <param name="percentage" value="@usage"/>
+            <pb:template xmlns="" xml:space="preserve"><span class="lang-[[id]] lang__usage">[[content]]<span class="lang-usage-percent">[[percentage]]%</span></span></pb:template>
         </model>
                 </elementSpec>
                 <elementSpec ident="msIdentifier" mode="add"/>
@@ -337,19 +346,19 @@
         </model>
                 </elementSpec>
             <elementSpec ident="s" mode="change">
-        <model output="web" behaviour="pass-through">
+                    <model output="web" behaviour="pass-through">
             <desc>Render language specific s as spans in paragraphs</desc>
             <param name="language" value="@xml:lang/string()"/>
             <pb:template xmlns="" xml:space="preserve"><span class="lang-[[language]]">[[content]]</span></pb:template>
         </model>
-    </elementSpec>
+                </elementSpec>
             <elementSpec ident="foreign" mode="change">
-        <model output="web" behaviour="pass-through">
+                    <model output="web" behaviour="pass-through">
             <desc>Render language specific foreign as spans in paragraphs</desc>
             <param name="language" value="@xml:lang/string()"/>
             <pb:template xmlns="" xml:space="preserve"><span class="lang-[[language]]">[[content]]</span></pb:template>
         </model>
-    </elementSpec>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>

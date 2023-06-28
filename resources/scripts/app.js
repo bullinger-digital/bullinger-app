@@ -3,13 +3,14 @@ window.addEventListener('DOMContentLoaded', function() {
 
     function applyLangColors () {
         const view = document.getElementById('view1')
+        const usage = view.shadowRoot.querySelector('.lang-usage')
         if (toggle.checked) {
-            // console.log('lang-toggle', 'checked')
+            usage.style.display = 'block';
             view.style.setProperty("--lang-de-color", 'var(--bb-lang-de-color)');
             view.style.setProperty("--lang-el-color", 'var(--bb-lang-el-color)');
             view.style.setProperty("--lang-la-color", 'var(--bb-lang-la-color)');
         } else {
-            // console.log('lang-toggle', 'unchecked')
+            usage.style.display = 'none';
             view.style.setProperty("--lang-la-color", 'transparent');
             view.style.setProperty("--lang-el-color", 'transparent');
             view.style.setProperty("--lang-de-color", 'transparent');

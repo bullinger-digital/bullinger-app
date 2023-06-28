@@ -121,3 +121,12 @@ display: block;
     box-shadow: var(--lang-la-color, 'transparent') 0.15em 0px 0px 2px,
                 var(--lang-la-color, 'transparent') -0.15em 0px 0px 2px;
 }
+
+.lang__usage {
+    margin: auto var(--s-2);
+}
+
+/* enforce whitespace between lanaguage name and percentage */
+.lang-usage-percent::before {
+    content: ' ';
+}
