@@ -21,7 +21,7 @@
                         <span data-template="app:person-name-full"> </span>
                     </h1>
                     <div data-template="app:name-alternatives"/>
-                    <div data-template="app:mentions"/>
+                    <div data-template="app:mentions-of-person"/>
                     <details data-template="app:person-is-sender">
                         <summary><pb-i18n key="letters-from">Briefe von</pb-i18n> <span data-template="app:person-name-full"/></summary>                        
                         <pb-table-grid source="api/person/sent/${key}" resizable="" emit="grid" subscribe="grid" per-page="10" data-template="pages:parse-params">

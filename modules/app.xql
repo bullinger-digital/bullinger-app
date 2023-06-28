@@ -103,18 +103,18 @@ function app:name-alternatives($node as node(), $model as map(*)) {
 };
 
 declare %templates:replace
-function app:mentions($node as node(), $model as map(*)) {
+function app:mentions-of-person($node as node(), $model as map(*)) {
     let $key := $model?key    
-    (: let $log := util:log("info", "app:mentions: $key: " || $key ) :)
+    (: let $log := util:log("info", "app:mentions-of-person: $key: " || $key ) :)
     let $person := id(xmldb:decode($key), $config:persons)
-    (: let $log := util:log("info", "app:mentions: found person: " || $person/@xml:id/string()) :)
+    (: let $log := util:log("info", "app:mentions-of-person: found person: " || $person/@xml:id/string()) :)
     let $matches := 
         for $id in $person//tei:persName/@xml:id
             return (
                 collection($config:data-default)//tei:text//tei:persName[@ref = $id],
                 collection($config:data-default)//tei:msContents//tei:persName[@ref = $id]
             )
-    (: let $log := util:log("info", "app:mentions: $matches: " || count($matches) || " in " || $config:data-default)     :)
+    (: let $log := util:log("info", "app:mentions-of-person: $matches: " || count($matches) || " in " || $config:data-default)     :)
     return
         if (count($matches) eq 0)
         then ()
@@ -127,6 +127,7 @@ function app:mentions($node as node(), $model as map(*)) {
                 app:print-mentions($matches)
             })
 };
+
 declare function app:print-mentions($matches) {
     element summary {
         element pb-i18n { 
@@ -140,7 +141,7 @@ declare function app:print-mentions($matches) {
         let $root := root($match[1])
         let $title := $root//tei:titleStmt/tei:title/string()
         let $id := $root/tei:TEI/@xml:id/string()
-        (: let $log := util:log("info", "app:mentions: $id: '" || $id || "' title:  '" || $title || "'") :)
+        (: let $log := util:log("info", "app:mentions-of-person: $id: '" || $id || "' title:  '" || $title || "'") :)
         return
             element div {
                 element a  {
@@ -149,6 +150,28 @@ declare function app:print-mentions($matches) {
                 }
             }
 };
+
+declare %templates:replace
+function app:mentions-of-locality($node as node(), $model as map(*)) {
+    let $key := $model?key    
+    (: let $log := util:log("info", "app:mentions-of-locality: $key: " || $key ) :)
+    let $place := id(xmldb:decode($key), $config:localities)
+    (: let $log := util:log("info", "app:mentions-of-locality: found locality: " || $person/@xml:id/string()) :)
+    let $matches := collection($config:data-default)//tei:placeName[@ref = $place/@xml:id]
+    (: let $log := util:log("info", "app:mentions-of-locality: $matches: " || count($matches) || " in " || $config:data-default)     :)
+    return
+        if (count($matches) eq 0)
+        then ()
+        else if (count($matches) <= 5)
+        then (
+            app:print-mentions($matches)
+        )
+        else (
+            element details {
+                app:print-mentions($matches)
+            })
+};
+
 
 declare %templates:replace
 function app:person-is-sender($node as node(), $model as map(*)) {
