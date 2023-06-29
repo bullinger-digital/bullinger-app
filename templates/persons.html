@@ -9,15 +9,12 @@
             <header class="top-header">
                 <nav data-template="lib:include" data-template-path="templates/menu.html"></nav>
             </header>
-            <div class="center-l breadcrumbs">
-                <pb-i18n key="register">register</pb-i18n> > <pb-i18n key="names">persons</pb-i18n>
-            </div>
             <main class="center-l people register">
                 <div class="register-list">
                     <pb-custom-form id="options" auto-submit="paper-input,paper-icon-button" emit="transcription">
                         <paper-input id="query" name="search" label="Suche" data-template="templates:form-control">
                             <paper-icon-button icon="search" slot="suffix"/>
-                        </paper-input>                        
+                        </paper-input>
                     </pb-custom-form>
                     <pb-split-list class="register-split-list" 
                         url="api/persons-all-list"
