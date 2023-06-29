@@ -271,8 +271,8 @@ function app:further-information($node as node(), $model as map(*)) {
 
 declare 
     %templates:replace
-function app:image($node as node(), $model as map(*)) {    
-    let $img-url := substring-before($model?data//tei:idno[@subtype="portrait"]/text(),'"')
+function app:image($node as node(), $model as map(*)) {
+    let $img-url := $model?data//tei:idno[@subtype="portrait"]/text()
     return
         if (string-length($img-url) > 0)
         then 
