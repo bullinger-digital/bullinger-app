@@ -370,11 +370,6 @@ main .panels .doclist {
     color: #c02020;
 }
 
-.documents a,
-.documents a:visited {
-    color: #303F9F;
-    text-decoration: none;
-}
 
 .documents li {
     display: grid;
@@ -396,7 +391,6 @@ li.document{
     padding: 6px 0;
     border-bottom: thin solid var(--bb-field-gray);
     padding-bottom:1rem;
-    max-width:calc(100% - 1rem);
     gap:1em;
     position: relative;
 }
@@ -409,15 +403,6 @@ li.document{
 .document-info {
     width: 100%;
     min-width: min(28em, 100%);
-}
-
-.document-info a,
-.document-info a:link,
-.document-info a:visited,
-.document-info a:hover,
-.document-info a:active {
-    text-decoration: none;
-    color: var(--bb-beige);
 }
 
 pb-collapse > div{
