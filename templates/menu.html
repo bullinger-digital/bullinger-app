@@ -2,26 +2,14 @@
     <a href="${app}/index.html" class="logo" data-template="lib:parse-params"/>
     <pb-media-query class="menubar-left desktop" query="min-width: 48.5rem">
         <a href="${app}/letters.html">
-            <pb-i18n key="letters">Briefe</pb-i18n>            
+            <pb-i18n key="letters">Briefe</pb-i18n>
         </a>
-        <div class="dropdown-menu">
-            <div class="dropdown">
-                <label class="menu-label" for="m-register">
-                    <pb-i18n key="register">Register</pb-i18n>
-                </label>
-                <input id="m-register" name="register" type="checkbox"/>
-                <div class="menu-list">
-                    <ul>
-                        <li><a href="${app}/persons/">
-                            <pb-i18n key="persons">Personen</pb-i18n>
-                        </a></li>
-                        <li><a href="${app}/localities/">
-                            <pb-i18n key="localities">Orte</pb-i18n>
-                        </a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        <a href="${app}/persons/">
+            <pb-i18n key="persons">Personen</pb-i18n>
+        </a>
+        <a href="${app}/localities/">
+            <pb-i18n key="localities">Orte</pb-i18n>
+        </a>
     </pb-media-query>
 
     <fx-fore src="${app}/fore-search.html" data-template="pages:parse-params"></fx-fore>
@@ -38,15 +26,12 @@
                     <a href="${app}/letters.html">
                         <pb-i18n key="letters">Briefe</pb-i18n>
                     </a>
-                    <p><pb-i18n key="register">Register</pb-i18n></p>
-                    <ul>
-                        <li><a href="${app}/persons/">
-                            <pb-i18n key="persons">Personen</pb-i18n>
-                        </a></li>
-                        <li><a href="${app}/localities/">
-                            <pb-i18n key="localities">Orte</pb-i18n>
-                        </a></li>
-                    </ul>
+                    <a href="${app}/persons/">
+                        <pb-i18n key="persons">Personen</pb-i18n>
+                    </a>
+                    <a href="${app}/localities/">
+                        <pb-i18n key="localities">Orte</pb-i18n>
+                    </a>
                 </div>
             </section>
         </details>

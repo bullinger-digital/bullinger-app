@@ -10,9 +10,6 @@
             <header class="top-header">
                 <nav data-template="lib:include" data-template-path="templates/menu.html"></nav>
             </header>
-            <div class="center-l breadcrumbs">
-                <pb-i18n key="register">register</pb-i18n> > <pb-i18n key="localities">localities</pb-i18n>
-            </div>
             <main class="register register__localities center-l">
                 <div class="register-list">
                     <pb-custom-form id="options" auto-submit="paper-input,paper-icon-button" emit="transcription">
@@ -53,11 +50,11 @@
                 const map = document.querySelector('pb-leaflet-map');
                 map.addEventListener('pb-ready', function() {
                     const pbPage = document.querySelector("pb-page")
-                    console.log(`pbPage:`, pbPage);
+                    // console.log(`pbPage:`, pbPage);
                     const endpoint = pbPage.getEndpoint();
-                    console.log(`endpoint:`, endpoint);
+                    // console.log(`endpoint:`, endpoint);
                     const url = endpoint + "/api/localities-all";
-                    console.log(`fetching localities from:`, url);
+                    // console.log(`fetching localities from:`, url);
                     
                     fetch(url)
                         .then(function(response) {
