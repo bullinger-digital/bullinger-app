@@ -296,8 +296,10 @@ footer {
     font-size: var(--pb-base-font-size);
     font-family: var(--pb-base-font-family);
     color: var(--bb-black);
-    align-self: center;
+    align-items: center;
     white-space: nowrap;
+    height: 100%;
+    display: flex;
 }
 .menubar a:focus{
     text-decoration: underline;
