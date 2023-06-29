@@ -1,13 +1,17 @@
 <div data-template="browse:is-writeable" class="collection">
-    <div data-template="browse:dispatch-action"/>
-    <div>
-        <ul class="documents" data-template="browse:browse" data-template-per-page="10">
-            <li class="document">
-                <div class="document-info">
-                    <header data-template="browse:short-header"></header>
-                    <div class="matches" data-template="browse:show-hits"></div>                    
-                </div>
-            </li>
-        </ul>
-    </div>
+    <div data-template="browse:dispatch-action"></div>
+    <ul class="documents" data-template="browse:browse" data-template-per-page="10">
+        <li class="empty">
+            <div class="empty-info">
+                <h3>The query returned no Result</h3>
+                <p>Try to search for <a href="?query=bullinger&amp;field=text">Bullinger</a></p>
+            </div>
+        </li>
+        <li class="document">
+            <div class="document-info">
+                <header data-template="browse:short-header"></header>
+                <div class="matches" data-template="browse:show-hits"></div>
+            </div>
+        </li>
+    </ul>
 </div>
