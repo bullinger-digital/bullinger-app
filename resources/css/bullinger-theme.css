@@ -826,8 +826,38 @@ pb-view {
     height: 50vh;
 }
 
+.detail {
+    display: grid;
+    grid-gap: var(--s2);
+    grid-template-areas: "left right"
+                         "bottom bottom";
+    grid-template-columns: minmax(60%, 80%) minmax(10rem, 32rem);
+    grid-template-rows: auto auto;
+}
+
 .detail .right {
+    grid-area: right;
     max-width: 32rem;
+}
+
+.detail .bottom {
+    grid-area: bottom;
+}
+
+.detail #map {
+    margin: var(--s0) 0;
+    max-width: 32rem;
+    height: 32rem;
+}
+
+.detail-image {
+    margin: var(--s0) 0;
+    padding: 0;
+}
+
+.detail-image,
+.detail-image img {
+    max-width: 100%;
 }
 
 [slot=controls] {

@@ -21,6 +21,13 @@
                         <span data-template="app:person-name-full"> </span>
                     </h1>
                     <div data-template="app:name-alternatives"/>
+                    <div data-template="app:further-information"/>
+
+                </section>
+                <section class="right">
+                    <div data-template="app:image"/>
+                </section>
+                <section class="bottom">
                     <div data-template="app:mentions-of-person"/>
                     <details data-template="app:person-is-sender">
                         <summary><pb-i18n key="letters-from">Briefe von</pb-i18n> <span data-template="app:person-name-full"/></summary>                        
@@ -42,11 +49,7 @@
                             <pb-table-column label="Empfänger Ort" property="recipients-place" sort=""></pb-table-column> 
                         </pb-table-grid>
                     </details>
-                    <div data-template="app:further-information"/>
 
-                </section>
-                <section class="right">
-                    <div data-template="app:image"/>
                 </section>
             </main>
         </pb-page>
