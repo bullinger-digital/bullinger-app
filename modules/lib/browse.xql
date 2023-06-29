@@ -191,7 +191,6 @@ declare function app:show-hits($node as node(), $model as map(*)) {
         let $matches := $field//exist:match
         return
             <div class="matches">
-                <div class="count"><pb-i18n key="browse.items" options='{{"count": {count($matches)}}}'></pb-i18n></div>
                 {
                     for $match in subsequence($matches, 1, 5)
                     let $config := <config width="60" table="no"/>
