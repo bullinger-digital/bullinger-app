@@ -265,21 +265,21 @@ declare function api:sort($entries as element()*, $sortBy as xs:string, $dir as 
         sort($entries, (), function($letter) {
             switch ($sortBy)
                 case "title" return
-                    $letter//tei:titleStmt/tei:title
+                    lower-case($letter//tei:titleStmt/tei:title)
                 case "place" return
                     let $send-place := id($letter//tei:correspAction[@type="sent"]/tei:placeName/@source/string(), $config:localities)
                     return
-                        api:get-place-name($send-place)
+                        lower-case(api:get-place-name($send-place))
                 case "date" return
                     $letter//tei:correspAction[@type="sent"]/tei:date
                 case "recipients" return                    
-                    api:get-persons-from-correspAction($letter//tei:correspAction[@type="sent"])
+                    lower-case(api:get-persons-from-correspAction($letter//tei:correspAction[@type="sent"]))
                 case "recipients" return
-                    api:get-persons-from-correspAction($letter//tei:correspAction[@type="received"])
+                    lower-case(api:get-persons-from-correspAction($letter//tei:correspAction[@type="received"]))
                 case "recipients-place" return
                         let $recipients-place := id($letter//tei:correspAction[@type="received"]/tei:placeName/@source/string(), $config:localities)
                         return 
-                            api:get-place-name($recipients-place)
+                            lower-case(api:get-place-name($recipients-place))
                 default return
                     $letter/@xml:id
         })
@@ -338,6 +338,7 @@ declare function api:person-filter($filter as xs:string?, $key as xs:string) {
 declare function api:register-select($request as map(*)) {
     switch($request?parameters?type)
         case "archives" return api:archives($request)
+        case "institutions" return api:institutions($request)
         default return ()
 };
 
@@ -362,14 +363,14 @@ declare function api:archives($request as map(*)) {
             "results":
                 array {
                     for $org in $subset
-                        let $name := ft:field($org, "o-name")
+                        let $name := ft:field($org, "archive-name")
                         let $url := $org/tei:idno[@subtype="url"]/text()
-                        let $letters := collection($config:data-default)/tei:TEI[.//tei:repository/@ref=$org/@xml:id]                        
+                        let $count := ft:field($org, "archive-count")
                         return
                             map {
                                 "archive": $name,
                                 "link": <a href="{$url}" target="_blank">Icon</a>,
-                                "document-count": count($letters)
+                                "document-count": $count
                             }
                 }
         })
@@ -398,9 +399,9 @@ declare function api:archives-filter($filter as xs:string?) {
     let $archives := $config:archives//tei:org
     let $result := 
         if ($filter) then
-            $archives[ft:query(., 'o-name:(' || $filter || '*)', $options)]
+            $archives[ft:query(., 'archive-name:(' || $filter || '*)', $options)]
         else
-            $archives[ft:query(., 'o-name:*', $options)]
+            $archives[ft:query(., 'archive-name:*', $options)]
     return 
         $result
 };
@@ -411,9 +412,94 @@ declare function api:archives-sort($entries as element()*, $sortBy as xs:string,
         sort($entries, (), function($org) {
             switch ($sortBy)
                 case "document-count" return 
-                    count(collection($config:data-default)/tei:TEI[.//tei:repository/@ref=$org/@xml:id])
+                    xs:integer(ft:field($org, "archive-count"))
                 default return
-                    ft:field($org, 'o-name')[1]
+                    lower-case(ft:field($org, 'archive-name')[1])
+        })
+    return
+        if ($dir = "asc") then
+            $sorted
+        else
+            reverse($sorted)
+};
+
+declare function api:institutions($request as map(*)) {
+    let $key := $request?parameters?key
+    let $sortBy := $request?parameters?order
+    let $sortDir := $request?parameters?dir
+    let $limit := $request?parameters?limit
+    let $start := $request?parameters?start    
+    let $filter := $request?parameters?search
+    
+    let $entries := api:institutions-filter($filter)
+    let $log := util:log("info", "api:institutions entries: " || count($entries))
+    let $sorted := api:institutions-sort($entries, $sortBy, $sortDir)
+    let $log := util:log("info", "api:institutions $sorted: " || count($sorted))
+    let $subset := subsequence($sorted, $start, $limit)
+    return (
+        session:set-attribute($config:session-prefix || ".institutions.hits", $entries),
+        session:set-attribute($config:session-prefix || ".institutions.hitCount", count($entries)),
+        map {
+            "count": count($entries),
+            "results":
+                array {
+                    for $org at $index in $subset
+                        let $singular := ft:field($org, 'org-name-sing')[1]
+                        let $plural := ft:field($org, 'org-name-plur')[1]
+                        let $sent := ft:field($org, 'org-sent-count')[1]
+                        let $received := ft:field($org, 'org-received-count')[1]
+                        return
+                            map {
+                                "singular": $singular,
+                                "plural": $plural,
+                                "sent": $sent,
+                                "received": $received
+                            }
+                }
+        })
+};
+
+declare function api:institutions-filter($filter as xs:string?) {    
+    let $options :=
+        map:merge((
+            $api:QUERY_OPTIONS,
+            map {
+                "facets":
+                    map:merge((
+                        for $param in request:get-parameter-names()[starts-with(., 'facet-')]
+                        let $dimension := substring-after($param, 'facet-')
+                        let $paramValue := request:get-parameter($param, ())                        
+                        return
+                            if($paramValue and $paramValue != "null")
+                            then (
+                                map {
+                                    $dimension: request:get-parameter($param, ())
+                                }
+                            ) else ()
+                    ))
+            }
+        ))   
+    let $institutions := $config:orgs//tei:org
+    let $result := 
+        if ($filter) then
+            $institutions[ft:query(., 'org-name-plur:(' || $filter || '*)', $options)]
+        else
+            $institutions[ft:query(., 'org-name-plur:*', $options)]
+    return 
+        $result
+};
+
+declare function api:institutions-sort($entries as element()*, $sortBy as xs:string, $dir as xs:string) {
+    (: let $log := util:log("info", ("api:institutions-sort $sortBy: ", $sortBy, " - $dir: ", $dir)) :)
+    let $sorted :=
+        sort($entries, (), function($org) {
+            switch ($sortBy)
+                case "sent" return 
+                    xs:integer(ft:field($org, 'org-sent-count')[1])
+                case "received" return
+                    xs:integer(ft:field($org, 'org-received-count')[1])
+                default return
+                    lower-case(ft:field($org, 'org-name-plur')[1])
         })
     return
         if ($dir = "asc") then
