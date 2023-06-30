@@ -12,6 +12,11 @@
             <main class="register register__localities center-l">
                 <div class="register-list">
                     <h1>Archives</h1>
+                    <pb-table-grid source="api/archives" resizable="" emit="grid" subscribe="grid" per-page="200">
+                        <pb-table-column label="Archiv" property="archive" sort=""></pb-table-column>
+                        <pb-table-column label="Webseite" property="link"></pb-table-column>
+                        <pb-table-column label="Anzahl Dokumente" property="document-count" sort=""></pb-table-column>
+                    </pb-table-grid>                    
                 </div>
             </main>
         </pb-page>

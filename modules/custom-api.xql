@@ -334,6 +334,87 @@ declare function api:person-filter($filter as xs:string?, $key as xs:string) {
         $result
 };
 
+declare function api:archives($request as map(*)) {
+    let $key := $request?parameters?key
+    let $sortBy := $request?parameters?order
+    let $sortDir := $request?parameters?dir
+    let $limit := $request?parameters?limit
+    let $start := $request?parameters?start    
+    let $filter := $request?parameters?search
+    
+    let $entries := api:archives-filter($filter)
+    let $log := util:log("info", "api:archives entries: " || count($entries))
+    let $sorted := api:archives-sort($entries, $sortBy, $sortDir)
+    let $log := util:log("info", "api:archives $sorted: " || count($sorted))
+    let $subset := subsequence($sorted, $start, $limit)
+    return (
+        session:set-attribute($config:session-prefix || ".archives.hits", $entries),
+        session:set-attribute($config:session-prefix || ".archives.hitCount", count($entries)),
+        map {
+            "count": count($entries),
+            "results":
+                array {
+                    for $org in $subset
+                        let $name := ft:field($org, "o-name")
+                        let $url := $org/tei:idno[@subtype="url"]/text()
+                        let $letters := collection($config:data-default)/tei:TEI[.//tei:repository/@ref=$org/@xml:id]                        
+                        return
+                            map {
+                                "archive": $name,
+                                "link": <a href="{$url}" target="_blank">Icon</a>,
+                                "document-count": count($letters)
+                            }
+                }
+        })
+};
+
+declare function api:archives-filter($filter as xs:string?) {    
+    let $options :=
+        map:merge((
+            $api:QUERY_OPTIONS,
+            map {
+                "facets":
+                    map:merge((
+                        for $param in request:get-parameter-names()[starts-with(., 'facet-')]
+                        let $dimension := substring-after($param, 'facet-')
+                        let $paramValue := request:get-parameter($param, ())                        
+                        return
+                            if($paramValue and $paramValue != "null")
+                            then (
+                                map {
+                                    $dimension: request:get-parameter($param, ())
+                                }
+                            ) else ()
+                    ))
+            }
+        ))   
+    let $archives := $config:archives//tei:org
+    let $result := 
+        if ($filter) then
+            $archives[ft:query(., 'o-name:(' || $filter || '*)', $options)]
+        else
+            $archives[ft:query(., 'o-name:*', $options)]
+    return 
+        $result
+};
+
+declare function api:archives-sort($entries as element()*, $sortBy as xs:string, $dir as xs:string) {
+    (: let $log := util:log("info", ("api:sort $sortBy: ", $sortBy, " - $dir: ", $dir)) :)
+    let $sorted :=
+        sort($entries, (), function($org) {
+            switch ($sortBy)
+                case "document-count" return 
+                    count(collection($config:data-default)/tei:TEI[.//tei:repository/@ref=$org/@xml:id])
+                default return
+                    ft:field($org, 'o-name')[1]
+        })
+    return
+        if ($dir = "asc") then
+            $sorted
+        else
+            reverse($sorted)
+};
+
 declare function api:person-is-sender($request as map(*)) {    
     let $key := $request?parameters?key
     let $sortBy := $request?parameters?order

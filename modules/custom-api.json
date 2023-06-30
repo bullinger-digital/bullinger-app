@@ -442,6 +442,81 @@
 				}
 			}
         },
+		"/api/archives": {
+            "get": {
+                "summary": "List register entries",
+                "description": "Retrieve list of register entries in table structure",
+                "operationId": "custom:archives",
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "schema":{
+                            "type": "string",
+                            "default": "id"
+                        }
+                    },
+                    {
+                        "name": "dir",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": "asc"
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "order",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": "title"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    },
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "default": 0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of register entries",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },		
         "/api/localities-all-list": {
             "get": {
                 "summary": "List localities",
