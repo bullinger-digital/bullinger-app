@@ -9,7 +9,7 @@ window.addEventListener('DOMContentLoaded', function() {
             toggle.parentElement.style.display = 'none';
             return;
         }
-        toggle.parentElement.style.display = 'block';
+        toggle.parentElement.style.display = 'inline-block';
         if (toggle.checked) {
             usage.style.display = 'block';
             view.style.setProperty("--lang-de-color", 'var(--bb-lang-de-color)');
