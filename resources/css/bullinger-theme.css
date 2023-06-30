@@ -721,7 +721,6 @@ pb-view {
 
 .text {
     background-color:rgb(243,244,246);
-    height:80vh;
 }
 .transkription,
 .facsimile {
@@ -730,7 +729,7 @@ pb-view {
     background-color: white;
 }
 .transkription pb-view {
-    height:70vh;
+    min-height: 40rem;
     overflow-y: auto;
 }
 
@@ -790,7 +789,7 @@ pb-view {
     grid-gap: var(--s3);
     grid-template-areas: "left right"
                          "bottom bottom";
-    grid-template-columns: minmax(50%, 80ch) minmax(24rem, 32rem);
+    grid-template-columns: minmax(50%, 80ch) minmax(16rem, 32rem);
     grid-template-rows: min-content;
 }
 
@@ -826,6 +825,38 @@ pb-view {
 .detail-image,
 .detail-image img {
     max-width: 100%;
+}
+
+.detail .person-meta {
+    display: flex;
+    gap: var(--s1);
+}
+
+.meta-info--link-list {
+    list-style-type: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+.meta-info--link {
+    display: inline-block;
+    width: 1.25em;
+    height: 1.25em;
+    margin: var(--s-3);
+    background-position: center;
+    background-size: contain;
+}
+.meta-info--link__gnd {
+    background-image: url("../images/gnd-icon.svg");
+}
+
+.meta-info--link__wiki {
+    background-image: url("../images/wiki-icon.svg");
+}
+
+.meta-info--link__histHub {
+    background-image: url("../images/histhub-icon.svg");
 }
 
 [slot=controls] {

@@ -11,15 +11,17 @@
             </header>
             <main class="detail detail-name center-l">
                 <section class="left">
-                    <h1 id="person">
-                        <span data-template="app:person-name-full"> </span>
-                    </h1>
-                    <div data-template="app:name-alternatives"/>
-                    <div data-template="app:further-information"/>
-
+                    <h1 id="person" data-template="app:person-name-full"></h1>
+                    <section class="person-meta">
+                        <div data-template="app:further-information"></div>
+                        <div data-template="app:person-letters-sent"></div>
+                        <div data-template="app:person-letters-received"></div>
+                        <div data-template="app:person-letters-mentioned"></div>
+                    </section>
+                    <div data-template="app:name-alternatives"></div>
                 </section>
                 <section class="right">
-                    <div data-template="app:image"/>
+                    <div data-template="app:image"></div>
                 </section>
                 <section class="bottom">
                     <!-- <fx-fore>

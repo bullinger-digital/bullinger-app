@@ -31,12 +31,12 @@ function app:load-person($node as node(), $model as map(*), $key as xs:string) {
     let $person := id(xmldb:decode($key), $config:persons)
     (: let $log := util:log("info", "app:load-actor $name: " || $actor/tei:*[@type="full"]/text() || " - $key:" || $key) :)
     
-    return 
-        map {                
-                "key":$key,  
-                "type":local-name($person),              
-                "data":$person
-        }    
+    return
+        map {
+            "key": $key,
+            "type": local-name($person),
+            "data": $person
+        }
 };
 
 declare
@@ -85,47 +85,31 @@ function app:person-name-full($node as node(), $model as map(*)) {
 
 declare %templates:replace   
 function app:name-alternatives($node as node(), $model as map(*)) {    
-    let $alt-names := for $persName in ($model?data)//tei:persName[@type="alias"]
-                      return
-                        $persName/tei:forename/text() || " " || $persName/tei:surname/text()
-    let $names := string-join($alt-names, "; ")            
-    return
-        if(string-length($names )> 0) 
-        then (
-            element p {
-                element pb-i18n {
-                    attribute key { "further-names"},
-                    "Weitere Namen"
-                },
-                ": " || $names
-            }
-        )else ()
-};
+    let $aliases := ($model?data)//tei:persName[@type="alias"]
 
-declare %templates:replace
-function app:mentions-of-person($node as node(), $model as map(*)) {
-    let $key := $model?key    
-    (: let $log := util:log("info", "app:mentions-of-person: $key: " || $key ) :)
-    let $person := id(xmldb:decode($key), $config:persons)
-    (: let $log := util:log("info", "app:mentions-of-person: found person: " || $person/@xml:id/string()) :)
-    let $matches := 
-        for $id in $person//tei:persName/@xml:id
-            return (
-                collection($config:data-default)//tei:text//tei:persName[@ref = $id],
-                collection($config:data-default)//tei:msContents//tei:persName[@ref = $id]
-            )
-    (: let $log := util:log("info", "app:mentions-of-person: $matches: " || count($matches) || " in " || $config:data-default)     :)
     return
-        if (count($matches) eq 0)
-        then ()
-        else if (count($matches) <= 5)
+        if (exists($aliases)) 
         then (
-            app:print-mentions($matches)
+            element div {
+                attribute class { "alias-list" },
+                element strong {
+                    element pb-i18n {
+                        attribute key { "further-names"},
+                        "Weitere Namen"
+                    }
+                },
+                element p {
+                    (
+                        for $alias in $aliases
+                        let $full-alias := $alias/tei:forename/text() || " " || $alias/tei:surname/text()
+                        return $full-alias
+                        (: (<span class="alias">{ $full-alias }</span>, <br />) :)
+                    )
+                    => string-join("; ")
+                }
+            }
         )
-        else (
-            element details {
-                app:print-mentions($matches)
-            })
+        else ()
 };
 
 declare function app:print-mentions($matches) {
@@ -204,31 +188,72 @@ declare function app:locality-in-corresp-action($node, $model, $person, $type) {
         )
 };
 
-declare %templates:replace   
+declare %templates:replace
 function app:further-information($node as node(), $model as map(*)) {
     let $data := $model?data
-    let $meta-information := 
-            for $entry in $data//tei:idno[not(@subtype = 'portrait')]
-                order by $entry/@subtype ascending
-                (: let $log := util:log("info", "app:place-ptr: type: " || $entry/@type) :)
-                return
-                        element li {
-                            element a {
-                                attribute href {$entry/text()},
-                                attribute target { "blank_"},
-                                $entry/@subtype/string()
-                            }
-                        }
+    let $meta-information := $data//tei:idno[not(@subtype = 'portrait')]
+
     return
         if (count($meta-information) = 0)
         then ()
-        else
-            <div class="metadaten">
-                <summary>
-                    <pb-i18n key="further-information">Weitere Informationen</pb-i18n>
-                </summary>
-                <ul>{ $meta-information }</ul>
-            </div>
+        else element { node-name($node) } {
+            $node/@*,
+            <strong><pb-i18n key="further-information">Weitere Informationen</pb-i18n></strong>,
+            <ul class="meta-info--link-list">{
+                for $entry in $meta-information
+                let $subtype := $entry/@subtype/string()
+                order by $subtype ascending
+                return
+                    element li {
+                        element a {
+                            attribute class { "meta-info--link", "meta-info--link__" || $subtype },
+                            attribute href { $entry/text() },
+                            attribute target { "blank_" },
+                            attribute title { $subtype }
+                        }
+                    }
+            }</ul>
+        }
+};
+
+declare %templates:wrap
+function app:person-letters-sent ($node as node(), $model as map(*)) {
+    let $person := $model?data
+    (: TODO :)
+    let $sent := "?"
+    return (
+        <strong><pb-i18n key="sent">Gesendet</pb-i18n></strong>,
+        <br/>,
+        <p class="count">{ $sent }</p>
+    )
+};
+
+declare %templates:wrap
+function app:person-letters-received ($node as node(), $model as map(*)) {
+    let $person := $model?data
+    (: TODO :)
+    let $received := "?"
+    return (
+        <strong><pb-i18n key="received">Empfangen</pb-i18n></strong>,
+        <br/>,
+        <p class="count">{ $received }</p>
+    )
+};
+declare %templates:wrap
+function app:person-letters-mentioned ($node as node(), $model as map(*)) {
+    let $person := $model?data
+    let $mentioned := 
+        for $id in $person//tei:persName/@xml:id
+        return (
+            collection($config:data-default)//tei:text//tei:persName[@ref = $id],
+            collection($config:data-default)//tei:msContents//tei:persName[@ref = $id]
+        )
+
+    return (
+        <strong><pb-i18n key="mentions">Erwähnungen</pb-i18n></strong>,
+        <br/>,
+        <p class="count">{ count($mentioned) }</p>
+    )
 };
 
 declare 
