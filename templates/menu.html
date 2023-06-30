@@ -4,12 +4,33 @@
         <a href="${app}/letters.html">
             <pb-i18n key="letters">Briefe</pb-i18n>
         </a>
-        <a href="${app}/persons/">
-            <pb-i18n key="persons">Personen</pb-i18n>
-        </a>
-        <a href="${app}/localities/">
-            <pb-i18n key="localities">Orte</pb-i18n>
-        </a>
+        <div class="dropdown-menu">
+            <div class="dropdown">
+                <label class="menu-label" for="m-register">
+                    <pb-i18n key="register">Register</pb-i18n>
+                </label>
+                <input id="m-register" name="register" type="checkbox"/>
+                <div class="menu-list">
+                    <ul>
+                        <li><a href="${app}/persons/">
+                            <pb-i18n key="persons">Personen</pb-i18n>
+                        </a></li>
+                        <li><a href="${app}/localities/">
+                            <pb-i18n key="localities">Orte</pb-i18n>
+                        </a></li>
+                        <li><a href="${app}/institutions/">
+                            <pb-i18n key="institutions">Institutionen</pb-i18n>
+                        </a></li>
+                        <li><a href="${app}/archives/">
+                            <pb-i18n key="archives">Archive</pb-i18n>
+                        </a></li>
+                        <li><a href="${app}/literature/">
+                            <pb-i18n key="literature">Literatur</pb-i18n>
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </pb-media-query>
 
     <fx-fore src="${app}/fore-search.html" data-template="pages:parse-params"></fx-fore>
@@ -21,17 +42,29 @@
                 <iron-icon icon="close"></iron-icon>
             </summary>
             <section>
-                <header><pb-i18n key="menu">Menu</pb-i18n></header>
+                <header><pb-i18n key="mobile.menu">Menu</pb-i18n></header>
                 <div>
                     <a href="${app}/letters.html">
                         <pb-i18n key="letters">Briefe</pb-i18n>
                     </a>
-                    <a href="${app}/persons/">
-                        <pb-i18n key="persons">Personen</pb-i18n>
-                    </a>
-                    <a href="${app}/localities/">
-                        <pb-i18n key="localities">Orte</pb-i18n>
-                    </a>
+                    <p><pb-i18n key="register">Register</pb-i18n></p>
+                    <ul>
+                        <li><a href="${app}/persons/">
+                            <pb-i18n key="persons">Personen</pb-i18n>
+                        </a></li>
+                        <li><a href="${app}/localities/">
+                            <pb-i18n key="localities">Orte</pb-i18n>
+                        </a></li>
+                        <li><a href="${app}/institutions/">
+                            <pb-i18n key="institutions">Institutionen</pb-i18n>
+                        </a></li>
+                        <li><a href="${app}/archives/">
+                            <pb-i18n key="archives">Archive</pb-i18n>
+                        </a></li>
+                        <li><a href="${app}/literature/">
+                            <pb-i18n key="literature">Literatur</pb-i18n>
+                        </a></li>
+                    </ul>
                 </div>
             </section>
         </details>

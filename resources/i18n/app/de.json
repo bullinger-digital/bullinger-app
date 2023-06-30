@@ -13,5 +13,8 @@
         "provenience": "Provenienz",
         "sender": "Absender",
         "type": "Dokumenttyp"  
+    },
+    "mobile" : {
+        "menu": "Menü"
     }
 }

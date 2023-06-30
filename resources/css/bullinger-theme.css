@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,700;1,200;1,400;1,700&family=Source+Serif+Pro:ital,wght@0,200;0,300;0,400;0,700;1,200;1,400;1,700&display=swap");
+@import "dropdown-css.css";
 @import "fore.css";
 @import "fore-custom.css";
 
@@ -208,7 +209,7 @@ footer {
     padding-left: 1rem;
 }
 .mobile-menu header{
-    height:5.5rem;
+    height: var(--bb-header-height);
     border-bottom: thin solid var(--bb-light-gray);
     font-size:2rem;
     display: flex;
@@ -304,19 +305,23 @@ footer {
 }
 
 .menubar details.mobile-menu a,
-.menubar details.mobile-menu p{
+.menubar details.mobile-menu p {
     font-size: 1.4rem;
     line-height: 1.5;
+    height: auto;
+    display: block;
 }
-.menubar details.mobile-menu p{
+.menubar details.mobile-menu p {
     border-bottom: thin solid var(--bb-light-gray);
 }
-.menubar details.mobile-menu a{
-    border:none;
+.menubar details.mobile-menu a,
+.menubar details.mobile-menu a:link,
+.menubar details.mobile-menu a:visited,
+.menubar details.mobile-menu a:hover,
+.menubar details.mobile-menu a:active {
+    border: none;
+    text-decoration: none;
     margin: 0;
-}
-.menubar details.mobile-menu a:hover{
-    text-decoration: underline;
 }
 
 .menu-right.dropdown-menu{
