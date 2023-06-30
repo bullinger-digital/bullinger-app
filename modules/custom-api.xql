@@ -334,6 +334,13 @@ declare function api:person-filter($filter as xs:string?, $key as xs:string) {
         $result
 };
 
+
+declare function api:register-select($request as map(*)) {
+    switch($request?parameters?type)
+        case "archives" return api:archives($request)
+        default return ()
+};
+
 declare function api:archives($request as map(*)) {
     let $key := $request?parameters?key
     let $sortBy := $request?parameters?order

@@ -442,12 +442,21 @@
 				}
 			}
         },
-		"/api/archives": {
+		"/api/register/{type}": {
             "get": {
                 "summary": "List register entries",
                 "description": "Retrieve list of register entries in table structure",
-                "operationId": "custom:archives",
+                "operationId": "custom:register-select",
                 "parameters": [
+					{
+                        "name": "type",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+							"default": "archives"
+                        }
+                    },
                     {
                         "name": "sort",
                         "in": "query",
