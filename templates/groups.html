@@ -11,7 +11,14 @@
             </header>
             <main class="register register__localities center-l">
                 <div class="register-list">
-                    <h1>Groups</h1>
+                    <h1>Titel/Gruppen</h1>
+                    <pb-table-grid source="api/register/groups" resizable="" emit="grid" subscribe="grid" per-page="200">
+                        <pb-table-column label="Name Singular" property="singular" sort=""></pb-table-column>
+                        <pb-table-column label="Name Plural" property="plural" sort=""></pb-table-column>
+                        <pb-table-column label="Gesendet" property="sent" sort=""></pb-table-column>
+                        <pb-table-column label="Empfangen" property="received" sort=""></pb-table-column>
+                        <pb-table-column label="Total" property="total" sort=""></pb-table-column>
+                    </pb-table-grid>
                 </div>
             </main>
         </pb-page>
