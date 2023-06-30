@@ -4,6 +4,12 @@ window.addEventListener('DOMContentLoaded', function() {
     function applyLangColors () {
         const view = document.getElementById('view1')
         const usage = view.shadowRoot.querySelector('.lang-usage')
+        // hide toggle if there is nothing to display
+        if (!usage) {
+            toggle.parentElement.style.display = 'none';
+            return;
+        }
+        toggle.parentElement.style.display = 'block';
         if (toggle.checked) {
             usage.style.display = 'block';
             view.style.setProperty("--lang-de-color", 'var(--bb-lang-de-color)');
