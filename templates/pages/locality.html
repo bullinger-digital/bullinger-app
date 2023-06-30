@@ -29,27 +29,14 @@
                     </div>
                 </section>
                 <section class="bottom">
-                    <div data-template="app:mentions-of-locality"></div>
-                    <details data-template="app:locality-is-sender">
-                        <summary><pb-i18n key="letters-from">Sendeort ist </pb-i18n> <span data-template="app:locality-name"/></summary>
-                        <pb-table-grid source="api/locality/sent/${key}" resizable="" emit="grid" subscribe="grid" per-page="10" data-template="pages:parse-params">                        
-                            <pb-table-column label="Brief" property="title" sort=""></pb-table-column>
-                            <pb-table-column label="Absender" property="senders" sort=""></pb-table-column>
-                            <pb-table-column label="Datum" property="date" sort=""></pb-table-column>
-                            <pb-table-column label="Empfänger" property="recipients" sort=""></pb-table-column>
-                            <pb-table-column label="Empfänger Ort" property="recipients-place" sort=""></pb-table-column> 
-                        </pb-table-grid>
-                    </details>
-                    <details data-template="app:locality-is-recipient">
-                        <summary><pb-i18n key="letters-to">Empfangsort</pb-i18n> <span data-template="app:locality-name"/></summary>
-                        <pb-table-grid source="api/locality/received/${key}" resizable="" emit="grid" subscribe="grid" per-page="10" data-template="pages:parse-params">                        
-                            <pb-table-column label="Brief" property="title" sort=""></pb-table-column>
-                            <pb-table-column label="Absender" property="senders" sort=""></pb-table-column>
-                            <pb-table-column label="Absender Ort " property="place" sort=""></pb-table-column>
-                            <pb-table-column label="Datum" property="date" sort=""></pb-table-column>
-                            <pb-table-column label="Empfänger" property="recipients" sort=""></pb-table-column>
-                        </pb-table-grid>
-                    </details>
+                    <pb-table-grid source="api/locality/${key}" resizable="" emit="grid" subscribe="grid" per-page="10" search="" data-template="pages:parse-params">                        
+                        <pb-table-column label="Brief" property="title" sort=""></pb-table-column>
+                        <pb-table-column label="Absender" property="senders" sort=""></pb-table-column>
+                        <pb-table-column label="Absender Ort " property="place" sort=""></pb-table-column>
+                        <pb-table-column label="Datum" property="date" sort=""></pb-table-column>
+                        <pb-table-column label="Empfänger" property="recipients" sort=""></pb-table-column>
+                        <pb-table-column label="Empfänger Ort" property="recipients-place" sort=""></pb-table-column> 
+                    </pb-table-grid>
                 </section>
             </main>
         </pb-page>

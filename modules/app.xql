@@ -30,12 +30,17 @@ declare
 function app:load-person($node as node(), $model as map(*), $key as xs:string) {
     let $person := id(xmldb:decode($key), $config:persons)
     (: let $log := util:log("info", "app:load-actor $name: " || $actor/tei:*[@type="full"]/text() || " - $key:" || $key) :)
-    
+    let $sent-count := count(collection($config:data-default)//tei:TEI[ft:query(.//tei:text, 'sender:' || $key)])
+    let $received-count := count(collection($config:data-default)//tei:TEI[ft:query(.//tei:text, 'recipient:' || $key)])
+    let $total := $sent-count + $received-count
     return
         map {
             "key": $key,
             "type": local-name($person),
-            "data": $person
+            "data": $person,
+            "sent-count":$sent-count,
+            "received-count":$received-count,
+            "total-count":$total
         }
 };
 
@@ -137,7 +142,7 @@ declare function app:print-mentions($matches) {
 
 declare %templates:replace
 function app:mentions-of-locality($node as node(), $model as map(*)) {
-    let $key := $model?key    
+    let $key := $model?key
     (: let $log := util:log("info", "app:mentions-of-locality: $key: " || $key ) :)
     let $place := id(xmldb:decode($key), $config:localities)
     (: let $log := util:log("info", "app:mentions-of-locality: found locality: " || $person/@xml:id/string()) :)
@@ -217,42 +222,26 @@ function app:further-information($node as node(), $model as map(*)) {
 };
 
 declare %templates:wrap
-function app:person-letters-sent ($node as node(), $model as map(*)) {
-    let $person := $model?data
-    (: TODO :)
-    let $sent := "?"
-    return (
+function app:person-letters-sent ($node as node(), $model as map(*)) {       
+     (
         <strong><pb-i18n key="sent">Gesendet</pb-i18n></strong>,
         <br/>,
-        <p class="count">{ $sent }</p>
+        <p class="count">{ $model?sent-count }</p>
     )
 };
 
 declare %templates:wrap
-function app:person-letters-received ($node as node(), $model as map(*)) {
-    let $person := $model?data
-    (: TODO :)
-    let $received := "?"
-    return (
+function app:person-letters-received ($node as node(), $model as map(*)) {    
         <strong><pb-i18n key="received">Empfangen</pb-i18n></strong>,
         <br/>,
-        <p class="count">{ $received }</p>
-    )
+        <p class="count">{ $model?received-count }</p>
 };
 declare %templates:wrap
-function app:person-letters-mentioned ($node as node(), $model as map(*)) {
-    let $person := $model?data
-    let $mentioned := 
-        for $id in $person//tei:persName/@xml:id
-        return (
-            collection($config:data-default)//tei:text//tei:persName[@ref = $id],
-            collection($config:data-default)//tei:msContents//tei:persName[@ref = $id]
-        )
-
-    return (
-        <strong><pb-i18n key="mentions">Erwähnungen</pb-i18n></strong>,
+function app:person-letters-mentioned ($node as node(), $model as map(*)) {    
+    (
+        <strong><pb-i18n key="total">Total</pb-i18n></strong>,
         <br/>,
-        <p class="count">{ count($mentioned) }</p>
+        <p class="count">{ $model?total-count}</p>
     )
 };
 

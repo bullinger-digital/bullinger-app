@@ -293,45 +293,38 @@ declare function api:sort($entries as element()*, $sortBy as xs:string, $dir as 
 
 declare function api:person-filter($filter as xs:string?, $key as xs:string) {
     (: let $log := util:log("info", ("api:person-filter $filter: ", $filter, " - $key: ", $key, " - $role: ", $role) ) :)
-    let $options :=
-        map:merge((
-            $api:QUERY_OPTIONS,
-            map {
-                "facets":
-                    map:merge((
-                        for $param in request:get-parameter-names()[starts-with(., 'facet-')]
-                        let $dimension := substring-after($param, 'facet-')
-                        let $paramValue := request:get-parameter($param, ())
-                        let $log := util:log("info", ("api:person-filter facets: dimension: ", $dimension, " - value: :" , $paramValue))
-                        return
-                            if($paramValue and $paramValue != "null")
-                            then (
-                                map {
-                                    $dimension: request:get-parameter($param, ())
-                                }
-                            ) else ()
-                    ))
-            }
-        ))
-    (: let $log := util:log("info", ("api:person-filter: found person: ", $options)) :)
-    let $person := id(xmldb:decode($key), $config:persons)
-    
-    let $matches := collection($config:data-default)/tei:TEI//tei:persName[@ref = $person//tei:persName/@xml:id]
-    let $letters := 
-        for $match in $matches
-            let $root := root($match)
-            group by $id := $root//tei:TEI/@xml:id/string()            
-            return
-                $root[1]//tei:TEI
-    (: let $log := util:log("info", ("api:person-filter: found letters: ", count($letters), " - filter enabled: ", boolean($filter))) :)
+    let $options := api:get-register-query-options()
+    let $all-letters := collection($config:data-default)//tei:TEI
+    let $letters := $all-letters[ft:query(.//tei:text, 'correspondant:' || $key , $options)]
     let $result := 
         if ($filter) then
             $letters[ft:query(.//tei:text, 'title:(' || $filter || '*)', $options)] 
-        else
-            $letters[ft:query(.//tei:text, 'title:*', $options)]
+        else $letters
+            
     (: let $log := util:log("info", ("api:person-filter: filtered letters :", count($result))) :)
     return 
         $result
+};
+
+declare function api:get-register-query-options() {
+    map:merge((
+        $api:QUERY_OPTIONS,
+        map {
+            "facets":
+                map:merge((
+                    for $param in request:get-parameter-names()[starts-with(., 'facet-')]
+                    let $dimension := substring-after($param, 'facet-')
+                    let $paramValue := request:get-parameter($param, ())                        
+                    return
+                        if($paramValue and $paramValue != "null")
+                        then (
+                            map {
+                                $dimension: request:get-parameter($param, ())
+                            }
+                        ) else ()
+                ))
+        }
+    ))
 };
 
 
@@ -378,25 +371,7 @@ declare function api:archives($request as map(*)) {
 };
 
 declare function api:archives-filter($filter as xs:string?) {    
-    let $options :=
-        map:merge((
-            $api:QUERY_OPTIONS,
-            map {
-                "facets":
-                    map:merge((
-                        for $param in request:get-parameter-names()[starts-with(., 'facet-')]
-                        let $dimension := substring-after($param, 'facet-')
-                        let $paramValue := request:get-parameter($param, ())                        
-                        return
-                            if($paramValue and $paramValue != "null")
-                            then (
-                                map {
-                                    $dimension: request:get-parameter($param, ())
-                                }
-                            ) else ()
-                    ))
-            }
-        ))   
+    let $options := api:get-register-query-options()
     let $archives := $config:archives//tei:org
     let $result := 
         if ($filter) then
@@ -461,25 +436,7 @@ declare function api:institutions($request as map(*)) {
 };
 
 declare function api:institutions-filter($filter as xs:string?) {    
-    let $options :=
-        map:merge((
-            $api:QUERY_OPTIONS,
-            map {
-                "facets":
-                    map:merge((
-                        for $param in request:get-parameter-names()[starts-with(., 'facet-')]
-                        let $dimension := substring-after($param, 'facet-')
-                        let $paramValue := request:get-parameter($param, ())                        
-                        return
-                            if($paramValue and $paramValue != "null")
-                            then (
-                                map {
-                                    $dimension: request:get-parameter($param, ())
-                                }
-                            ) else ()
-                    ))
-            }
-        ))   
+    let $options := api:get-register-query-options() 
     let $institutions := $config:orgs//tei:org
     let $result := 
         if ($filter) then
@@ -548,25 +505,7 @@ declare function api:groups($request as map(*)) {
 };
 
 declare function api:groups-filter($filter as xs:string?) {    
-    let $options :=
-        map:merge((
-            $api:QUERY_OPTIONS,
-            map {
-                "facets":
-                    map:merge((
-                        for $param in request:get-parameter-names()[starts-with(., 'facet-')]
-                        let $dimension := substring-after($param, 'facet-')
-                        let $paramValue := request:get-parameter($param, ())                        
-                        return
-                            if($paramValue and $paramValue != "null")
-                            then (
-                                map {
-                                    $dimension: request:get-parameter($param, ())
-                                }
-                            ) else ()
-                    ))
-            }
-        ))   
+    let $options := api:get-register-query-options() 
     let $roles := $config:roles//tei:nym
     let $result := 
         if ($filter) then
@@ -598,20 +537,20 @@ declare function api:groups-sort($entries as element()*, $sortBy as xs:string, $
             reverse($sorted)
 };
 
-declare function api:person-is-sender($request as map(*)) {    
+declare function api:register-person-detail($request as map(*)) {    
     let $key := $request?parameters?key
     let $sortBy := $request?parameters?order
     let $sortDir := $request?parameters?dir
     let $limit := $request?parameters?limit
     let $start := $request?parameters?start    
     let $filter := $request?parameters?search
-    (: let $log := util:log("info", "api:person-is-sender " || $key) :)
+    (: let $log := util:log("info", "api:register-person-detail " || $key) :)
     let $entries := api:person-filter($filter,$key)
     let $sorted := api:sort($entries, $sortBy, $sortDir)
     let $subset := subsequence($sorted, $start, $limit)
     return (
-        session:set-attribute($config:session-prefix || ".pers-sender.hits", $entries),
-        session:set-attribute($config:session-prefix || ".pers-sender.hitCount", count($entries)),
+        session:set-attribute($config:session-prefix || ".persons.hits", $entries),
+        session:set-attribute($config:session-prefix || ".persons.hitCount", count($entries)),
         map {
             "count": count($entries),
             "results":
@@ -719,21 +658,7 @@ declare function api:format-date($date as xs:string?){
         format-date(xs:date($date), '[D]. [MNn] [Y]', "de", (), ())
 };
 
-declare function api:locality-filter($filter as xs:string?, $key as xs:string, $role as xs:string) {
-    let $place := id(xmldb:decode($key), $config:localities)
-    (: let $log := util:log("info", "api:locality-filter: found locality: " || $place/@xml:id/string()) :)
-    let $matches := collection($config:data-default)/tei:TEI//tei:correspAction[@type=$role]//tei:placeName[@source = $place/@xml:id]
-    (: let $log := util:log("info", "api:locality-filter: $matches: " || count($matches) || " in " || $config:data-default) :)
-    return
-        for $match in $matches
-            let $root := root($match)
-            group by $id := $root//tei:TEI/@xml:id/string()
-            order by $id ascending
-            return
-                $root[1]//tei:TEI
-};
-
-declare function api:locality-is-sender($request as map(*)) {    
+declare function api:register-locality-detail($request as map(*)) {    
     let $key := $request?parameters?key
     let $sortBy := $request?parameters?order
     let $sortDir := $request?parameters?dir
@@ -741,7 +666,7 @@ declare function api:locality-is-sender($request as map(*)) {
     let $start := $request?parameters?start    
     let $filter := $request?parameters?search
     (: let $log := util:log("info", "api:locality-is-sender " || $key) :)
-    let $entries := api:locality-filter($filter,$key, "sent")
+    let $entries := api:locality-filter($filter,$key)
     let $sorted := api:sort($entries, $sortBy, $sortDir)
     let $subset := subsequence($sorted, $start, $limit)
     return (
@@ -757,6 +682,8 @@ declare function api:locality-is-sender($request as map(*)) {
                         (: let $log := util:log("info", ("api:locality-is-sender $correspAction: ",$letter//tei:correspAction[@type="sent"])) :)
                         let $senders := api:get-persons-from-correspAction($letter//tei:correspAction[@type="sent"])
                         (: let $log := util:log("info", ("api:locality-is-sender $senders: ",$senders)) :)
+                        let $send-place := id($letter//tei:correspAction[@type="sent"]/tei:placeName/@source/string(), $config:localities)
+                        let $send-place-name := api:get-place-name($send-place)
                         let $date := api:handle-date($letter//tei:correspAction[@type="sent"]/tei:date)
                         let $recipients := api:get-persons-from-correspAction($letter//tei:correspAction[@type="received"])
                         let $recipients-place := id($letter//tei:correspAction[@type="received"]/tei:placeName/@source/string(), $config:localities)
@@ -765,6 +692,7 @@ declare function api:locality-is-sender($request as map(*)) {
                             map {                            
                                 "title": <a href="../{$id}">{$title}</a>,
                                 "senders": $senders,
+                                "place": $send-place-name,
                                 "date":$date,
                                 "recipients":$recipients,
                                 "recipients-place":$recipients-place-name
@@ -773,43 +701,19 @@ declare function api:locality-is-sender($request as map(*)) {
         }
 )};
 
-declare function api:locality-is-recipient($request as map(*)) {    
-    let $key := $request?parameters?key
-    let $sortBy := $request?parameters?order
-    let $sortDir := $request?parameters?dir
-    let $limit := $request?parameters?limit
-    let $start := $request?parameters?start    
-    let $filter := $request?parameters?search
-    (: let $log := util:log("info", "api:locality-is-recipient " || $key) :)
-    let $entries := api:locality-filter($filter,$key, "received")    
-    let $sorted := api:sort($entries, $sortBy, $sortDir)
-    let $subset := subsequence($sorted, $start, $limit)
-    return (
-        session:set-attribute($config:session-prefix || ".locality-receiver.hits", $entries),
-        session:set-attribute($config:session-prefix || ".locality-receiver.hitCount", count($entries)),
-        map {
-            "count": count($entries),
-            "results":
-                array {
-                    for $letter in $subset
-                        let $id := $letter/@xml:id/string()
-                        let $title := $letter//tei:titleStmt/tei:title/text()
-                        let $send-place := id($letter//tei:correspAction[@type="sent"]/tei:placeName/@source/string(), $config:localities)
-                        let $send-place-name := api:get-place-name($send-place)
-                        let $date := api:handle-date($letter//tei:correspAction[@type="sent"]/tei:date)
-                        let $senders := api:get-persons-from-correspAction($letter//tei:correspAction[@type="sent"])
-                        let $recipients := api:get-persons-from-correspAction($letter//tei:correspAction[@type="received"])
-                        return
-                            map {                            
-                                "title": <a href="../{$id}">{$title}</a>,
-                                "senders":$senders,
-                                "place": $send-place-name,
-                                "date":$date,                                
-                                "recipients":$recipients
-                            }
-                }
-        }
-)};
+declare function api:locality-filter($filter as xs:string?, $key as xs:string) {    
+    (: let $log := util:log("info", "api:locality-filter: found locality: " || $key)     :)
+    let $options := api:get-register-query-options()
+
+    let $all-letters := collection($config:data-default)//tei:TEI
+    let $letters := $all-letters[ft:query(.//tei:text, 'place:' || $key , $options)]
+    let $result := 
+        if ($filter) then
+            $letters[ft:query(.//tei:text, 'title:(' || $filter || '*)', $options)] 
+        else $letters
+    return
+        $result
+};
 
 declare function api:cleanup-register-data($request as map(*)) {
     let $log := util:log("info", "api:cleanup-register-data - register: " || $request?parameters?file)    
@@ -820,7 +724,7 @@ declare function api:cleanup-register-data($request as map(*)) {
 };
 
 declare function api:person-facets($request as map(*)) {
-    let $hits := session:get-attribute($config:session-prefix || ".pers-sender.hits")
+    let $hits := session:get-attribute($config:session-prefix || ".persons.hits")
     let $configs := [
         map {
             "dimension": "date",
@@ -843,7 +747,7 @@ declare function api:person-facets($request as map(*)) {
 };
 
 declare function api:facets($request as map(*)) {    
-    let $hits := session:get-attribute($config:session-prefix || ".pers-sender.hits")
+    let $hits := session:get-attribute($config:session-prefix || ".persons.hits")
     let $_ := util:log("info", "api:facets")
     where count($hits) > 0
     return
@@ -864,7 +768,7 @@ declare function api:facets-search($request as map(*)) {
     let $type := $request?parameters?type
 
     let $_ := util:log("info", ("api:facets-search type: '", $type, "' - query: '" , $query, "' - value: '" , $value, "'"))    
-    let $hits := session:get-attribute($config:session-prefix || ".pers-sender.hits")    
+    let $hits := session:get-attribute($config:session-prefix || ".persons.hits")    
     let $log := util:log("info", "api:facets-search: hits: " || count($hits))
     let $facets := ft:facets($hits, $type, ())
     let $log := util:log("info", "api:facets-search: $facets: " || count($facets))
