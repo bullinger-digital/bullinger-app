@@ -407,9 +407,9 @@ declare function api:institutions($request as map(*)) {
     let $filter := $request?parameters?search
     
     let $entries := api:institutions-filter($filter)
-    let $log := util:log("info", "api:institutions entries: " || count($entries))
+    (: let $log := util:log("info", "api:institutions entries: " || count($entries)) :)
     let $sorted := api:institutions-sort($entries, $sortBy, $sortDir)
-    let $log := util:log("info", "api:institutions $sorted: " || count($sorted))
+    (: let $log := util:log("info", "api:institutions $sorted: " || count($sorted)) :)
     let $subset := subsequence($sorted, $start, $limit)
     return (
         session:set-attribute($config:session-prefix || ".institutions.hits", $entries),
@@ -474,9 +474,9 @@ declare function api:groups($request as map(*)) {
     let $filter := $request?parameters?search
     
     let $entries := api:groups-filter($filter)
-    let $log := util:log("info", "api:groups entries: " || count($entries))
+    (: let $log := util:log("info", "api:groups entries: " || count($entries)) :)
     let $sorted := api:groups-sort($entries, $sortBy, $sortDir)
-    let $log := util:log("info", "api:groups $sorted: " || count($sorted))
+    (: let $log := util:log("info", "api:groups $sorted: " || count($sorted)) :)
     let $subset := subsequence($sorted, $start, $limit)
     return (
         session:set-attribute($config:session-prefix || ".groups.hits", $entries),
@@ -669,8 +669,8 @@ declare function api:register-locality-detail($request as map(*)) {
     let $sorted := api:sort($entries, $sortBy, $sortDir)
     let $subset := subsequence($sorted, $start, $limit)
     return (
-        session:set-attribute($config:session-prefix || ".locality-sender.hits", $entries),
-        session:set-attribute($config:session-prefix || ".locality-sender.hitCount", count($entries)),
+        session:set-attribute($config:session-prefix || ".localities.hits", $entries),
+        session:set-attribute($config:session-prefix || ".localities.hitCount", count($entries)),
         map {
             "count": count($entries),
             "results":
@@ -722,31 +722,8 @@ declare function api:cleanup-register-data($request as map(*)) {
     
 };
 
-declare function api:person-facets($request as map(*)) {
-    let $hits := session:get-attribute($config:session-prefix || ".persons.hits")
-    let $configs := [
-        map {
-            "dimension": "date",
-            "heading": "facets.date",
-            "max": 5,
-            "hierarchical": true()
-        }
-    ]
-    where count($hits) > 0
-    return
-        <fx-fore>
-            <fx-switch>
-            {
-                for $config in $configs?*
-                return
-                    facets:display($config, $hits)
-            }
-            </fx-switch>
-        </fx-fore>
-};
-
 declare function api:facets($request as map(*)) {    
-    let $hits := session:get-attribute($config:session-prefix || ".persons.hits")
+    let $hits := session:get-attribute($config:session-prefix || ".hits")
     let $_ := util:log("info", "api:facets")
     where count($hits) > 0
     return
@@ -767,54 +744,64 @@ declare function api:facets-search($request as map(*)) {
     let $type := $request?parameters?type
 
     let $_ := util:log("info", ("api:facets-search type: '", $type, "' - query: '" , $query, "' - value: '" , $value, "'"))    
-    let $hits := session:get-attribute($config:session-prefix || ".persons.hits")    
-    let $log := util:log("info", "api:facets-search: hits: " || count($hits))
+    let $hits := session:get-attribute($config:session-prefix || ".hits")
+    (: let $log := util:log("info", "api:facets-search: hits: " || count($hits)) :)
     let $facets := ft:facets($hits, $type, ())
-    let $log := util:log("info", "api:facets-search: $facets: " || count($facets))
+    (: let $log := util:log("info", "api:facets-search: $facets: " || count($facets)) :)
 
     
-    let $matches := for $key in if (exists($request?parameters?value)) 
+    let $matches := 
+        for $key in if (exists($request?parameters?value)) 
                             then $request?parameters?value 
                             else map:keys($facets)
-                        return  
-                            switch($type) 
-                            case "sender" 
-                            case "recipient" 
-                                return 
-                                    let $register := $config:persons
-                                    let $persName := $config:persons/id($key)/parent::tei:person/tei:persName[@type='main']                                    
-                                    let $name := string-join(($persName/tei:surname, $persName/tei:forename), ", ")
-                                    (: let $_ := util:log("info", "api:facets-search: $name: " || $name) :)
-                                    return
-                                        map {
-                                            "text": $name,
-                                            "freq": $facets($key),
-                                            "value": $key
-                                        }
-                            case "place" return                                    
-                                    let $place := $config:localities/id($key)                                    
-                                    let $settlement := $place//tei:settlement/text()
-                                    let $district := $place//tei:district/text()
-                                    let $country := $place//tei:country/text()
-                                    let $name :=  if($settlement) then ($settlement) else if ($district) then ($district) else ($country)
-                                    let $_ := util:log("info", "api:facets-search: $name: " || $name)
-                                    return
-                                        map {
-                                            "text": $name,
-                                            "freq": $facets($key),
-                                            "value": $key
-                                        }
+            let $text := 
+                switch($type) 
+                    case "sender" 
+                    case "recipient" 
+                        return                                     
+                            let $persName := $config:persons/id($key)/parent::tei:person/tei:persName[@type='main']                                    
+                            let $name := string-join(($persName/tei:surname, $persName/tei:forename), ", ")
+                            (: let $_ := util:log("info", "api:facets-search: $name: " || $name) :)
+                            return
+                                $name 
+                    case "place" return
+                            let $place := $config:localities/id($key)
+                            let $_ := util:log("info", "api:facets-search: place: $place: " || $place/@xml:id)
+                            
+                            let $settlement := $place//tei:settlement/text()
+                            let $district := $place//tei:district/text()
+                            let $country := $place//tei:country/text()
+                            let $name :=  if($settlement) then ($settlement) else if ($district) then ($district) else ($country)
+                            return
+                                $name
+                    case "archive" return
+                        let $archive := $config:archives/id($key)
+                        let $_ := util:log("info", "api:facets-search: place: $archive: " || $archive/@xml:id)
+                        return
+                            string-join(($archive/tei:orgName/text(), $archive/tei:addName/text()), ", ")
+                    case "institution" return
+                        let $org := $config:orgs/id($key)
+                        let $_ := util:log("info", "api:facets-search: place: $institution: " || $org/@xml:id)
+                        return
+                            $org/tei:name[@xml:lang="de"][@type="pl"]/text()
+                    case "group" return
+                        let $group := $config:roles/id($key)
+                        let $_ := util:log("info", "api:facets-search: place: $group: " || $group/@xml:id)
+                        return
+                            $group/tei:form[@xml:lang="de"][@type="pl"]/text()
+                    default return 
+                        let $_ := util:log("info", "api:facets-search: default return, $type: " || $type)
+                        return 
+                            ("unknown facet type " || $type)
+            return 
+                map {
+                    "text": $text,
+                    "freq": $facets($key),
+                    "value": $key
+                } 
 
-                            default return 
-                                let $_ := util:log("info", "api:facets-search: default return, $type: " || $type)
-                                return 
-                                        map {
-                                            "text": $key,
-                                            "freq": $facets($key),
-                                            "value": $key
-                                        }
 
-            
+           
         let $log := util:log("info", "api:facets-search: $matches: " || count($matches))
         let $filtered := filter($matches, function($item) {
             matches($item?text, '(?:^|\W)' || $request?parameters?query, 'i')

@@ -119,16 +119,13 @@ declare variable $config:pagination-fill := 5;
 
 declare variable $config:facets := [
     map {
-        "dimension": "date",
-        "heading": "facets.date",
-        "max": 5,
-        "hierarchical": true()
-    },
-    map {
         "dimension": "sender",
-        "heading": "facets.sender",
-        "max": 5,
-        "hierarchical": false(),
+        "heading": "Absender",
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "select": map {
+            "source": "api/facets/sender"
+        },
         "output": function($label) {
             let $person := $config:persons/id($label)/parent::tei:person/tei:persName[@type='main']
             return 
@@ -136,12 +133,15 @@ declare variable $config:facets := [
                 then (string-join(($person/*),", "))
                 else ($label)
         }
-    },
+    },    
     map {
         "dimension": "recipient",
-        "heading": "facets.addressee",
-        "max": 5,
-        "hierarchical": false(),
+        "heading": "Empfänger",
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "select": map {
+            "source": "api/facets/sender"
+        },
         "output": function($label) {
             let $person := $config:persons/id($label)/parent::tei:person/tei:persName[@type='main']
             return 
@@ -150,7 +150,7 @@ declare variable $config:facets := [
                 else ($label)
         }
     },
-    map {
+    (: map {
         "dimension": "text-mention",
         "heading": "facets.mentioned-in-text",
         "max": 5,
@@ -175,12 +175,15 @@ declare variable $config:facets := [
                 then (string-join(($person/*),", "))
                 else ($label)
         }
-    },    
+    },     :)
     map {
         "dimension": "place",
-        "heading": "facets.place",
-        "max": 5,
-        "hierarchical": false(),
+        "heading": "Ort",
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "select": map {
+            "source": "api/facets/place"
+        },
         "output": function($label) {
             let $place := $config:localities/id($label)
             return 
@@ -197,31 +200,46 @@ declare variable $config:facets := [
     },
     map {
         "dimension": "archive",
-        "heading": "facets.archive",
-        "max": 5,
-        "hierarchical": false(),
+        "heading": "Archiv",
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "select": map {
+            "source": "api/facets/archive"
+        },
         "output": function($label) {
-            $config:archives/id($label)/tei:orgName/text()           
+            $config:archives/id($label)/tei:orgName/text()
         }
     },
     map {
         "dimension": "group",
-        "heading": "facets.group",
-        "max": 5,
-        "hierarchical": false(),
+        "heading": "Titel/Gruppe",
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "select": map {
+            "source": "api/facets/group"
+        },
         "output": function($label) {
             $config:roles/id($label)/tei:form[@xml:lang="de"][@type="sg"]/text()
         }
     },
     map {
         "dimension": "institution",
-        "heading": "facets.institution",
-        "max": 5,
-        "hierarchical": false(),
+        "heading": "Institution",
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "select": map {
+            "source": "api/facets/institution"
+        },
         "output": function($label) {
             $config:orgs/id($label)/tei:name[@xml:lang="de"][@type="sg"]/text()
         }
-    }    
+    },
+    map {
+        "dimension": "date",
+        "heading": "facets.date",
+        "max": 5,
+        "hierarchical": true()
+    }
 ];
 
 declare variable $config:facets-persons := [

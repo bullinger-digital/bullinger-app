@@ -38,26 +38,48 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    const facets = document.querySelector('.facets');
-    if (facets) {
-        facets.addEventListener('pb-custom-form-loaded', function(ev) {
-            const elems = ev.detail.querySelectorAll('.facet');
-            elems.forEach(facet => {
-                facet.addEventListener('change', () => {
-                    if (!facet.checked) {
-                        pbRegistry.state[facet.name] = null;
+    const customForms = document.querySelectorAll('.facets');
+    if (customForms) {
+        customForms.forEach((customForm) => {
+            customForm.addEventListener('pb-custom-form-loaded', function(ev) {
+                const elems = ev.detail.querySelectorAll('.facet');
+                elems.forEach(facet => {
+                    facet.addEventListener('change', () => {
+                        const table = facet.closest('table');
+                        if (table) {
+                            table.querySelectorAll('.nested .facet').forEach(nested => {
+                                if (nested != facet) {
+                                    nested.checked = false;
+                                }
+                            });
+                        }
+                        customForm.submit();
+                    });
+                });
+                ev.detail.querySelectorAll('pb-combo-box').forEach((select) => {
+                    select.renderFunction = (data, escape) => {
+                        if (data) {
+                            return `<div>${escape(data.text)} <span class="freq">${escape(data.freq || '')}</span></div>`;
+                        }
+                        return '';
                     }
-                    const table = facet.closest('table');
-                    if (table) {
-                        const nested = table.querySelectorAll('.nested .facet').forEach(nested => {
-                            if (nested != facet) {
-                                nested.checked = false;
-                            }
-                        });
-                    }
-                    facets.submit();
                 });
             });
         });
     }
+
+    const tlogs = document.querySelector('.travellogs');
+    tlogs.addEventListener('pb-custom-form-loaded', function(ev) {
+        const elems = ev.detail.querySelectorAll('paper-checkbox');
+        elems.forEach(cb => cb.addEventListener('change', () => {
+            pbEvents.emit('pb-search-resubmit', 'search');
+        }));
+    });
+
+});
+
+document.addEventListener('pb-page-loaded', function() {
+    pbEvents.subscribe('pb-combo-box-change', null, function() {
+        pbEvents.emit('pb-search-resubmit', 'search');
+    });
 });
