@@ -151,6 +151,32 @@ declare variable $config:facets := [
         }
     },
     map {
+        "dimension": "text-mention",
+        "heading": "facets.mentioned-in-text",
+        "max": 5,
+        "hierarchical": false(),
+        "output": function($label) {
+            let $person := $config:persons/id($label)/parent::tei:person/tei:persName[@type='main']
+            return 
+                if ($person) 
+                then (string-join(($person/*),", "))
+                else ($label)
+        }
+    },
+    map {
+        "dimension": "mscontents-mention",
+        "heading": "facets.mentioned-in-mscontents",
+        "max": 5,
+        "hierarchical": false(),
+        "output": function($label) {
+            let $person := $config:persons/id($label)/parent::tei:person/tei:persName[@type='main']
+            return 
+                if ($person) 
+                then (string-join(($person/*),", "))
+                else ($label)
+        }
+    },    
+    map {
         "dimension": "place",
         "heading": "facets.place",
         "max": 5,
@@ -196,6 +222,68 @@ declare variable $config:facets := [
             $config:orgs/id($label)/tei:name[@xml:lang="de"][@type="sg"]/text()
         }
     }    
+];
+
+declare variable $config:facets-persons := [
+    map {
+        "dimension": "datestring",
+        "heading": "facets.date",
+        "max": 5,
+        "hierarchical": false(),
+        "select": map {
+            "source": "api/facets/datestring"
+        }
+    },
+    map {
+        "dimension": "sender",
+        "heading": "facets.sender",
+        "select": map {
+            "source": "api/facets/sender"
+        },
+        "output": function($label) {
+            let $person := $config:persons/id($label)/parent::tei:person/tei:persName[@type='main']
+            return 
+                if ($person) 
+                then (string-join(($person/*),", "))
+                else ($label)
+        }
+    },
+    map {
+        "dimension": "recipient",
+        "heading": "facets.addressee",
+        "select": map {
+            "source": "api/facets/recipient"
+        },        
+        "output": function($label) {
+            let $person := $config:persons/id($label)/parent::tei:person/tei:persName[@type='main']
+            return 
+                if ($person) 
+                then (string-join(($person/*),", "))
+                else ($label)
+        }
+    },
+    map {
+        "dimension": "place",
+        "heading": "facets.place",
+        "max": 5,
+        "hierarchical": false(),
+        "select": map {
+            "source": "api/facets/place"
+        },        
+        "output": function($label) {
+            let $place := $config:localities/id($label)
+            return 
+                if ($place) 
+                then (
+                    let $settlement := $place//tei:settlement/text()
+                    let $district := $place//tei:district/text()
+                    let $country := $place//tei:country/text()
+                    return
+                        if($settlement) then ($settlement) else if ($district) then ($district) else ($country)
+                )
+                else ($label)
+        }
+    }  
 ];
 
 (:

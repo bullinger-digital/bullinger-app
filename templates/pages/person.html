@@ -22,33 +22,44 @@
                     <div data-template="app:image"/>
                 </section>
                 <section class="bottom">
-                    <div data-template="app:mentions-of-person"/>
-                    <details data-template="app:person-is-sender">
-                        <summary><pb-i18n key="letters-from">Briefe von</pb-i18n> <span data-template="app:person-name-full"/></summary>                        
-                        <pb-table-grid source="api/person/sent/${key}" resizable="" emit="grid" subscribe="grid" per-page="10" data-template="pages:parse-params">
-                            <pb-table-column label="Brief" property="title" sort=""></pb-table-column>
-                            <pb-table-column label="Absender Ort" property="place" sort=""></pb-table-column>
-                            <pb-table-column label="Datum" property="date" sort=""></pb-table-column>
-                            <pb-table-column label="Empfänger" property="recipients" sort=""></pb-table-column>
-                            <pb-table-column label="Empfänger Ort" property="recipients-place" sort=""></pb-table-column>
-                        </pb-table-grid>
-                    </details>
-                    <details data-template="app:person-is-recipient">
-                        <summary><pb-i18n key="letters-to">Briefe an</pb-i18n> <span data-template="app:person-name-full"/></summary>
-                        <pb-table-grid source="api/person/received/${key}" resizable="" emit="grid" subscribe="grid" per-page="10" data-template="pages:parse-params">                        
-                            <pb-table-column label="Brief" property="title" sort=""></pb-table-column>
-                            <pb-table-column label="Absender" property="senders" sort=""></pb-table-column>
-                            <pb-table-column label="Absender Ort " property="place" sort=""></pb-table-column>
-                            <pb-table-column label="Datum" property="date" sort=""></pb-table-column>
-                            <pb-table-column label="Empfänger Ort" property="recipients-place" sort=""></pb-table-column> 
-                        </pb-table-grid>
-                    </details>
+                    <!-- <pb-custom-form id="facets" url="api/show-facets/persons" event="pb-results-received" subscribe="grid" emit="grid" use-language="use-language" data-template="pages:parse-params"/> -->
+
+                    <pb-table-grid source="api/person/sent/${key}" resizable="" emit="grid" subscribe="grid" per-page="7" search="" data-template="pages:parse-params">
+                        <pb-table-column label="Brief" property="title" sort=""></pb-table-column>
+                        <pb-table-column label="Absender" property="senders" sort=""></pb-table-column>
+                        <pb-table-column label="Absendeort" property="place" sort=""></pb-table-column>
+                        <pb-table-column label="Datum" property="date" sort=""></pb-table-column>
+                        <pb-table-column label="Empfänger" property="recipients" sort=""></pb-table-column>
+                        <pb-table-column label="Empfangsort" property="recipients-place" sort=""></pb-table-column>
+                    </pb-table-grid>                   
+
 
                 </section>
             </main>
         </pb-page>
         <footer data-template="templates:include" data-template-path="templates/footer.html"/>        
-        <div class="splash"></div>        
+        <div class="splash"></div>
+        <script>
+            const facets = document.getElementById('facets');
+            if (facets) {
+                facets.addEventListener('pb-custom-form-loaded', function(ev) {
+                    const elems = ev.detail.querySelectorAll('.facet, pb-combo-box');
+                    elems.forEach(function(facet) {
+                        facet.addEventListener('change', function() {
+                            const table = facet.closest('table');
+                            if (table) {
+                                const nested = table.querySelectorAll('.nested .facet').forEach(function(nested) {
+                                    if (nested != facet) {
+                                        nested.checked = false;
+                                    }
+                                });
+                            }
+                            facets._submit();
+                        });
+                    });
+                });
+            }
+        </script>
     </body>
 
 </html>

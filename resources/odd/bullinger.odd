@@ -43,7 +43,7 @@
                
             <elementSpec ident="graphic" mode="change">
                     <model predicate="$parameters?view = &#34;facsimile&#34;" behaviour="inline">
-            <param name="facs" value="encode-for-uri(replace(@url, '(.*Autograph.\d\d)__(.*)' , '$1 $2'))"/>
+            <param name="facs" value="let $url := if(contains(@url, &#34;Autograph&#34;))              then ( replace(@url, '(.*Autograph.\d\d)__(.*)' , '$1 $2') )             else if(contains(@url, &#34;Kopie&#34;))              then (replace(@url, '(.*Kopie.\d\d)__(.*)' , '$1 $2'))             else (replace(@url, '(.*Original.\d\d)__(.*)' , '$1 $2'))              return   encode-for-uri($url)"/>
             <param name="label" value="@n"/>
             <param name="id" value="@xml:id"/>
             <pb:template xmlns="" xml:space="preserve"><pb-facs-link id="[[id]]" emit="transcription" facs="[[facs]]"/></pb:template>
