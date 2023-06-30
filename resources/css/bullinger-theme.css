@@ -836,7 +836,7 @@ pb-view {
     list-style-type: none;
     display: flex;
     padding: 0;
-    margin: 0;
+    margin-block: var(--s-1);
 }
 
 .meta-info--link {
