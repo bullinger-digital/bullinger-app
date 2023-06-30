@@ -362,8 +362,7 @@ declare function api:archives($request as map(*)) {
                         let $count := ft:field($org, "archive-count")
                         return
                             map {
-                                "archive": $name,
-                                "link": <a href="{$url}" target="_blank">Icon</a>,
+                                "archive": <a href="{$url}" target="_blank">{$name}</a>,
                                 "document-count": $count
                             }
                 }
