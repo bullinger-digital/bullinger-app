@@ -25,9 +25,9 @@
         }
     },
     "paths": {
-		"/persons/": {
+		"/archives/": {
             "get": {
-				"summary": "Landing page for persons",
+				"summary": "Landing page for archives",
 				"description": "Retrieve an HTML page expanded through eXist templating.",
 				"tags": ["view"],
 				"operationId": "vapi:html",
@@ -38,7 +38,7 @@
 						"in": "query",
 						"schema": {
 							"type": "string",
-                            "default": "persons"
+                            "default": "archives"
 						}
 					},
 					{
@@ -46,7 +46,66 @@
 						"in": "query",
 						"schema": {
 							"type": "string",
-							"default": "/persons/"
+							"default": "/archives/"
+						}					
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "HTML of the page",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The document was not found",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An error occurred",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+        }, 
+		"/groups/": {
+            "get": {
+				"summary": "Landing page for groups",
+				"description": "Retrieve an HTML page expanded through eXist templating.",
+				"tags": ["view"],
+				"operationId": "vapi:html",
+				"x-error-handler": "vapi:handle-error",
+				"parameters": [
+					{
+						"name": "file",
+						"in": "query",
+						"schema": {
+							"type": "string",
+                            "default": "groups"
+						}
+					},
+					{
+						"name": "uri",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"default": "/groups/"
 						}					
 					}
 				],
@@ -84,36 +143,34 @@
 				}
 			}
         },
-        "/persons/{key}": {
+		"/institutions/": {
             "get": {
-				"summary": "Retrieve the HTML template used for displaying person metadata",
-				"description": "Get the HTML template associated with the given document.",
+				"summary": "Landing page for Institutions",
+				"description": "Retrieve an HTML page expanded through eXist templating.",
 				"tags": ["view"],
-				"operationId": "vapi:html",	
+				"operationId": "vapi:html",
+				"x-error-handler": "vapi:handle-error",
 				"parameters": [
 					{
-						"name": "key",
-						"in": "path",
-						"description": "ID of the person",
-						"required": true,
+						"name": "file",
+						"in": "query",
 						"schema": {
 							"type": "string",
-							"example": ""
-						},
-						"allowReserved": true
-					},
-					{ 
-						"name":"file",
-						"in":"query",
-						"schema":{
-							"type": "string",
-							"default":"pages/person"
+                            "default": "institutions"
 						}
+					},
+					{
+						"name": "uri",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"default": "/institutions/"
+						}					
 					}
 				],
 				"responses": {
 					"200": {
-						"description": "HTML view for the document",
+						"description": "HTML of the page",
 						"content": {
 							"text/html": {
 								"schema": {
@@ -144,58 +201,7 @@
 					}
 				}
 			}
-        },        
-        "/api/persons-all-list": {
-            "get": {
-                "summary": "List names",
-                "description": "Retrieve list of places in format required by pb-split-list",
-                "operationId": "custom:persons-all-list",
-                "parameters": [
-					{
-						"name": "category",
-						"in": "query",
-						"schema": {
-							"type": "string"
-						}
-					},					
-                    {
-                        "name": "dir",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "default": "asc"
-                        }
-                    },					
-                    {
-                        "name": "limit",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer",
-                            "default": 50
-                        }
-                    },
-                    {
-                        "name": "search",
-                        "in": "query",
-                        "schema":{
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Persons to display",
-                        "content": {
-                            "application/json": {
-                                "schema":{
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },  
+        }, 
         "/localities/": {
             "get": {
 				"summary": "Landing page for localities",
@@ -316,6 +322,126 @@
 				}
 			}
         },          
+		"/persons/": {
+            "get": {
+				"summary": "Landing page for persons",
+				"description": "Retrieve an HTML page expanded through eXist templating.",
+				"tags": ["view"],
+				"operationId": "vapi:html",
+				"x-error-handler": "vapi:handle-error",
+				"parameters": [
+					{
+						"name": "file",
+						"in": "query",
+						"schema": {
+							"type": "string",
+                            "default": "persons"
+						}
+					},
+					{
+						"name": "uri",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"default": "/persons/"
+						}					
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "HTML of the page",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The document was not found",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An error occurred",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+        },
+        "/persons/{key}": {
+            "get": {
+				"summary": "Retrieve the HTML template used for displaying person metadata",
+				"description": "Get the HTML template associated with the given document.",
+				"tags": ["view"],
+				"operationId": "vapi:html",	
+				"parameters": [
+					{
+						"name": "key",
+						"in": "path",
+						"description": "ID of the person",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"example": ""
+						},
+						"allowReserved": true
+					},
+					{ 
+						"name":"file",
+						"in":"query",
+						"schema":{
+							"type": "string",
+							"default":"pages/person"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "HTML view for the document",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The document was not found",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An error occurred",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+        },
         "/api/localities-all-list": {
             "get": {
                 "summary": "List localities",
@@ -386,179 +512,7 @@
                     }
 				}
 			}
-		},		
-		"/api/person/sent/{key}": {
-            "get": {
-                "summary": "List register entries",
-                "description": "Retrieve list of register entries in table structure",
-                "operationId": "custom:person-is-sender",
-                "parameters": [
-					{
-						"name": "key",
-						"in": "path",
-						"description": "ID of the person",
-						"required": true,
-						"schema": {
-							"type": "string",
-							"example": ""
-						},
-						"allowReserved": true
-					},					
-                    {
-                        "name": "sort",
-                        "in": "query",
-                        "schema":{
-                            "type": "string",
-                            "default": "id"
-                        }
-                    },
-                    {
-                        "name": "dir",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "default": "asc"
-                        }
-                    },
-                    {
-                        "name": "filter",
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "search",
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "order",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "default": "title"
-                        }
-                    },
-                    {
-                        "name": "limit",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer",
-                            "default": 10
-                        }
-                    },
-                    {
-                        "name": "start",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer",
-                            "default": 0
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "List of register entries",
-                        "content": {
-                            "application/json": {
-                                "schema":{
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-		"/api/person/received/{key}": {
-            "get": {
-                "summary": "List register entries",
-                "description": "Retrieve list of register entries in table structure",
-                "operationId": "custom:person-is-recipient",
-                "parameters": [
-					{
-						"name": "key",
-						"in": "path",
-						"description": "ID of the person",
-						"required": true,
-						"schema": {
-							"type": "string",
-							"example": ""
-						},
-						"allowReserved": true
-					},					
-                    {
-                        "name": "sort",
-                        "in": "query",
-                        "schema":{
-                            "type": "string",
-                            "default": "id"
-                        }
-                    },
-                    {
-                        "name": "dir",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "default": "asc"
-                        }
-                    },
-                    {
-                        "name": "order",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "default": "title"
-                        }
-                    },
-                    {
-                        "name": "filter",
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "search",
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "limit",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer",
-                            "default": 10
-                        }
-                    },
-                    {
-                        "name": "start",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer",
-                            "default": 0
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "List of register entries",
-                        "content": {
-                            "application/json": {
-                                "schema":{
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
+		},
 		"/api/locality/sent/{key}": {
             "get": {
                 "summary": "List register entries",
@@ -730,7 +684,144 @@
                     }
                 }
             }
-        },		
+        },        
+        "/api/persons-all-list": {
+            "get": {
+                "summary": "List names",
+                "description": "Retrieve list of places in format required by pb-split-list",
+                "operationId": "custom:persons-all-list",
+                "parameters": [
+					{
+						"name": "category",
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					},					
+                    {
+                        "name": "dir",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": "asc"
+                        }
+                    },					
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "default": 50
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "schema":{
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Persons to display",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }, 
+		"/api/person/{key}": {
+            "get": {
+                "summary": "List register entries",
+                "description": "Retrieve list of register entries in table structure",
+                "operationId": "custom:person-is-sender",
+                "parameters": [
+					{
+						"name": "key",
+						"in": "path",
+						"description": "ID of the person",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"example": ""
+						},
+						"allowReserved": true
+					},					
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "schema":{
+                            "type": "string",
+                            "default": "id"
+                        }
+                    },
+                    {
+                        "name": "dir",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": "asc"
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "order",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": "title"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    },
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "default": 0
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of register entries",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
 		"/api/cleanup-register-data/{file}": {
             "get": {
                 "summary": "Remove all unused register entries",

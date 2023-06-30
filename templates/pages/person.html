@@ -1,6 +1,6 @@
 <html data-template="app:load-person">
     <head data-template="lib:include" data-template-path="templates/header.html">
-        <title data-target="title-template" data-template="app:page-title" data-template-page="person"> </title>
+        <title data-target="title-template" data-template-page="person">Person</title>
         <meta data-target="title-template" name="pb-template" content="person.html"/>
     </head>
 
@@ -22,18 +22,39 @@
                     <div data-template="app:image"/>
                 </section>
                 <section class="bottom">
+                    <!-- <fx-fore>
+                        <h2>Filter</h2>
+                        <fx-trigger>
+                            <button>Absender</button>
+                            <fx-toggle case="ft-sender"> </fx-toggle>
+                        </fx-trigger>
+                        <fx-trigger>
+                            <button>Empfänger</button>
+                            <fx-toggle case="ft-recipient"> </fx-toggle>
+                        </fx-trigger>
+                        <fx-switch>
+                            <fx-case id="ft-sender">
+                                <fx-control ref="sender">
+                                    <label>Absender</label>
+                                 </fx-control>
+                            </fx-case>
+                            <fx-case id="ft-recipient">
+                                <fx-control ref="recipient">
+                                    <label>Empfänger</label>
+                                 </fx-control>
+                            </fx-case>
+                        </fx-switch>
+                    </fx-fore> -->
                     <!-- <pb-custom-form id="facets" url="api/show-facets/persons" event="pb-results-received" subscribe="grid" emit="grid" use-language="use-language" data-template="pages:parse-params"/> -->
 
-                    <pb-table-grid source="api/person/sent/${key}" resizable="" emit="grid" subscribe="grid" per-page="7" search="" data-template="pages:parse-params">
+                    <pb-table-grid source="api/person/${key}" resizable="" emit="grid" subscribe="grid" per-page="7" search="" data-template="pages:parse-params">
                         <pb-table-column label="Brief" property="title" sort=""></pb-table-column>
                         <pb-table-column label="Absender" property="senders" sort=""></pb-table-column>
                         <pb-table-column label="Absendeort" property="place" sort=""></pb-table-column>
                         <pb-table-column label="Datum" property="date" sort=""></pb-table-column>
                         <pb-table-column label="Empfänger" property="recipients" sort=""></pb-table-column>
                         <pb-table-column label="Empfangsort" property="recipients-place" sort=""></pb-table-column>
-                    </pb-table-grid>                   
-
-
+                    </pb-table-grid>
                 </section>
             </main>
         </pb-page>

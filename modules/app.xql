@@ -172,44 +172,6 @@ function app:mentions-of-locality($node as node(), $model as map(*)) {
             })
 };
 
-
-declare %templates:replace
-function app:person-is-sender($node as node(), $model as map(*)) {
-    let $key := $model?key        
-    let $person := id(xmldb:decode($key), $config:persons)
-    (: let $log := util:log("info", "app:person-is-sender: found person: " || $person/@xml:id/string()) :)
-    return 
-        app:person-in-corresp-action($node, $model, $person, "sent")
-};
-
-declare %templates:replace
-function app:person-is-recipient($node as node(), $model as map(*)) {
-    let $key := $model?key        
-    let $person := id(xmldb:decode($key), $config:persons)
-    (: let $log := util:log("info", "app:person-is-recipient: found person: " || $person/@xml:id/string()) :)
-    return 
-        app:person-in-corresp-action($node, $model, $person, "received")
-
-};
-
-declare function app:person-in-corresp-action($node, $model, $person, $type) {
-    let $matches := 
-        for $id in $person//tei:persName/@xml:id
-            return (
-                    collection($config:data-default)//tei:correspAction[@type=$type]//tei:persName[@ref = $id]
-            )
-    (: let $log := util:log("info", "app:person-in-corresp-action: $matches: " || count($matches) || " in type " || $type)     :)
-    return
-        if (count($matches) eq 0)
-        then ()
-        else (
-            element details {
-                templates:process($node/node(), $model)
-            }
-        )
-};
-
-
 declare %templates:replace
 function app:locality-is-sender($node as node(), $model as map(*)) {
     let $key := $model?key        

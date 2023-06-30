@@ -374,46 +374,6 @@ declare function api:person-is-sender($request as map(*)) {
                 }
         }
 )};
-
-declare function api:person-is-recipient($request as map(*)) {    
-    let $key := $request?parameters?key
-    let $sortBy := $request?parameters?order
-    let $sortDir := $request?parameters?dir
-    let $limit := $request?parameters?limit
-    let $start := $request?parameters?start    
-    let $filter := $request?parameters?search
-    (: let $log := util:log("info", "api:person-is-recipient " || $key) :)
-    let $entries := api:person-filter($filter,$key)
-    let $sorted := api:sort($entries, $sortBy, $sortDir)
-    let $subset := subsequence($sorted, $start, $limit)
-    return (
-        session:set-attribute($config:session-prefix || ".receiver.hits", $entries),
-        session:set-attribute($config:session-prefix || ".receiver.hitCount", count($entries)),
-        map {
-            "count": count($entries),
-            "results":
-                array {
-                    for $letter in $subset
-                        let $id := $letter/@xml:id/string()
-                        let $title := $letter//tei:titleStmt/tei:title/text()
-                        let $send-place := id($letter//tei:correspAction[@type="sent"]/tei:placeName/@source/string(), $config:localities)
-                        let $send-place-name := api:get-place-name($send-place)
-                        let $date := api:handle-date($letter//tei:correspAction[@type="sent"]/tei:date)
-                        let $senders := api:get-persons-from-correspAction($letter//tei:correspAction[@type="sent"])
-                        let $recipients-place := id($letter//tei:correspAction[@type="received"]/tei:placeName/@source/string(), $config:localities)
-                        let $recipients-place-name := api:get-place-name($recipients-place)                        
-                        return
-                            map {                            
-                                "title": <a href="../{$id}">{$title}</a>,
-                                "place": $send-place-name,
-                                "date":$date,
-                                "senders":$senders,
-                                "recipients-place":$recipients-place-name
-                            }
-                }
-        }
-)};
-
 declare function api:get-persons-from-correspAction($corresp as element(tei:correspAction)?){
     let $entities := for $entity in $corresp/tei:*
                         return
