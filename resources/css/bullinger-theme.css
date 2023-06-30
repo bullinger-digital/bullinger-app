@@ -22,10 +22,11 @@
 
     --bb-font-family-serif: Source Serif Pro, serif;
     --bb-font-family-sans: Source Sans Pro, serif;
+    --bb-content-font-family: Cardo, serif;
 
-    --bb-font-weight-light: "200";
-    --bb-font-weight-normal: "300";
-    --bb-font-weight-medium: "400";
+    --bb-font-weight-ultra-light: "200";
+    --bb-font-weight-light: "300";
+    --bb-font-weight-normal: "400";
     --bb-font-weight-bold: "700";
 
     --bb-font-size-largest: 36px;
@@ -99,7 +100,7 @@ body {
     --pb-lang-label-color: var(--pb-color-primary);
     --pb-base-font-size: var(--pb-font-size-base);
     --pb-content-font-size: var(--bb-font-size-base);
-    --pb-content-font-family: var(--pb-base-font-family);
+    --pb-content-font-family: var(--bb-content-font-family);
     padding: 0;
     hyphens: auto;
     font-size: var(--pb-base-font-size);
