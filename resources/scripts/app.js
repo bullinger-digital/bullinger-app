@@ -15,11 +15,19 @@ window.addEventListener('DOMContentLoaded', function() {
             view.style.setProperty("--lang-de-color", 'var(--bb-lang-de-color)');
             view.style.setProperty("--lang-el-color", 'var(--bb-lang-el-color)');
             view.style.setProperty("--lang-la-color", 'var(--bb-lang-la-color)');
+            view.style.setProperty("--lang-he-color", 'var(--bb-lang-he-color)');
+            view.style.setProperty("--lang-fr-color", 'var(--bb-lang-fr-color)');
+            view.style.setProperty("--lang-it-color", 'var(--bb-lang-it-color)');
+            view.style.setProperty("--lang-en-color", 'var(--bb-lang-en-color)');
         } else {
             usage.style.display = 'none';
             view.style.setProperty("--lang-la-color", 'transparent');
             view.style.setProperty("--lang-el-color", 'transparent');
             view.style.setProperty("--lang-de-color", 'transparent');
+            view.style.setProperty("--lang-he-color", 'transparent');
+            view.style.setProperty("--lang-fr-color", 'transparent');
+            view.style.setProperty("--lang-it-color", 'transparent');
+            view.style.setProperty("--lang-en-color", 'transparent');
         }
     }
 

@@ -48,6 +48,11 @@
     --bb-lang-de-color: rgb(220, 249, 222);
     --bb-lang-el-color: rgb(250, 229, 235);
     --bb-lang-la-color: rgb(250, 244, 229);
+    --bb-lang-he-color: rgb(229, 250, 247);
+    --bb-lang-fr-color: rgb(229 220 247);
+    --bb-lang-it-color: rgb(229 160 247);
+    --bb-lang-en-color: rgb(229 250 120);
+
 
     --pb-link-color: var(--bb-black);
     --pb-color-inverse: var(--bb-white);

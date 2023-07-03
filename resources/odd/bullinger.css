@@ -121,6 +121,31 @@ display: block;
     box-shadow: var(--lang-la-color, 'transparent') 0.15em 0px 0px 2px,
                 var(--lang-la-color, 'transparent') -0.15em 0px 0px 2px;
 }
+.lang-he {
+    background-color: var(--lang-he-color, 'transparent');
+    box-shadow: var(--lang-he-color, 'transparent') 0.15em 0px 0px 2px,
+                var(--lang-he-color, 'transparent') -0.15em 0px 0px 2px;
+}
+
+.lang-fr {
+    background-color: var(--lang-fr-color, 'transparent');
+    box-shadow: var(--lang-fr-color, 'transparent') 0.15em 0px 0px 2px,
+                var(--lang-fr-color, 'transparent') -0.15em 0px 0px 2px;
+}
+
+.lang-it {
+    background-color: var(--lang-it-color, 'transparent');
+    box-shadow: var(--lang-it-color, 'transparent') 0.15em 0px 0px 2px,
+                var(--lang-it-color, 'transparent') -0.15em 0px 0px 2px;
+}
+
+.lang-en {
+    background-color: var(--lang-en-color, 'transparent');
+    box-shadow: var(--lang-en-color, 'transparent') 0.15em 0px 0px 2px,
+                var(--lang-en-color, 'transparent') -0.15em 0px 0px 2px;
+}
+
+
 
 .lang__usage {
     margin: auto var(--s-2);
