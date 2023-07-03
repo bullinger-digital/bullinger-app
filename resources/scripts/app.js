@@ -25,13 +25,13 @@ window.addEventListener('DOMContentLoaded', function() {
 
     toggle.addEventListener('change', applyLangColors)
 
-    pbEvents.subscribe('pb-update', 'transcription', ev => {        
+    pbEvents.subscribe('pb-update', 'transcription', ev => {
         const shadowroot = ev.detail.root;
         // set initial value
         applyLangColors()
-        if(!(ev.target.id === "facsimile-links")) return;        
-        const pblinks = document.getElementById("facsimile-links")        
-        const empty = pblinks.shadowRoot.querySelector('.content');        
+        if(!(ev.target.id === "facsimile-links")) return;
+        const pblinks = document.getElementById("facsimile-links");
+        const empty = pblinks.shadowRoot.querySelector('.content');
         if(empty === null || empty.textContent=== "") {
             const viewer = document.querySelector('pb-facsimile').style.display = "none";
             document.getElementById("facsimile-status").style.display ="block";
