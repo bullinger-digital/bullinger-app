@@ -6,12 +6,15 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 declare function cr:remove-not-referenced-places($register-path, $register-filename, $letters) {
     let $places-data := doc($register-path || $register-filename)
-    let $placeNames := $letters//tei:placeName
     let $remove-places := 
         for $place in $places-data//tei:place
-            let $refs :=  ($placeNames[@source = $place/@xml:id], $placeNames[@ref = $place/@xml:id])
+            let $id := $place/@xml:id/string()
+            let $ref-in-letters := $letters//tei:placeName/@ref[. = $id]
+            let $ref := if($ref-in-letters) then (count($ref-in-letters)) else (0)
+            let $source-in-letters := $letters//tei:placeName/@source[. = $id]
+            let $source := if($source-in-letters) then (count($source-in-letters)) else (0)
             return
-                if(count($refs) = 0)
+                if($ref = 0 and $source = 0)
                 then (
                     update delete $place
                 ) 
@@ -23,36 +26,16 @@ declare function cr:remove-not-referenced-places($register-path, $register-filen
 
 declare function cr:remove-not-referenced-persons($register-path, $register-filename, $letters) {
     let $persons-data := doc($register-path || $register-filename)
-    let $remove-alias-persnames := 
-        for $person in $persons-data//tei:persName[not(@type="main")]
-            let $refs :=  $letters//tei:persName[@ref = $person/@xml:id] 
+    let $removed-not-referenced := 
+        for $person in $persons-data//tei:person 
+            let $ids := $person//tei:persName/@xml:id
+            let $refs :=  $letters//tei:persName[@ref = $ids]
             return
                 if(count($refs) = 0)
                 then (
                     update delete $person
                 ) 
                 else ()
-    let $store := xmldb:store($register-path, $register-filename, $persons-data)
-    (: remove persName type main only if there is no alias anymore :)
-    let $remove-main-persnames := 
-        for $personName in $persons-data//tei:persName[@type="main"]
-            let $person := $personName/parent::tei:person
-            let $refs :=  $letters//tei:persName[@ref = $personName/@xml:id] 
-            return
-                if(count($refs) = 0 and exists($person) and not(exists($person/tei:persName[@type="alias"])))
-                then (
-                    update delete $personName
-                ) 
-                else ()
-    let $store := xmldb:store($register-path, $register-filename, $persons-data)
-    let $check-person := 
-                for $noPersName in $persons-data//tei:person[not(exists(tei:persName))]
-                    return
-                        if(count($letters//tei:persName[@ref = $noPersName/@xml:id]) = 0)
-                        then (
-                            update delete $noPersName
-                        ) 
-                        else ()
     let $store := xmldb:store($register-path, $register-filename, $persons-data)
     return
         $persons-data

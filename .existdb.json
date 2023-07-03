@@ -13,6 +13,7 @@
             ".devcontainer",
             ".existdb.json",
             ".git/**",
+            ".idea/**",
             "build/**",
             "node_modules/**",
             "bower_components/**",
