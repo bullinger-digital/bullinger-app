@@ -23,7 +23,7 @@
                     </pb-custom-form>
                     <pb-search id="search-form" subscribe="search" data-template="pages:parse-params" value="${query}"
                         subforms=".facets,.options" submit-on-load="submit-on-load">
-                        <paper-button slot="searchButton"><pb-i18n key="search.search">Search</pb-i18n></paper-button>
+                        <paper-button slot="searchButton" class="btn-search"><pb-i18n key="search.search">Search</pb-i18n></paper-button>
                     </pb-search>
 
                     <pb-custom-form id="facets" class="facets" url="api/search/facets" event="pb-results-received"
