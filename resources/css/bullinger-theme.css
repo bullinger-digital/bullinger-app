@@ -724,9 +724,6 @@ pb-view {
     align-self:start;
 }
 
-.text {
-    background-color:rgb(243,244,246);
-}
 .transkription,
 .facsimile {
     box-shadow: 0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05);
@@ -734,7 +731,8 @@ pb-view {
     background-color: white;
 }
 .transkription pb-view {
-    min-height: 40rem;
+    min-height: 40vh;
+    max-height: 70vh;
     overflow-y: auto;
 }
 
