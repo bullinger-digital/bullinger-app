@@ -117,7 +117,7 @@
                     <model output="latex" behaviour="metadata"/>
                     <model output="fo" behaviour="omit"/>
                     <model output="web" predicate="$parameters?header='short'" behaviour="block"/>
-                    <model output="web" behaviour="pass-through" predicate="exists(.//language)">
+                    <model output="web" predicate="exists(.//language)" behaviour="pass-through">
             <param name="content" value="sort(.//language, (), function ($lang as element(language)) { -number($lang/@usage) })"/>
             <pb:template xmlns="" xml:space="preserve"><div class="lang-usage">Farblegende: [[content]]</div></pb:template>
         </model>
@@ -239,16 +239,16 @@
             <param name="place" value="let $placeref := ../placeName/@source  return if($parameters?places[@xml:id=$placeref])  then ( (&#34;, &#34;, $parameters?places[@xml:id=$placeref]) ) else ()"/>
             <pb:template xmlns="" xml:space="preserve">[[name]][[place]]</pb:template>
         </model>
-                    <model behaviour="inline" cssClass="person">
+                    <model predicate="@ref" behaviour="inline" cssClass="person">
             <desc>persName in TEI Text</desc>
             <param name="content" value="./text()"/>
-            <param name="label" value="let $ref := ./@ref   let $persParam := $parameters?persons/persName[@xml:id = $ref] return   $persParam/forename/text() || &#34; &#34; || $persParam/surname/text()"/>
-            <param name="mode" value="$parameters?mode"/>
+            <param name="label" value="let $ref := ./@ref    let $persParam := $parameters?persons/persName[@xml:id = $ref]  let $name := $persParam/forename/text() || &#34; &#34; || $persParam/surname/text() return   &lt;a href=&#34;./persons/{$ref}&#34;&gt;{$name}&lt;/a&gt;"/>
             <pb:template xmlns="" xml:space="preserve"><pb-popover>
-  <span slot="default">[[mode]] [[content]]</span>
+  <span slot="default">[[content]]</span>
   <span slot="alternate">[[label]]</span>
 </pb-popover></pb:template>
         </model>
+                    <model behaviour="inline" cssClass="person"/>
                 </elementSpec>
                 <elementSpec ident="orgName" mode="add">
                     <model predicate="$parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
@@ -319,15 +319,16 @@
             <param name="placename" value="let $source := @source return $parameters?places[@xml:id=$source]"/>
             <pb:template xmlns="" xml:space="preserve">[[placename]]</pb:template>
         </model>
-                    <model behaviour="inline" cssClass="place">
+                    <model predicate="@ref" behaviour="inline" cssClass="place">
             <desc>placeName in TEI Text</desc>
             <param name="content" value="./text()"/>
-            <param name="label" value="if(exists(@ref)) then (   let $ref := ./@ref     let $place := $parameters?places[@xml:id = $ref]       return string-join(($place/settlement/text(), $place/district, $place/country),&#34;, &#34;)  )  else ( ./text() )"/>
+            <param name="label" value="let $ref := ./@ref let $place := $parameters?places[@xml:id = $ref] return   &lt;a href=&#34;./localities/{$ref}&#34;&gt;{$place}&lt;/a&gt;"/>
             <pb:template xmlns="" xml:space="preserve"><pb-popover>
   <span slot="default">[[content]]</span>
-  <span slot="alternate">[[label]]</span>
+  <span slot="alternate">Test [[label]]</span>
 </pb-popover></pb:template>
         </model>
+                    <model behaviour="inline" cssClass="place"/>
                 </elementSpec>
                 <elementSpec ident="body" mode="change"/>
             <elementSpec ident="place" mode="add">
