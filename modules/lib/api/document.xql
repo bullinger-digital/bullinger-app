@@ -534,7 +534,13 @@ declare function dapi:get-fragment($request as map(*), $docs as node()*, $path a
                             }
                         )
         else
-            error($errors:NOT_FOUND, "Document " || $path || " not found")
+                if ($request?parameters?format = "html") then
+                    router:response(200, "text/html", <div/>)
+                else
+                    router:response(200, "application/json", map {
+                        "format": $request?parameters?format,
+                        "root": $request?parameters?root}
+                )
 };
 
 declare function dapi:get-collection($data) {
