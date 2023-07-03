@@ -362,7 +362,7 @@ declare function api:archives($request as map(*)) {
                         let $count := ft:field($org, "archive-count")
                         return
                             map {
-                                "archive": <a href="{$url}" target="_blank">{$name}</a>,
+                                "archive": <a style="color:var(--bb-beige);text-decoration:none;" href="{$url}" target="_blank">{$name}</a>,
                                 "document-count": $count
                             }
                 }
@@ -565,8 +565,8 @@ declare function api:register-person-detail($request as map(*)) {
                         let $recipients-place := id($letter//tei:correspAction[@type="received"]/tei:placeName/@source/string(), $config:localities)
                         let $recipients-place-name := api:get-place-name($recipients-place)
                         return
-                            map {                            
-                                "title": <a href="../{$id}">{$title}</a>,
+                            map {
+                                "title": <a style="color:var(--bb-beige);text-decoration:none;" href="../{$id}">{$title}</a>,
                                 "senders":$senders,
                                 "place": $send-place-name,
                                 "date":$date,
@@ -688,8 +688,8 @@ declare function api:register-locality-detail($request as map(*)) {
                         let $recipients-place := id($letter//tei:correspAction[@type="received"]/tei:placeName/@source/string(), $config:localities)
                         let $recipients-place-name := api:get-place-name($recipients-place)
                         return
-                            map {                            
-                                "title": <a href="../{$id}">{$title}</a>,
+                            map {
+                                "title": <a style="color:var(--bb-beige);text-decoration:none;" href="../{$id}">{$title}</a>,
                                 "senders": $senders,
                                 "place": $send-place-name,
                                 "date":$date,
@@ -718,8 +718,6 @@ declare function api:cleanup-register-data($request as map(*)) {
     let $log := util:log("info", "api:cleanup-register-data - register: " || $request?parameters?file)    
     return
         cr:cleanup-register($request?parameters?file)
-
-    
 };
 
 declare function api:facets($request as map(*)) {    
@@ -758,8 +756,8 @@ declare function api:facets-search($request as map(*)) {
                 switch($type) 
                     case "sender" 
                     case "recipient" 
-                        return                                     
-                            let $persName := $config:persons/id($key)/parent::tei:person/tei:persName[@type='main']                                    
+                        return
+                            let $persName := $config:persons/id($key)/parent::tei:person/tei:persName[@type='main']
                             let $name := string-join(($persName/tei:surname, $persName/tei:forename), ", ")
                             (: let $_ := util:log("info", "api:facets-search: $name: " || $name) :)
                             return
