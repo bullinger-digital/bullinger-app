@@ -408,6 +408,15 @@
 							"type": "string",
 							"default": "text"
 						}
+					},
+					{
+						"name": "sort",
+						"in": "query",
+						"description": "Sort by",
+						"schema": {
+							"type": "string",
+							"default": "date"
+						}
 					}
 				],
 				"responses": {
@@ -438,7 +447,16 @@
 							"type": "string",
 							"default": "text"
 						}
-					}
+					},
+					{
+						"name": "sort",
+						"in": "query",
+						"description": "sort by",
+						"schema": {
+							"type": "string",
+							"default": "date"
+						}
+					}					
 				],				
 				"responses": {
 					"200": {
