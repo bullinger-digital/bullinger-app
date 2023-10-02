@@ -49,18 +49,15 @@ RUN curl -L -o exist-distribution-${EXIST_VERSION}-unix.tar.bz2 https://github.c
     && rm exist-distribution-${EXIST_VERSION}-unix.tar.bz2 \
     && mv /usr/local/exist-distribution-${EXIST_VERSION} /usr/local/exist
 
-
-RUN  git clone https://bullinger-data:glpat-o77qzsd8YEz5aQQ4M1Kg@gitlab.existsolutions.com/bullinger/bullinger-data.git
+RUN  git clone --depth 1 -b main https://bullinger-data:glpat-o77qzsd8YEz5aQQ4M1Kg@gitlab.existsolutions.com/bullinger/bullinger-data.git
 
 RUN cd /workspaces/bullinger-data \
-    && echo Checking out main \
-    && git checkout main \
     && ant \
     && cp build/*.xar /usr/local/exist/autodeploy/zz-bullinger-data-0.1.xar;
     
 # If tei-publisher-lib version is "master", build it. Otherwise download the specified version.
 RUN if [ "${PUBLISHER_LIB_VERSION}" = "master" ]; then \
-        git clone https://github.com/eeditiones/tei-publisher-lib.git \
+        git clone --depth 1 https://github.com/eeditiones/tei-publisher-lib.git \
         && cd tei-publisher-lib \
         && ant \
         && cp build/*.xar /usr/local/exist/autodeploy; \
