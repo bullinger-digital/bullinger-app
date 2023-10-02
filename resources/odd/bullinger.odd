@@ -44,9 +44,9 @@
             <elementSpec ident="graphic" mode="change">
                     <model predicate="$parameters?view = &#34;facsimile&#34;" behaviour="inline">
             <param name="facs" value="let $url := substring-before(@url, '/full/max/0/default.jpg') return $url"/>
-            <param name="label" value="@n"/>
+            <param name="order" value="@n"/>
             <param name="id" value="@xml:id"/>
-            <pb:template xmlns="" xml:space="preserve"><pb-facs-link id="[[id]]" emit="transcription" facs="[[facs]]"/></pb:template>
+            <pb:template xmlns="" xml:space="preserve"><pb-facs-link id="[[id]]" emit="transcription" facs="[[facs]]" order="[[order]]"/></pb:template>
         </model>
                     <model behaviour="omit">
             <param name="url" value="@url"/>
