@@ -3,7 +3,7 @@
   "version" : "1.0.0",
   "description" : "Heinrich-Bullinger-Briefwechseledition",
   "dependencies" : {
-    "@teipublisher/pb-components" : "eeditiones/tei-publisher-components#url-patterns",
+    "@teipublisher/pb-components" : "eeditiones/tei-publisher-components",
     "@jinntec/fore": "jinntec/fore#ee-bl"
   }
 }
