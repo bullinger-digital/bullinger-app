@@ -41,18 +41,17 @@ ARG TEMPLATING_VERSION=1.1.0
 ARG PUBLISHER_LIB_VERSION=3.1.0
 ARG ROUTER_VERSION=1.8.1
 
-ARG ACCESS_TOKEN_NAME1=bullinger.tei-publisher.com
 ARG ACCESS_TOKEN_VALUE1=glpat-VSiN6jvJ_SqVDz23XTVz
-ARG ACCESS_TOKEN_VALUE2=glpat-u4xEH_htQC2s4b2_E2JY
+ARG ACCESS_TOKEN_VALUE2=glpat-o77qzsd8YEz5aQQ4M1Kg
 
 # add key
 RUN  mkdir -p ~/.ssh && ssh-keyscan -t rsa gitlab.existsolutions.com >> ~/.ssh/known_hosts
 
-RUN  git clone --depth 1 -b main https://${ACCESS_TOKEN_NAME1}:${ACCESS_TOKEN_VALUE1}@gitlab.existsolutions.com/bullinger/bullinger-app.git \
+RUN  git clone --depth 1 -b main https://bullinger.tei-publisher.com:${ACCESS_TOKEN_VALUE1}@gitlab.existsolutions.com/bullinger/bullinger-app.git \
     && cd bullinger-app \
     && ant
 
-RUN  git clone --depth 1 -b main https://${ACCESS_TOKEN_NAME1}:${ACCESS_TOKEN_VALUE2}@gitlab.existsolutions.com/bullinger/bullinger-data.git \
+RUN  git clone --depth 1 -b main https://bullinger-data:${ACCESS_TOKEN_VALUE2}@gitlab.existsolutions.com/bullinger/bullinger-data.git \
     && cd bullinger-data \
     && ant
 
