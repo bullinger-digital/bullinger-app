@@ -290,3 +290,34 @@ function app:show-map($node as node(), $model as map(*)) {
             <div style="text-align:center;font-style:italic;"><pb-i18n key="no-geo-data">Keine Geodaten verfügbar</pb-i18n></div>
         ) 
 };
+
+declare 
+    %templates:replace
+function app:transcription-source($node as node(), $model as map(*)) {
+    let $tei := collection($config:data-default)//tei:TEI[@xml:id=$model?doc]
+    let $bibl := $tei//tei:sourceDesc/tei:bibl[@type="transcription"]
+    return
+        if($bibl) 
+        then (
+            <pb-popover class="source-info" persistent="true" theme="light">
+                <iron-icon slot="default" icon="info" class="source-info--icon"/>
+                <span slot="alternate">Quelle: {$bibl/text()}</span>
+            </pb-popover>
+        ) else ()
+};
+
+declare 
+    %templates:replace
+function app:facsimile-source($node as node(), $model as map(*)) {
+    let $tei := collection($config:data-default)//tei:TEI[@xml:id=$model?doc]
+    let $bibl := $tei//tei:sourceDesc/tei:bibl[@type="scan"]
+    return
+        if($bibl) 
+        then (
+            <pb-popover class="source-info" persistent="true" theme="light">
+                <iron-icon slot="default" icon="info" class="source-info--icon"/>
+                <span slot="alternate">Quelle: {$bibl/text()}</span>
+            </pb-popover>
+        ) else ()
+};
+
