@@ -255,7 +255,7 @@ function app:image($node as node(), $model as map(*)) {
             element figure {
                 attribute class { "detail-image" },
                 element img {
-                    attribute src { "../../bullinger-data/data/portraits/" || $img-url }
+                    attribute src { "../resources/portraits/" || $img-url }
                 }
             }
         else ()

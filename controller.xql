@@ -44,7 +44,15 @@ else if ($exist:path eq '/api.html') then
     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
         <forward url="{$exist:controller}/templates/api.html"/>
     </dispatch>
-    
+else if (matches($exist:path, "^.*/(resources/portraits)/.*$")) then
+        <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+            <forward url="/bullinger-data/data/portraits/{substring-after($exist:path, 'resources/portraits/')}">
+            {
+                <set-header name="Access-Control-Allow-Origin" value="{$allowOrigin}"/>,
+                if ($allowOrigin = "*") then () else <set-header name="Access-Control-Allow-Credentials" value="true"/>
+            }
+            </forward>
+        </dispatch>
 (: static resources from the resources, transform, templates, odd or modules subirectories are directly returned :)
 else if (matches($exist:path, "^.*/(resources|transform|templates)/.*$")
     or matches($exist:path, "^.*/odd/.*\.css$")

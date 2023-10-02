@@ -314,7 +314,7 @@
                 </elementSpec>
             <elementSpec ident="person" mode="add">
                     <model predicate="$parameters?subtype = 'pictures'" behaviour="graphic" cssClass="portrait">
-            <param name="url" value="'../bullinger-data/data/portraits/' || ./idno[@subtype='portrait']/text()"/>
+            <param name="url" value="'resources/portraits/' || ./idno[@subtype='portrait']/text()"/>
             <param name="title" value="./persName[@type='main']/forename || &#34; &#34; || ./persName[@type='main']/surname"/>
             <pb:template xmlns="" xml:space="preserve"><img src="[[url]]" alt="[[title]]"/></pb:template>
         </model>
