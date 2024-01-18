@@ -143,17 +143,27 @@ pb-page[unresolved]~.splash {
     padding-right: var(--s0);
 }
 
+pb-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 .wrapper,
 footer {
     box-sizing: content-box;
     border-block-start: thin solid var(--bb-field-gray);
     background-color: var(--bb-footer-color);
     margin: 0;
-    min-width: 100vw;
-    width: 100vw;
-    max-width: 100vw;
-    height: var(--bb-footer-height);
-    font-size: var(--bb-font-size-small);
+    font-size: var(--bb-font-size-smallest);
+    text-align: center;
+}
+
+footer,
+footer a,
+footer a:link,
+footer a:visited {
+    color: #a3a3a3;
 }
 
 .wrapper pb-search {
@@ -343,9 +353,10 @@ main {
     --main-padding: 3rem;
     box-sizing: content-box;
     margin-top: 0;
+
+    flex: 1 1 0%;
     padding-top: calc(var(--bb-header-height) + var(--main-padding));
     padding-bottom: var(--main-padding);
-    min-height: calc(var(--bb-content-min-height) - 2 * var(--main-padding));
     --pb-browse-toolbar-justify-content: space-between;
 }
 
