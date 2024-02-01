@@ -16,5 +16,6 @@
     },
     "mobile" : {
         "menu": "Menü"
-    }
+    },
+    "app-title": "Test DE"
 }
