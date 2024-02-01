@@ -16,5 +16,11 @@
     },
     "mobile" : {
         "menu": "Menü"
+    },
+    "app-title": "Test DE",
+    "index-intro": "index-intro <strong>DE</strong>",
+    "letters": "Briefe",
+    "metadata": {
+        "date": "Datum"
     }
 }
