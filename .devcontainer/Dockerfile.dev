@@ -49,20 +49,20 @@ RUN curl -L -o exist-distribution-${EXIST_VERSION}-unix.tar.bz2 https://github.c
     && rm exist-distribution-${EXIST_VERSION}-unix.tar.bz2 \
     && mv /usr/local/exist-distribution-${EXIST_VERSION} /usr/local/exist
 
-RUN  git clone --depth 1 -b main git@github.com:bullinger-digital/bullinger-korpus-tei.git
+RUN  git clone --depth 1 -b main https://github.com/bullinger-digital/bullinger-korpus-tei.git
 
 RUN cd /workspaces/bullinger-data \
     && ant \
     && cp build/*.xar /usr/local/exist/autodeploy/zz-bullinger-data-0.1.xar;
-    
+
 # If tei-publisher-lib version is "master", build it. Otherwise download the specified version.
 RUN if [ "${PUBLISHER_LIB_VERSION}" = "master" ]; then \
-        git clone --depth 1 https://github.com/eeditiones/tei-publisher-lib.git \
-        && cd tei-publisher-lib \
-        && ant \
-        && cp build/*.xar /usr/local/exist/autodeploy; \
+    git clone --depth 1 https://github.com/eeditiones/tei-publisher-lib.git \
+    && cd tei-publisher-lib \
+    && ant \
+    && cp build/*.xar /usr/local/exist/autodeploy; \
     else \
-        curl -L -o /usr/local/exist/autodeploy/tei-publisher-lib-${PUBLISHER_LIB_VERSION}.xar https://exist-db.org/exist/apps/public-repo/public/tei-publisher-lib-${PUBLISHER_LIB_VERSION}.xar; \
+    curl -L -o /usr/local/exist/autodeploy/tei-publisher-lib-${PUBLISHER_LIB_VERSION}.xar https://exist-db.org/exist/apps/public-repo/public/tei-publisher-lib-${PUBLISHER_LIB_VERSION}.xar; \
     fi
 
 RUN curl -L -o /usr/local/exist/autodeploy/roaster-${ROUTER_VERSION}.xar https://exist-db.org/exist/apps/public-repo/public/roaster-${ROUTER_VERSION}.xar

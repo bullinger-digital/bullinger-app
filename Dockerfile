@@ -34,21 +34,15 @@ ENV PATH ${PATH}:${ANT_HOME}/bin
 
 FROM builder as tei
 
-# add key
-RUN  mkdir -p ~/.ssh && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-
 ARG TEMPLATING_VERSION=1.1.0
 ARG PUBLISHER_LIB_VERSION=3.1.0
 ARG ROUTER_VERSION=1.8.1
 
-# add key
-RUN  mkdir -p ~/.ssh && ssh-keyscan -t rsa gitlab.existsolutions.com >> ~/.ssh/known_hosts
-
-RUN  git clone --depth 1 -b main git@github.com:bullinger-digital/bullinger-app.git \
+RUN  git clone --depth 1 -b main https://github.com/bullinger-digital/bullinger-app.git \
     && cd bullinger-app \
     && ant
 
-RUN  git clone --depth 1 -b main git@github.com:bullinger-digital/bullinger-korpus-tei.git \
+RUN  git clone --depth 1 -b main https://github.com/bullinger-digital/bullinger-korpus-tei.git \
     && cd bullinger-data \
     && ant
 
@@ -71,23 +65,23 @@ ARG HTTPS_PORT=8443
 ARG CONTEXT_PATH=auto
 ARG PROXY_CACHING=false
 ENV JAVA_TOOL_OPTIONS \
-  -Dfile.encoding=UTF8 \
-  -Dsun.jnu.encoding=UTF-8 \
-  -Djava.awt.headless=true \
-  -Dorg.exist.db-connection.cacheSize=${CACHE_MEM:-256}M \
-  -Dorg.exist.db-connection.pool.max=${MAX_BROKER:-20} \
-  -Dlog4j.configurationFile=/exist/etc/log4j2.xml \
-  -Dexist.home=/exist \
-  -Dexist.configurationFile=/exist/etc/conf.xml \
-  -Djetty.home=/exist \
-  -Dexist.jetty.config=/exist/etc/jetty/standard.enabled-jetty-configs \  
-  -Dteipublisher.context-path=${CONTEXT_PATH} \
-  -Dteipublisher.proxy-caching=${PROXY_CACHING} \
-  -XX:+UseG1GC \
-  -XX:+UseStringDeduplication \
-  -XX:+UseContainerSupport \
-  -XX:MaxRAMPercentage=${JVM_MAX_RAM_PERCENTAGE:-75.0} \
-  -XX:+ExitOnOutOfMemoryError
+    -Dfile.encoding=UTF8 \
+    -Dsun.jnu.encoding=UTF-8 \
+    -Djava.awt.headless=true \
+    -Dorg.exist.db-connection.cacheSize=${CACHE_MEM:-256}M \
+    -Dorg.exist.db-connection.pool.max=${MAX_BROKER:-20} \
+    -Dlog4j.configurationFile=/exist/etc/log4j2.xml \
+    -Dexist.home=/exist \
+    -Dexist.configurationFile=/exist/etc/conf.xml \
+    -Djetty.home=/exist \
+    -Dexist.jetty.config=/exist/etc/jetty/standard.enabled-jetty-configs \  
+    -Dteipublisher.context-path=${CONTEXT_PATH} \
+    -Dteipublisher.proxy-caching=${PROXY_CACHING} \
+    -XX:+UseG1GC \
+    -XX:+UseStringDeduplication \
+    -XX:+UseContainerSupport \
+    -XX:MaxRAMPercentage=${JVM_MAX_RAM_PERCENTAGE:-75.0} \
+    -XX:+ExitOnOutOfMemoryError
 
 # pre-populate the database by launching it once and change default pw
 
