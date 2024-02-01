@@ -114,26 +114,6 @@ body {
     background-color: var(--bb-page-bg-color);
 }
 
-pb-page[unresolved]~.splash {
-    visibility: visible;
-    opacity: 1;
-    transition: visibility 0s linear 0s, opacity 300ms;
-}
-.splash {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    visibility: hidden;
-    opacity: 0;
-    background-color: var(--bb-white);
-    background-position: center center;
-    background-size: var(--pb-splash-image-size);
-    background-repeat: no-repeat;
-    transition: visibility 0s linear 300ms, opacity 300ms;
-}
-
 .center-l {
     box-sizing: content-box;
     max-width: 78rem;
@@ -952,9 +932,5 @@ pb-split-list::part(items) {
 }
 
 .logo {
-    background-image: url("../images/bullinger-digital.svg");
-}
-
-.splash {
     background-image: url("../images/bullinger-digital.svg");
 }
