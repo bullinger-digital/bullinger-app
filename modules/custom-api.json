@@ -383,6 +383,54 @@
 				}
 			}
         },
+		"/content/{page}": {
+			"get": {
+				"summary": "Show static content page",
+				"operationId": "vapi:html",
+				"tags": ["content"],
+				"parameters": [
+					{
+						"name": "page",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "lang",
+						"in": "query",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"default": "de"
+						}
+					},
+					{
+						"name": "file",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"default": "static"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Static page",
+						"content": {
+							"text/html": {}
+						}
+					},
+					"404": {
+						"description": "Page content not found",
+						"content": {
+							"text/html": {}
+						}
+					}
+				}
+			}
+		}, 
 		"/api/register/{type}": {
             "get": {
                 "summary": "List register entries",

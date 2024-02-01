@@ -322,3 +322,13 @@ function app:facsimile-source($node as node(), $model as map(*)) {
         ) else ()
 };
 
+declare
+    %templates:wrap
+function app:include-static-content($node as node(), $model as map(*), $page) as node()* {
+    let $source-document := $page || "-" || $model?lang || ".html"
+    let $path := $config:app-root || "/static/" || $source-document
+    return
+        if (not(doc-available($path)))
+        then error((), "The content page could not be found: " || $source-document)
+        else doc($path)//main/node()
+};
