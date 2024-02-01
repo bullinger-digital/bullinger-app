@@ -43,7 +43,7 @@ RUN  git clone --depth 1 -b main https://github.com/bullinger-digital/bullinger-
     && ant
 
 RUN  git clone --depth 1 -b main https://github.com/bullinger-digital/bullinger-korpus-tei.git \
-    && cd bullinger-data \
+    && cd bullinger-korpus-tei \
     && ant
 
 RUN curl -L -o /tmp/roaster-${ROUTER_VERSION}.xar http://exist-db.org/exist/apps/public-repo/public/roaster-${ROUTER_VERSION}.xar

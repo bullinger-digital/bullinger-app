@@ -51,7 +51,7 @@ RUN curl -L -o exist-distribution-${EXIST_VERSION}-unix.tar.bz2 https://github.c
 
 RUN  git clone --depth 1 -b main https://github.com/bullinger-digital/bullinger-korpus-tei.git
 
-RUN cd /workspaces/bullinger-data \
+RUN cd /workspaces/bullinger-korpus-tei \
     && ant \
     && cp build/*.xar /usr/local/exist/autodeploy/zz-bullinger-data-0.1.xar;
 
