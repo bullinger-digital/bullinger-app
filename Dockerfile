@@ -41,17 +41,14 @@ ARG TEMPLATING_VERSION=1.1.0
 ARG PUBLISHER_LIB_VERSION=3.1.0
 ARG ROUTER_VERSION=1.8.1
 
-ARG ACCESS_TOKEN_VALUE1=glpat-VSiN6jvJ_SqVDz23XTVz
-ARG ACCESS_TOKEN_VALUE2=glpat-o77qzsd8YEz5aQQ4M1Kg
-
 # add key
 RUN  mkdir -p ~/.ssh && ssh-keyscan -t rsa gitlab.existsolutions.com >> ~/.ssh/known_hosts
 
-RUN  git clone --depth 1 -b main https://bullinger.tei-publisher.com:${ACCESS_TOKEN_VALUE1}@gitlab.existsolutions.com/bullinger/bullinger-app.git \
+RUN  git clone --depth 1 -b main git@github.com:bullinger-digital/bullinger-app.git \
     && cd bullinger-app \
     && ant
 
-RUN  git clone --depth 1 -b main https://bullinger-data:${ACCESS_TOKEN_VALUE2}@gitlab.existsolutions.com/bullinger/bullinger-data.git \
+RUN  git clone --depth 1 -b main git@github.com:bullinger-digital/bullinger-korpus-tei.git \
     && cd bullinger-data \
     && ant
 
@@ -66,7 +63,7 @@ COPY --from=tei /tmp/*.xar /exist/autodeploy/
 
 WORKDIR /exist
 
-ARG ADMIN_PASS=dm18IWqn0OQBfSh5KubR
+ARG ADMIN_PASS=${ADMIN_PASS}
 
 ARG HTTP_PORT=8080
 ARG HTTPS_PORT=8443
