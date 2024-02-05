@@ -83,7 +83,7 @@
                 <param name="lang" value=".//langUsage"/>
                 <param name="printed" value=".//listBibl"/>
                 <param name="hbbw-no" value="$parameters?hbbw-no"/>
-                <param name="hidden" value="let $hbbw := $parameters?hbbw-no return if(string-length($hbbw) &gt; 0) then () else ('display:none;')"/>
+                <param name="hidden" value="let $hbbw := $parameters?hbbw-no return if(string-length($hbbw) &gt; 0 and $hbbw != 'keine') then () else ('display:none;')"/>
                 <pb:set-param name="subtype" value="metadata"/>
                 <pb:template xmlns="" xml:space="preserve"><h2>Metadata</h2>
 <div id="sourceDesc">
