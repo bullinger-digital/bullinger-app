@@ -246,9 +246,9 @@
                 </elementSpec>
                 <elementSpec ident="persName" mode="add">
                     <model predicate="$parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
-            <param name="name" value="let $ref := ./@ref  let $persName := $parameters?persons/persName[@xml:id = $ref] return   $persName/forename/text() || &#34; &#34; || $persName/surname/text()"/>
+            <param name="name" value="let $ref := ./@ref  let $persName := $parameters?persons/persName[@xml:id = $ref] return   &lt;a href=&#34;./persons/{fn:upper-case($ref)}&#34;&gt;{$persName/forename/text() || &#34; &#34; || $persName/surname/text()}&lt;/a&gt;"/>
             <param name="place" value="let $placeref := ../placeName/@source  return if($parameters?places[@xml:id=$placeref])  then ( (&#34;, &#34;, $parameters?places[@xml:id=$placeref]) ) else ()"/>
-            <pb:template xmlns="" xml:space="preserve">[[name]][[place]]</pb:template>
+            <pb:template xmlns="" xml:space="preserve"><span>[[name]][[place]]</span></pb:template>
         </model>
                     <model predicate="@ref" behaviour="inline" cssClass="person">
             <desc>persName in TEI Text</desc>
