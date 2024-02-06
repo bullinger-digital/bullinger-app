@@ -81,7 +81,7 @@
                 <param name="correspAction" value=".//correspAction"/>
                 <param name="msDesc" value=".//msDesc"/>
                 <param name="lang" value=".//langUsage"/>
-                <param name="printed" value=".//listBibl"/>
+                <param name="printed" value="if (exists(.//listBibl/bibl[@type='Gedruckt'])) then .//listBibl else ()"/>
                 <param name="hbbw-no" value="$parameters?hbbw-no"/>
                 <param name="hbbw-hidden" value="let $hbbw := $parameters?hbbw-no return if(string-length($hbbw) &gt; 0) then () else ('display:none;')"/>
                 <pb:set-param name="subtype" value="metadata"/>
@@ -203,11 +203,12 @@
   <span slot="alternate">Quelle: [[content]]</span>
 </pb-popover></pb:template>
         </model>
-                    <model predicate="$parameters?view='metadata' and @type='Gedruckt' and @subtype='Erwähnung'" behaviour="listItem">
+                    <model predicate="$parameters?view='metadata' and @type='Gedruckt' and @subtype!='Gedruckt' and string-length(@subtype) &gt; 0" behaviour="listItem">
             <param name="content" value="./title/text()"/>
-            <pb:template xmlns="" xml:space="preserve">Erwähnung: [[content]]</pb:template>
+            <param name="subtype" value="@subtype"/>
+            <pb:template xmlns="" xml:space="preserve">[[subtype]]: [[content]]</pb:template>
         </model>
-                    <model predicate="$parameters?view='metadata' and @type='Gedruckt' and not(@subtype)" behaviour="listItem"/>
+                    <model predicate="$parameters?view='metadata' and @type='Gedruckt'" behaviour="listItem"/>
                     <model predicate="parent::listBibl" behaviour="listItem"/>
                 </elementSpec>
                 <elementSpec ident="repository" mode="add">
@@ -271,9 +272,9 @@
                 <elementSpec ident="personGrp" mode="add"/>
                 <elementSpec ident="listBibl" mode="change">
                     <model predicate="$parameters?view='metadata'" behaviour="block">
-            <param name="bibl" value="bibl"/>
+            <param name="printed" value="let $printed := (for $b in bibl where $b/@type = 'Gedruckt' order by fn:starts-with($b/title/text(), 'HBBW') descending return $b)  return $printed"/>
             <pb:template xmlns="" xml:space="preserve"><div>Gedruckt</div>
-<div><ul>[[bibl]]</ul></div></pb:template>
+<div><ul>[[printed]]</ul></div></pb:template>
         </model>
                     <model predicate="bibl" behaviour="list">
             <param name="content" value="bibl"/>
