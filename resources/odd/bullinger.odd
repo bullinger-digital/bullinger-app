@@ -83,6 +83,7 @@
                 <param name="lang" value=".//langUsage"/>
                 <param name="printed" value="if (exists(.//listBibl/bibl[@type='Gedruckt'])) then .//listBibl else ()"/>
                 <param name="hbbw-no" value="$parameters?hbbw-no"/>
+                <param name="hbbw-no-text" value="let $hbbw-printed := .//listBibl/bibl[@type='Gedruckt']/title/text()  return if(fn:starts-with($hbbw-printed, 'HBBW ')) then ($hbbw-printed) else ()"/>
                 <param name="hbbw-hidden" value="let $hbbw := $parameters?hbbw-no return if(string-length($hbbw) &gt; 0) then () else ('display:none;')"/>
                 <pb:set-param name="subtype" value="metadata"/>
                 <pb:template xmlns="" xml:space="preserve"><h2>Metadata</h2>
@@ -93,7 +94,7 @@
   [[printed]]
   <div style="[[hbbw-hidden]]">
     <div>HBBW-Briefnummer</div>
-    <div>[[hbbw-no]]</div>
+    <div><a target="_blank" href="http://teoirgsed.uzh.ch/SedWEB.cgi?Alias=Briefe&amp;Lng=1&amp;aheight=910&amp;PrjName=Bullinger+-+Briefwechsel&amp;fld_418=[[hbbw-no]]">[[hbbw-no-text]]</a></div>
   </div>
 </div></pb:template>
             </model>
@@ -130,7 +131,7 @@
                     <model predicate="$parameters?view='metadata'" behaviour="inline">
             <desc>Metadata Rendering (title, metadata, regest, incipit)</desc>
             <param name="content" value="teiHeader"/>
-            <pb:set-param name="hbbw-no" value="if(./@source/string() = 'HBBW' and string-length(./@n/string()) &gt; 0) then ( string-join((./@source/string(), &#34;Nr. &#34; || ./@n/string()),', ')) else ()"/>
+            <pb:set-param name="hbbw-no" value="if(./@source/string() = 'HBBW' and string-length(./@n/string()) &gt; 0) then (./@n/string()) else ()"/>
             <pb:set-param name="persons" value="let $persons := doc('/db/apps/bullinger-data/data/index/persons.xml') return     for $person in .//teiHeader//persName[@ref]      group by $persref := $person/@ref     return         id($persref,$persons)/ancestor::person"/>
             <pb:set-param name="orgs" value="let $orgs := doc('/db/apps/bullinger-data/data/index/institutions.xml') return  for $org in .//teiHeader//orgName[@ref]  group by $orgref := $org/@ref return id($orgref,$orgs)"/>
             <pb:set-param name="roles" value="let $roles := doc('/db/apps/bullinger-data/data/index/groups.xml')  return  for $role in .//teiHeader//roleName[@ref] group by $roleref := $role/@ref return id($roleref,$roles)"/>
