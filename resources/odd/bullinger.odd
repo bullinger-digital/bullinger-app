@@ -85,6 +85,10 @@
                 <param name="hbbw-no" value="$parameters?hbbw-no"/>
                 <param name="hbbw-no-text" value="let $hbbw-printed := .//listBibl/bibl[@type='Gedruckt']/title/text()  return if(fn:starts-with($hbbw-printed, 'HBBW ')) then ($hbbw-printed) else ()"/>
                 <param name="hbbw-hidden" value="let $hbbw := $parameters?hbbw-no return if(string-length($hbbw) &gt; 0) then () else ('display:none;')"/>
+                <param name="links-parents-hidden" value="if (exists(.//correspContext/ref[@type='parent'])) then () else ('display:none;')" />
+                <param name="links-children-hidden" value="if (exists(.//correspContext/ref[@type='child'])) then () else ('display:none;')" />
+                <param name="links-parents" value=".//correspContext/ref[@type='parent']" />
+                <param name="links-children" value=".//correspContext/ref[@type='child']" />
                 <pb:set-param name="subtype" value="metadata"/>
                 <pb:template xmlns="" xml:space="preserve"><h2>Metadata</h2>
 <div id="sourceDesc">
@@ -95,6 +99,14 @@
   <div style="[[hbbw-hidden]]">
     <div>HBBW-Briefnummer</div>
     <div><a target="_blank" href="http://teoirgsed.uzh.ch/SedWEB.cgi?Alias=Briefe&amp;Lng=1&amp;aheight=910&amp;PrjName=Bullinger+-+Briefwechsel&amp;fld_418=[[hbbw-no]]">[[hbbw-no-text]]</a></div>
+  </div>
+  <div style="[[links-parents-hidden]]">
+    <div>Dieser Eintrag verweist auf</div>
+    <div>[[links-parents]]</div>
+  </div>
+  <div style="[[links-children-hidden]]">
+    <div>Verweise auf diesen Eintrag</div>
+    <div>[[links-children]]</div>
   </div>
 </div></pb:template>
             </model>
@@ -358,6 +370,12 @@
             <param name="language" value="@xml:lang/string()"/>
             <pb:template xmlns="" xml:space="preserve"><span class="lang-[[language]]">[[content]]</span></pb:template>
         </model>
+                </elementSpec>
+                <elementSpec ident="ref" mode="change">
+                    <model predicate="$parameters?view='metadata'" behaviour="block">
+                        <param name="nr" value="fn:replace(@target, 'file', '')"/>
+                        <pb:template xmlns="" xml:space="preserve"><a href="file[[nr]]">[[nr]]</a></pb:template>
+                    </model>
                 </elementSpec>
             </schemaSpec>
         </body>
