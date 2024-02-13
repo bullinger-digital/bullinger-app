@@ -160,3 +160,10 @@ a, a:link, a:visited, a:hover, a:active {
     text-decoration: none;
     color: var(--bb-beige);
 }
+
+.metadata-info-icon {
+    width:18px;
+    margin-left:2px;
+    margin-top:-4px;
+    opacity:0.5;
+}
