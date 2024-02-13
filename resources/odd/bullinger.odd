@@ -83,7 +83,7 @@
                 <param name="lang" value=".//langUsage"/>
                 <param name="printed" value="if (exists(.//listBibl/bibl[@type='Gedruckt'])) then .//listBibl else ()"/>
                 <param name="hbbw-no" value="$parameters?hbbw-no"/>
-                <param name="hbbw-no-text" value="let $hbbw-printed := .//listBibl/bibl[@type='Gedruckt']/title/text()  return if(fn:starts-with($hbbw-printed, 'HBBW ')) then ($hbbw-printed) else ()"/>
+                <param name="hbbw-no-text" value="let $hbbw-printed := .//listBibl/bibl[@type='Gedruckt']/title[starts-with(text(), 'HBBW ')]/text()  return if(exists($hbbw-printed)) then ($hbbw-printed) else ()"/>
                 <param name="hbbw-hidden" value="let $hbbw := $parameters?hbbw-no return if(string-length($hbbw) &gt; 0) then () else ('display:none;')"/>
                 <param name="links-parents-hidden" value="if (exists(.//correspContext/ref[@type='parent'])) then () else ('display:none;')" />
                 <param name="links-children-hidden" value="if (exists(.//correspContext/ref[@type='child'])) then () else ('display:none;')" />
