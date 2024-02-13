@@ -373,7 +373,7 @@
         </model>
                 </elementSpec>
                 <elementSpec ident="ref" mode="change">
-                    <model predicate="$parameters?view='metadata'" behaviour="block">
+                    <model predicate="$parameters?view='metadata'" behaviour="inline">
                         <param name="nr" value="fn:replace(@target, 'file', '')"/>
                         <pb:template xmlns="" xml:space="preserve"><a href="file[[nr]]">[[nr]]</a></pb:template>
                     </model>
