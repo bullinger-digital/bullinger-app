@@ -33,6 +33,76 @@ declare function api:lookup($name as xs:string, $arity as xs:integer) {
         ()
     }
 };
+(: 
+declare function api:timeline($request as map(*)) {
+    let $entries := session:get-attribute($config:session-prefix || '.hits')
+    let $datedEntries := filter($entries, function($entry) {
+        if (ft:field($entry, "type") = "Brief") then
+            let $date := ft:field($entry, "date", "xs:date")
+            return
+                exists($date) and year-from-date($date) != 1000
+        else
+            ()
+    })
+    let $undatedEntries := $entries except $datedEntries
+    return
+        map:merge((
+            for $entry in $datedEntries
+            group by $date := ft:field($entry, "date", "xs:date")
+            return
+                map:entry(format-date($date, "[Y0001]-[M01]-[D01]"), map {
+                    "count": count($entry),
+                    "info": api:corresp-titles($entry)
+                }),
+            if ($undatedEntries) then
+                map:entry("?", map {
+                    "count": count($undatedEntries),
+                    "info": api:corresp-titles($undatedEntries)
+                })
+            else
+                ()
+        ))
+}; :)
+
+declare function api:corresp-timeline($request as map(*)) {
+    let $id := xmldb:decode($request?parameters?id)
+    let $file := doc($config:data-root || "/letters/" || $id || ".xml")
+    let $senders := ($file//tei:correspAction[@type='sent']/tei:persName/@ref/string())[1] (: Todo: support multiple :)
+    let $receivers := ($file//tei:correspAction[@type='received']/tei:persName/@ref/string())[1]
+
+    let $entries := for $letter in collection($config:data-root || "/letters/")
+    where (
+        $letter//tei:correspAction[@type='sent']/tei:persName[@ref=$senders] and
+        $letter//tei:correspAction[@type='received']/tei:persName[@ref=$receivers]
+    ) or (
+        $letter//tei:correspAction[@type='sent']/tei:persName[@ref=$receivers] and
+        $letter//tei:correspAction[@type='received']/tei:persName[@ref=$senders]
+    )
+    return $letter
+
+    let $grouped := for $entry in $entries
+        let $date := $entry//tei:correspAction[@type='sent']/tei:date/@when
+        let $key := if(exists($date) and year-from-date($date) != 1000)
+            then $date
+            else "?"
+    group by $key
+    return map:entry($key, map {
+        "count": count($entry),
+        "info": array {
+            for $x in $entry
+            let $senderId := ($x//tei:correspAction[@type='sent']/tei:persName/@ref/string())[1]
+            let $receiverId := ($x//tei:correspAction[@type='received']/tei:persName/@ref/string())[1]
+            
+            let $sender := id($senderId, $config:persons)
+            let $receiver := id($receiverId, $config:persons)
+
+            return <a href="{$config:context-path}/{$x/tei:TEI/@xml:id}" part="tooltip-link">{$sender/tei:forename/string() || " " || $sender/tei:surname/string() || " an " || $receiver/tei:forename/string() || " " || $receiver/tei:surname/string()}</a>
+        }
+    })
+
+    return map:merge($grouped)
+};
+
 
 declare function api:persons-all-list($request as map(*)) {
     (: let $log := util:log("info","api:persons-all-list")  :)

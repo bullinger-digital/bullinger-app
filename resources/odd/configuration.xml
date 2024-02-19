@@ -8,15 +8,19 @@
 
     "mode" is the mode identification string passed to pmu:process.
     The "odd" is defined by its name, without the .odd suffix.
---><modules>
+-->
+<modules>
     <!-- General latex extension functions -->
-    <!--output mode="latex">
+    <!--output
+    mode="latex">
         <property name="class">"article"</property>
         <property name="section-numbers">false()</property>
         <property name="font-size">"12pt"</property>
-        <module uri="http://www.tei-c.org/tei-simple/xquery/ext-latex" prefix="ext-latex" at="xmldb:exist:///db/apps/tei-publisher/modules/ext-latex.xql"/>
+        <module uri="http://www.tei-c.org/tei-simple/xquery/ext-latex" prefix="ext-latex"
+    at="xmldb:exist:///db/apps/tei-publisher/modules/ext-latex.xql"/>
     </output-->
-    <!--output mode="web" odd="documentation">
-        <module uri="http://www.tei-c.org/tei-simple/xquery/ext-html" prefix="ext-html" at="xmldb:exist:///db/apps/tei-publisher/modules/ext-html.xql"/>
-    </output-->
+    <output>
+        <module uri="http://teipublisher.com/ext-common" prefix="ext"
+            at="xmldb:exist:///db/apps/bullinger/modules/ext-common.xql" />
+    </output>
 </modules>
