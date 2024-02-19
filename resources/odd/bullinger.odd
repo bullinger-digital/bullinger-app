@@ -62,10 +62,10 @@
             <model behaviour="section" pb:mode="header">
                 <desc>TEI Title</desc>
                 <param name="level" value="1"/>
-                <param name="sender" value="let $items := for $item in .//correspAction[@type = &#34;sent&#34;]/(persName,orgName,roleName)      return typeswitch ($item) case element(persName) return let $persName := $parameters?persons/persName[@xml:id = $item/@ref] return $persName/forename || &#34; &#34; || $persName/surname case element(orgName) return $parameters?orgs[@xml:id = $item/@ref]/name[@xml:lang='de'][@type=$item/@type] case element(roleName) return $parameters?roles[@xml:id = $item/@ref]/form[@xml:lang=&#34;de&#34;][@type=$item/@type]             default                 return () return string-join($items, ', ')"/>
-                <param name="receiver" value="let $items :=     for $item in .//correspAction[@type = &#34;received&#34;]/*     return         typeswitch ($item)             case element(persName)                 return                     let $persName := $parameters?persons/persName[@xml:id = $item/@ref]                     return $persName/forename || &#34; &#34; || $persName/surname             case element(orgName)                 return $parameters?orgs[@xml:id = $item/@ref]             case element(roleName)                 return $parameters?roles[@xml:id = $item/@ref]/form[@xml:lang=&#34;de&#34;][@type=$item/@type]             default                 return () return string-join($items, ', ')"/>
-                <param name="date" value="let $date := .//correspAction[@type = &#34;sent&#34;]/date return if(exists($date/@when)) then (format-date($date/@when, '[D1o] [MNn] [Y]', 'de', (), ())) else if (exists($date/@notBefore) and exists($date/@notAfter)) then (&#34;Zwischen &#34; || format-date($date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) || &#34; und &#34; || format-date($date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ()))  else if(exists($date/@notBefore)) then (&#34;Nach &#34; || format-date($date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) ) else if(exists($date/@notAfter)) then (&#34;Vor &#34; || format-date($date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ())) else (&#34;Unbekannt&#34;)"/>
-                <param name="place" value="let $place-id := .//correspAction[@type = 'sent']/placeName/@source return $parameters?places[@xml:id=$place-id]"/>
+                <param name="sender" value="ext:correspondents-by-letter(., 'sent')"/>
+                <param name="receiver" value="ext:correspondents-by-letter(., 'received')"/>
+                <param name="date" value="ext:date-by-letter(.)"/>
+                <param name="place" value="ext:place-by-letter(.)"/>
                 <param name="type" value="../@type/string()"/>
                 <pb:template xmlns="" xml:space="preserve"><h1><span><span style="color:var(--bb-beige);">[[sender]]</span> an <span style="color:var(--bb-beige);">[[receiver]]</span></span></h1>
 <div class="subtitle"><iron-icon id="date-range" icon="date-range"/>[[date]] <iron-icon id="map-near-me" icon="maps:near-me"/>[[place]] <span class="doc-type">[[type]]</span></div></pb:template>
@@ -179,18 +179,18 @@
                     <modelSequence predicate="@type = &#34;sent&#34; and $parameters?view='metadata'">
             <model predicate="exists(date/note)" behaviour="block">
                 <desc>Date with a Note</desc>
-                <param name="content" value="if(exists(./date/@when)) then (format-date(./date/@when, '[D1o] [MNn] [Y]', 'de', (), ())) else if (exists(./date/@notBefore) and exists(./date/@notAfter)) then (&#34;Zwischen &#34; || format-date(./date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) || &#34; und &#34; || format-date(./date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ()))  else if(exists(./date/@notBefore)) then (&#34;Nach &#34; || format-date(./date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) ) else if(exists(./date/@notAfter)) then (&#34;Vor &#34; || format-date(./date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ())) else (&#34;Unbekannt&#34;)"/>
+                <param name="content" value="ext:date-by-letter(.)"/>
                 <param name="note" value="./date/note/text()"/>
                 <pb:template xmlns="" xml:space="preserve"><div>Date</div>
-<div><pb-popover>
-    <span slot="default">[[content]]</span>
+<div>[[content]]<pb-popover>
+    <span slot="default"><iron-icon class="metadata-info-icon" title="Hinweis zum Datum" id="info-outline" icon="info-outline"/></span>
     <span slot="alternate">[[note]]</span>
   </pb-popover></div>
 </pb:template>
             </model>
             <model predicate="not(exists(date/note))" behaviour="block">
                 <desc>Date without Note</desc>
-                <param name="content" value="if(exists(./date/@when)) then (format-date(./date/@when, '[D1o] [MNn] [Y]', 'de', (), ())) else if (exists(./date/@notBefore) and exists(./date/@notAfter)) then (&#34;Zwischen &#34; || format-date(./date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) || &#34; und &#34; || format-date(./date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ()))  else if(exists(./date/@notBefore)) then (&#34;Nach &#34; || format-date(./date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) ) else if(exists(./date/@notAfter)) then (&#34;Vor &#34; || format-date(./date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ())) else (&#34;Unbekannt&#34;)"/>
+                <param name="content" value="ext:date-by-letter(.)"/>
                 <pb:template xmlns="" xml:space="preserve"><div>Date</div>
 <div>[[content]]</div>
 </pb:template>
