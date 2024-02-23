@@ -48,6 +48,18 @@ declare function ext:date-by-letter($item) {
         "Unbekannt"
 };
 
+declare function ext:format-date($date as xs:string?){
+    if(string-length($date) = 0) 
+    then ()
+    else if(matches($date, '^\d{4}$'))
+    then $date
+    else if (matches($date, '^\d{4}-\d{2}$')) then
+        format-date(xs:date($date || '-01'), '[MNn] [Y]', "de", (), ())
+    else
+        format-date(xs:date($date), '[D]. [MNn] [Y]', "de", (), ())
+};
+
+
 declare function ext:place-by-letter($letter) {
     let $place-id := $letter//correspAction[@type = 'sent']/placeName/@source
     return $config:localities//place[@xml:id=$place-id]

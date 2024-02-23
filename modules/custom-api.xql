@@ -16,6 +16,7 @@ import module namespace cr="jinntec.de/cleanup-register-data" at "util/cleanup-r
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace facets="http://teipublisher.com/facets" at "facets.xql";
 
+import module namespace ext="http://teipublisher.com/ext-common" at "ext.xql";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
 
 declare variable $api:QUERY_OPTIONS := map {
@@ -560,7 +561,7 @@ declare function api:register-person-detail($request as map(*)) {
                         let $senders := api:get-persons-from-correspAction($letter//tei:correspAction[@type="sent"])
                         let $send-place := id($letter//tei:correspAction[@type="sent"]/tei:placeName/@source/string(), $config:localities)
                         let $send-place-name := api:get-place-name($send-place)
-                        let $date := api:handle-date($letter//tei:correspAction[@type="sent"]/tei:date)
+                        let $date := ext:date-by-letter($letter)
                         let $recipients := api:get-persons-from-correspAction($letter//tei:correspAction[@type="received"])
                         let $recipients-place := id($letter//tei:correspAction[@type="received"]/tei:placeName/@source/string(), $config:localities)
                         let $recipients-place-name := api:get-place-name($recipients-place)
@@ -631,32 +632,6 @@ declare function api:get-place-name($place as element(tei:place)?){
     else ($place/tei:country/text())
 };
 
-(: declare function api:handle-date($date as element(tei:date)){ :)
-declare function api:handle-date($date){    
-    if($date/@when)
-        then ( api:format-date($date/@when) ) 
-    else if($date/@notBefore and $date/@notAfter)
-        then(
-            "Zwischen " || api:format-date($date/@notBefore/string()) || " und " || api:format-date($date/@notAfter/string())
-        )
-    else if($date/@notBefore)
-    then ( "Nicht vor " || api:format-date($date/@notBefore/string()))
-    else if($date/@notAfter)
-    then ( "Nicht nach " || api:format-date($date/@notAfter/string()))    
-    else ()
-};
-
-declare function api:format-date($date as xs:string?){
-    if(string-length($date) = 0) 
-    then ()
-    else if(matches($date, '^\d{4}$'))
-    then $date
-    else if (matches($date, '^\d{4}-\d{2}$')) then
-        format-date(xs:date($date || '-01'), '[MNn] [Y]', "de", (), ())
-    else
-        format-date(xs:date($date), '[D]. [MNn] [Y]', "de", (), ())
-};
-
 declare function api:register-locality-detail($request as map(*)) {    
     let $key := $request?parameters?key
     let $sortBy := $request?parameters?order
@@ -683,7 +658,7 @@ declare function api:register-locality-detail($request as map(*)) {
                         (: let $log := util:log("info", ("api:locality-is-sender $senders: ",$senders)) :)
                         let $send-place := id($letter//tei:correspAction[@type="sent"]/tei:placeName/@source/string(), $config:localities)
                         let $send-place-name := api:get-place-name($send-place)
-                        let $date := api:handle-date($letter//tei:correspAction[@type="sent"]/tei:date)
+                        let $date := ext:date-by-letter($letter)
                         let $recipients := api:get-persons-from-correspAction($letter//tei:correspAction[@type="received"])
                         let $recipients-place := id($letter//tei:correspAction[@type="received"]/tei:placeName/@source/string(), $config:localities)
                         let $recipients-place-name := api:get-place-name($recipients-place)
