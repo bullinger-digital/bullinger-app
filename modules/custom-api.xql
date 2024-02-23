@@ -41,7 +41,8 @@ declare function api:persons-all-list($request as map(*)) {
     let $letterParam := $request?parameters?category
     let $limit := $request?parameters?limit
     (: let $log := util:log("info","api:names-all-list $search:"||$search || " - $letterParam:"||$letterParam||" - $limit:" || $limit )  :)
-    let $items :=     
+
+    let $searchitems :=     
             if ($search and $search != '') 
             then (
                 $config:persons//tei:person[ft:query(., 'name:(' || $search || '*)')]
@@ -52,6 +53,8 @@ declare function api:persons-all-list($request as map(*)) {
                     "filter-rewrite": "yes"
                 })]
             )
+
+    let $items := $searchitems[fn:sum(ft:field(., 'sent-count', 'xs:integer'), ft:field(., 'received-count', 'xs:integer')) > 0]
 
     (: let $log := util:log("info", map {
         "function":"api:names-all-list $search:",
@@ -107,6 +110,9 @@ declare function api:output-name($list, $letter as xs:string, $search as xs:stri
     array {
         for $item in $list
             let $name := ft:field($item, 'name')[1]
+            (: Todo: we could now also get the sent and received counts like this: 
+            let $sent-count := ft:field($item, 'sent-count', 'xs:integer')[1]
+            let $received-count := ft:field($item, 'received-count', 'xs:integer')[1] :)
             return
             if(string-length($name)>0)
             then (
