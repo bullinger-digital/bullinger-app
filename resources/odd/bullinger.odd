@@ -267,10 +267,11 @@
                     <model predicate="@ref" behaviour="inline" cssClass="person">
             <desc>persName in TEI Text</desc>
             <param name="content" value="./text()"/>
-            <param name="label" value="let $ref := ./@ref    let $persParam := $parameters?persons/persName[@xml:id = $ref]  let $name := $persParam/forename/text() || &#34; &#34; || $persParam/surname/text() return   &lt;a href=&#34;./persons/{$ref}&#34;&gt;{$name}&lt;/a&gt;"/>
+            <param name="pers-id" value="fn:upper-case(./@ref)" />
+            <param name="label" value="let $ref := ./@ref let $persParam := $parameters?persons/persName[@xml:id = $ref]  return $persParam/forename/text() || &#34; &#34; || $persParam/surname/text()"/>
             <pb:template xmlns="" xml:space="preserve"><pb-popover>
   <span slot="default">[[content]]</span>
-  <span slot="alternate">[[label]]</span>
+  <span slot="alternate"><a href="./persons/[[pers-id]]">[[label]]</a></span>
 </pb-popover></pb:template>
         </model>
                     <model behaviour="inline" cssClass="person"/>
