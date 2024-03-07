@@ -40,7 +40,9 @@
     <text>
         <body>
             <schemaSpec start="TEI teiCorpus" ident="bullinger" source="teipublisher.odd">
-               
+                <elementSpec ident="zone" mode="change">
+                    <model behaviour="omit"/>
+                </elementSpec>
             <elementSpec ident="graphic" mode="change">
                     <model predicate="$parameters?view = &#34;facsimile&#34;" behaviour="inline">
             <param name="facs" value="let $url := substring-before(@url, '/full/max/0/default.jpg') return $url"/>
@@ -83,7 +85,7 @@
                 <param name="lang" value=".//langUsage"/>
                 <param name="printed" value="if (exists(.//listBibl/bibl[@type='Gedruckt'])) then .//listBibl else ()"/>
                 <param name="hbbw-no" value="$parameters?hbbw-no"/>
-                <param name="hbbw-no-text" value="let $hbbw-printed := .//listBibl/bibl[@type='Gedruckt']/title[starts-with(text(), 'HBBW ')]/text()  return if(exists($hbbw-printed)) then ($hbbw-printed) else ()"/>
+                <param name="hbbw-band" value="$parameters?hbbw-band"/>
                 <param name="hbbw-hidden" value="let $hbbw := $parameters?hbbw-no return if(string-length($hbbw) &gt; 0) then () else ('display:none;')"/>
                 <param name="links-parents-hidden" value="if (exists(.//correspContext/ref[@type='parent'])) then () else ('display:none;')" />
                 <param name="links-children-hidden" value="if (exists(.//correspContext/ref[@type='child'])) then () else ('display:none;')" />
@@ -98,7 +100,7 @@
   [[printed]]
   <div style="[[hbbw-hidden]]">
     <div>HBBW-Briefnummer</div>
-    <div><a target="_blank" href="http://teoirgsed.uzh.ch/SedWEB.cgi?Alias=Briefe&amp;Lng=1&amp;aheight=910&amp;PrjName=Bullinger+-+Briefwechsel&amp;fld_418=[[hbbw-no]]">[[hbbw-no-text]]</a></div>
+    <div><a target="_blank" href="http://teoirgsed.uzh.ch/SedWEB.cgi?Alias=Briefe&amp;Lng=1&amp;aheight=910&amp;PrjName=Bullinger+-+Briefwechsel&amp;fld_418=[[hbbw-no]]">Band [[hbbw-band]], Nr. [[hbbw-no]]</a></div>
   </div>
   <div style="[[links-parents-hidden]]">
     <div>Dieser Eintrag verweist auf</div>
@@ -143,7 +145,8 @@
                     <model predicate="$parameters?view='metadata'" behaviour="inline">
             <desc>Metadata Rendering (title, metadata, regest, incipit)</desc>
             <param name="content" value="teiHeader"/>
-            <pb:set-param name="hbbw-no" value="if(./@source/string() = 'HBBW' and string-length(./@n/string()) &gt; 0) then (./@n/string()) else ()"/>
+            <pb:set-param name="hbbw-no" value="if(fn:starts-with(./@source/string(), 'HBBW') and string-length(./@n/string()) &gt; 0) then (./@n/string()) else ()"/>
+            <pb:set-param name="hbbw-band" value="if(fn:starts-with(./@source/string(), 'HBBW-')) then (fn:substring-after(./@source/string(), '-')) else ()"/>
             <pb:set-param name="persons" value="let $persons := doc('/db/apps/bullinger-data/data/index/persons.xml') return     for $person in .//teiHeader//persName[@ref]      group by $persref := $person/@ref     return         id($persref,$persons)/ancestor::person"/>
             <pb:set-param name="orgs" value="let $orgs := doc('/db/apps/bullinger-data/data/index/institutions.xml') return  for $org in .//teiHeader//orgName[@ref]  group by $orgref := $org/@ref return id($orgref,$orgs)"/>
             <pb:set-param name="roles" value="let $roles := doc('/db/apps/bullinger-data/data/index/groups.xml')  return  for $role in .//teiHeader//roleName[@ref] group by $roleref := $role/@ref return id($roleref,$roles)"/>
