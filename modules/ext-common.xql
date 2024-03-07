@@ -37,26 +37,28 @@ declare function ext:date-by-letter($item) {
     return if(fn:string-length($date/text()) > 0) then
         $date/text()
     else if(exists($date/@when)) then
-        format-date($date/@when, '[D1o] [MNn] [Y]', 'de', (), ())
+        ext:format-date($date/@when)
     else if (exists($date/@notBefore) and exists($date/@notAfter)) then
-        "Zwischen " || format-date($date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ()) || " und " || format-date($date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ())
+        "Zwischen " || ext:format-date($date/@notBefore) || " und " || ext:format-date($date/@notAfter)
     else if(exists($date/@notBefore)) then
-        "Nach " || format-date($date/@notBefore, '[D1o] [MNn] [Y]', 'de', (), ())
+        "Nach " || ext:format-date($date/@notBefore)
     else if(exists($date/@notAfter)) then
-        "Vor " || format-date($date/@notAfter, '[D1o] [MNn] [Y]', 'de', (), ())
+        "Vor " || ext:format-date($date/@notAfter)
     else
         "Unbekannt"
 };
 
 declare function ext:format-date($date as xs:string?){
-    if(string-length($date) = 0) 
-    then ()
-    else if(matches($date, '^\d{4}$'))
-    then $date
+    if(string-length($date) = 0) then
+        ()
+    else if(matches($date, '^\d{4}$')) then
+        $date
     else if (matches($date, '^\d{4}-\d{2}$')) then
         format-date(xs:date($date || '-01'), '[MNn] [Y]', "de", (), ())
-    else
+    else if (matches($date, '^\d{4}-\d{2}-\d{2}$')) then
         format-date(xs:date($date), '[D]. [MNn] [Y]', "de", (), ())
+    else
+        $date
 };
 
 
