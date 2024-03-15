@@ -46,6 +46,7 @@ body {
     --pb-color-focus: #f6a623;
     --pb-annotation-stripes-light: #e0e0ef;
     --pb-annotation-stripes-dark: #50505f;
+    --pb-annotation-selection: #f9ea7643;
     --pb-drawer-background-color: var(--pb-color-inverse);
     --pb-menubar-background-color: #35424b;
     --pb-menubar-color: var(--pb-color-inverse);
@@ -414,6 +415,17 @@ pb-drawer {
     text-align: right;
     padding-left: 1em;
     vertical-align: middle;
+}
+
+.facets pb-combo-box {
+    margin-top: .5rem;
+    margin-bottom: 1.5rem;
+    display: block;
+}
+
+.facets pb-combo-box input::placeholder {
+    font-family: var(--pb-heading-font-family);
+    font-weight: var(--pb-heading-font-weight);
 }
 
 .gitlab img {

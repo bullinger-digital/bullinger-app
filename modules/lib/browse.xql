@@ -56,7 +56,7 @@ function app:clear-facets($node as node(), $model as map(*)) {
 declare 
     %templates:wrap
     %templates:default("field", "text")
-    %templates:default("sort", "title")
+    %templates:default("sort", "category")
 function app:form($node as node(), $model as map(*), $field as xs:string, $sort as xs:string) {
     map {
         "field": $field,
@@ -80,7 +80,7 @@ declare function app:parent-collection($node as node(), $model as map(*)) {
 declare
     %templates:wrap
     %templates:default("start", 1)
-    %templates:default("per-page", 20)
+    %templates:default("per-page", 10)
 function app:browse($node as node(), $model as map(*), $start as xs:int, $per-page as xs:int, $filter as xs:string?) {
     let $total := count($model?all)
     let $start :=
@@ -117,7 +117,7 @@ function app:short-header($node as node(), $model as map(*)) {
         let $work := root($model("work"))/*
         let $relPath := config:get-identifier($work)
         return
-            try {
+            (: try { :)
                 let $config := tpu:parse-pi(root($work), (), ())
                 let $header :=
                     $pm-config:web-transform(nav:get-header($model?config, $work), map {
@@ -129,10 +129,10 @@ function app:short-header($node as node(), $model as map(*)) {
                         $header
                     else
                         <a href="{$relPath}">{util:document-name($work)}</a>
-            } catch * {
-                <a href="{$relPath}">{util:document-name($work)}</a>,
-                <p class="error">Failed to output document metadata: {$err:description}</p>
-            }
+            (: } catch * { :)
+                (: <a href="{$relPath}">{util:document-name($work)}</a>,
+                <p class="error">Failed to output document metadata: {$err:description}</p> :)
+            (: } :)
 };
 
 declare function app:download-link($node as node(), $model as map(*), $mode as xs:string?) {
@@ -191,6 +191,7 @@ declare function app:show-hits($node as node(), $model as map(*)) {
         let $matches := $field//exist:match
         return
             <div class="matches">
+                <div class="count"><pb-i18n key="browse.items" options='{{"count": {count($matches)}}}'></pb-i18n></div>
                 {
                     for $match in subsequence($matches, 1, 5)
                     let $config := <config width="60" table="no"/>

@@ -73,8 +73,9 @@ declare %private function sapi:show-hits($request as map(*), $hits as item()*, $
     let $expanded := util:expand($hit, "add-exist-id=all")
     let $docId := config:get-identifier($div)
     return
-        <div class="search--result">
+        <paper-card>
             <header>
+                <div class="count">{$request?parameters?start + $p - 1}</div>
                 { query:get-breadcrumbs($config, $hit, $parent-id) }
             </header>
             <div class="matches">
@@ -106,7 +107,7 @@ declare %private function sapi:show-hits($request as map(*), $hits as item()*, $
                     kwic:get-summary($expanded, $match, $config)
             }
             </div>
-        </div>
+        </paper-card>
 };
 
 declare function sapi:facets($request as map(*)) {
@@ -121,4 +122,29 @@ declare function sapi:facets($request as map(*)) {
                 facets:display($config, $hits)
         }
         </div>
+};
+
+declare function sapi:list-facets($request as map(*)) {
+    let $type := $request?parameters?type
+    let $lang := tokenize($request?parameters?language, '-')[1]
+    let $facetConfig := filter($config:facets?*, function($facetCfg) {
+        $facetCfg?dimension = $type
+    })
+    let $hits := session:get-attribute($config:session-prefix || ".hits")
+    let $facets := ft:facets($hits, $type, ())
+    let $matches := 
+        for $key in if (exists($request?parameters?value)) then $request?parameters?value else map:keys($facets)
+        let $label := facets:translate($facetConfig, $lang, $key)
+        return 
+            map {
+                "text": $label,
+                "freq": $facets($key),
+                "value": $key
+            } 
+           
+    let $filtered := filter($matches, function($item) {
+        matches($item?text, '(?:^|\W)' || $request?parameters?query, 'i')
+    })
+    return
+        array { $filtered }
 };

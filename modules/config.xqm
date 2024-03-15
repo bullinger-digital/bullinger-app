@@ -112,6 +112,8 @@ declare variable $config:pagination-depth := 10;
  :)
 declare variable $config:pagination-fill := 5;
 
+declare variable $config:max-facets := 5;
+
 (:
  : Display configuration for facets to be shown in the sidebar. The facets themselves
  : are configured in the index configuration, collection.xconf.
@@ -121,11 +123,10 @@ declare variable $config:facets := [
     map {
         "dimension": "sender",
         "heading": "Absender",
+        "max": $config:max-facets,
         (: "max": 5,
         "hierarchical": false(), :)
-        "select": map {
-            "source": "api/facets/sender"
-        },
+        "source": "api/facets/sender",
         "output": function($label) {
             let $person := $config:persons/id($label)/parent::tei:person/tei:persName[@type='main']
             return 
@@ -137,11 +138,10 @@ declare variable $config:facets := [
     map {
         "dimension": "recipient",
         "heading": "Empfänger",
+        "max": $config:max-facets,
         (: "max": 5,
         "hierarchical": false(), :)
-        "select": map {
-            "source": "api/facets/sender"
-        },
+        "source": "api/facets/sender",
         "output": function($label) {
             let $person := $config:persons/id($label)/parent::tei:person/tei:persName[@type='main']
             return 
@@ -179,11 +179,10 @@ declare variable $config:facets := [
     map {
         "dimension": "place",
         "heading": "Ort",
+        "max": $config:max-facets,
         (: "max": 5,
         "hierarchical": false(), :)
-        "select": map {
-            "source": "api/facets/place"
-        },
+        "source": "api/facets/place",
         "output": function($label) {
             let $place := $config:localities/id($label)
             return 
@@ -201,11 +200,10 @@ declare variable $config:facets := [
     map {
         "dimension": "archive",
         "heading": "Archiv",
+        "max": $config:max-facets,
         (: "max": 5,
         "hierarchical": false(), :)
-        "select": map {
-            "source": "api/facets/archive"
-        },
+        "source": "api/facets/archive",
         "output": function($label) {
             $config:archives/id($label)/tei:orgName/text()
         }
@@ -213,11 +211,10 @@ declare variable $config:facets := [
     map {
         "dimension": "group",
         "heading": "Titel/Gruppe",
+        "max": $config:max-facets,
         (: "max": 5,
         "hierarchical": false(), :)
-        "select": map {
-            "source": "api/facets/group"
-        },
+        "source": "api/facets/group",
         "output": function($label) {
             $config:roles/id($label)/tei:form[@xml:lang="de"][@type="sg"]/text()
         }
@@ -225,11 +222,10 @@ declare variable $config:facets := [
     map {
         "dimension": "institution",
         "heading": "Institution",
+        "max": $config:max-facets,
         (: "max": 5,
         "hierarchical": false(), :)
-        "select": map {
-            "source": "api/facets/institution"
-        },
+        "source": "api/facets/institution",
         "output": function($label) {
             $config:orgs/id($label)/tei:name[@xml:lang="de"][@type="sg"]/text()
         }
@@ -248,16 +244,13 @@ declare variable $config:facets-persons := [
         "heading": "facets.date",
         "max": 5,
         "hierarchical": false(),
-        "select": map {
             "source": "api/facets/datestring"
-        }
     },
     map {
         "dimension": "sender",
         "heading": "facets.sender",
-        "select": map {
-            "source": "api/facets/sender"
-        },
+        "max": $config:max-facets,
+        "source": "api/facets/sender",
         "output": function($label) {
             let $person := $config:persons/id($label)/parent::tei:person/tei:persName[@type='main']
             return 
@@ -269,9 +262,8 @@ declare variable $config:facets-persons := [
     map {
         "dimension": "recipient",
         "heading": "facets.addressee",
-        "select": map {
-            "source": "api/facets/recipient"
-        },        
+        "max": $config:max-facets,
+        "source": "api/facets/recipient",
         "output": function($label) {
             let $person := $config:persons/id($label)/parent::tei:person/tei:persName[@type='main']
             return 
@@ -283,11 +275,9 @@ declare variable $config:facets-persons := [
     map {
         "dimension": "place",
         "heading": "facets.place",
-        "max": 5,
+        "max": $config:max-facets,
         "hierarchical": false(),
-        "select": map {
-            "source": "api/facets/place"
-        },        
+        "source": "api/facets/place",
         "output": function($label) {
             let $place := $config:localities/id($label)
             return 
