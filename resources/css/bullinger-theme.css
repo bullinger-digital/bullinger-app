@@ -934,3 +934,9 @@ pb-split-list::part(items) {
 .logo {
     background-image: url("../images/bullinger-digital.svg");
 }
+
+.search-result {
+    font-size: var(--s0);
+    font-family: var(--bb-font-family-serif);
+    color: var(--bb-dark-gray)
+}

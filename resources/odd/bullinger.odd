@@ -248,10 +248,24 @@
             <param name="level" value="5"/>
         </model>
                     <modelSequence output="web" predicate="$parameters?header='short'">
-            <model behaviour="link">
-                <param name="content" value="title[1]"/>
+            
+            <model behaviour="link" pb:mode="header">
+                <desc>Title in search results</desc>
                 <param name="uri" value="$parameters?doc"/>
+                <param name="level" value="1"/>
+                <param name="sender" value="ext:correspondents-by-letter(ancestor::teiHeader, 'sent')"/>
+                <param name="receiver" value="ext:correspondents-by-letter(ancestor::teiHeader, 'received')"/>
+                <param name="date" value="ext:date-by-letter(ancestor::teiHeader)"/>
+                <param name="place" value="ext:place-by-letter(ancestor::teiHeader)"/>
+                <param name="type" value="ancestor::TEI/@type/string()"/>
+                <pb:template xmlns="" xml:space="preserve">
+                    <div class="search-result">
+                        <div class="search-result-title"><span style="color:var(--bb-beige);">[[sender]]</span> an <span style="color:var(--bb-beige);">[[receiver]]</span></div>
+                        <div class="search-result-subtitle">[[date]], <span>[[place]]</span> <span class="doc-type"> ([[type]])</span></div>
+                    </div>
+                </pb:template>
             </model>
+
             <model behaviour="block">
                 <param name="content" value="subsequence(title, 2)"/>
             </model>
