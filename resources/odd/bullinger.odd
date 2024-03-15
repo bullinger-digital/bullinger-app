@@ -251,7 +251,7 @@
             
             <model behaviour="link" pb:mode="header">
                 <desc>Title in search results</desc>
-                <param name="uri" value="$parameters?doc"/>
+                <param name="uri" value="$parameters?doc || '?highlight=yes'"/>
                 <param name="level" value="1"/>
                 <param name="sender" value="ext:correspondents-by-letter(ancestor::teiHeader, 'sent')"/>
                 <param name="receiver" value="ext:correspondents-by-letter(ancestor::teiHeader, 'received')"/>
