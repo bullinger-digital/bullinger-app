@@ -65,6 +65,8 @@ function capi:list-works($root as xs:string?, $cached, $params as map(*)) {
         session:set-attribute($config:session-prefix || '.hits', $filtered?all),
         session:set-attribute($config:session-prefix || '.params', $params),
         session:set-attribute($config:session-prefix || ".works", $filtered),
+        session:set-attribute($config:session-prefix || ".search", $query),
+        session:set-attribute($config:session-prefix || ".field", $filter),
         if (empty($cached)) then
             session:set-attribute($config:session-prefix || ".collection", $root)
         else
