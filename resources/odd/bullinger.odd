@@ -126,8 +126,8 @@
             <model predicate="exists(.//msContents//incipit/node())" behaviour="section" cssClass="incipit">
                 <desc>Incipit</desc>
                 <param name="content" value=".//msContents//incipit"/>
-                <pb:template xmlns="" xml:space="preserve"><h2>Incipit</h2>
-<div id="incipit">[[content]]</div></pb:template>
+                <pb:template xmlns="" xml:space="preserve"><pb-restricted login="login"><h2>Incipit</h2>
+<div id="incipit">[[content]]</div></pb-restricted></pb:template>
             </model>
         </modelSequence>
                     <model output="latex" behaviour="metadata"/>
