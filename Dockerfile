@@ -35,7 +35,7 @@ ENV PATH ${PATH}:${ANT_HOME}/bin
 FROM builder as tei
 
 ARG TEMPLATING_VERSION=1.1.0
-ARG PUBLISHER_LIB_VERSION=3.1.0
+ARG PUBLISHER_LIB_VERSION=4.0.0
 ARG ROUTER_VERSION=1.8.1
 
 RUN  git clone --depth 1 -b main https://github.com/bullinger-digital/bullinger-app.git \

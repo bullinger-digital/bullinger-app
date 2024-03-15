@@ -31,7 +31,7 @@ declare variable $deploy:EXPATH_DESCRIPTOR :=
         version="0.1" spec="1.0">
         <dependency processor="http://exist-db.org" semver-min="5.3.0"/>
         <dependency package="http://exist-db.org/html-templating" semver="1"/>
-        <dependency package="http://existsolutions.com/apps/tei-publisher-lib" semver="3"/>
+        <dependency package="http://existsolutions.com/apps/tei-publisher-lib" semver="4"/>
         <dependency package="http://e-editiones.org/roaster" semver="1"/>
     </package>
 ;
@@ -67,6 +67,8 @@ declare variable $deploy:ANT_FILE :=
         <property name="build.dir" value="build"/>
         <property name="scripts.dir" value="node_modules/@teipublisher/pb-components/dist"/>
 
+       <property name="fore.dir" value="${basedir}/node_modules/@jinntec/fore/dist"/>
+
         <target name="clean">
             <delete dir="${build}" />
             <delete dir="resources/scripts" includes="*.js *.map" />
@@ -83,6 +85,10 @@ declare variable $deploy:ANT_FILE :=
                     <include name="*.js" />
                     <include name="*.map" />
                 </fileset>
+                <fileset dir="${fore.dir}">
+                    <include name="*.js" />
+                    <include name="*.map" />
+                </fileset>
             </copy>
             <copy todir="resources/images">
                 <fileset dir="node_modules/@teipublisher/pb-components/images">
@@ -92,6 +98,9 @@ declare variable $deploy:ANT_FILE :=
             </copy>
             <copy todir="resources/css">
                 <fileset dir="node_modules/@teipublisher/pb-components/css"/>
+                <fileset dir="${basedir}/node_modules/@jinntec/fore/resources">
+                    <include name="*.css"/>
+                </fileset>
             </copy>
             <copy todir="resources/lib">
                 <fileset dir="node_modules/@teipublisher/pb-components/lib"/>
@@ -141,7 +150,8 @@ declare function deploy:package-json($json as map(*)) {
         "version": "1.0.0",
         "description": $json?title,
         "dependencies": map {
-            "@teipublisher/pb-components": if ($config:webcomponents = 'local') then 'latest' else $config:webcomponents
+            "@teipublisher/pb-components": if ($config:webcomponents = 'local') then 'latest' else $config:webcomponents,
+            "@jinntec/fore": $config:fore
         }
     }
     return
@@ -353,7 +363,7 @@ declare function deploy:expand($collection as xs:string, $resource as xs:string,
 
 declare function deploy:store-libs($target as xs:string, $userData as xs:string+, $permissions as xs:string) {
     let $path := $config:app-root || "/modules"
-    for $lib in ("map.xql", "facets.xql", "annotation-config.xqm", "nlp-config.xqm", xmldb:get-child-resources($path)[starts-with(., "navigation")],
+    for $lib in ("map.xql", "facets.xql", "registers.xql", "annotation-config.xqm", "nlp-config.xqm", "iiif-config.xqm", xmldb:get-child-resources($path)[starts-with(., "navigation")],
         xmldb:get-child-resources($path)[starts-with(., "query")])
     return (
         xmldb:copy-resource($path, $lib, $target || "/modules", $lib)
@@ -418,8 +428,10 @@ declare function deploy:create-app($collection as xs:string, $json as map(*)) {
             'latest'
         else
             $config:webcomponents
+    let $fore := if ($config:fore = 'local') then 'latest' else $config:fore
     let $replacements := map {
         "^(.*\$config:webcomponents :=).*;$": '"' || $webcomponents || '";',
+        "^(.*\$config:fore :=).*;$": '"' || $fore || '";',
         "^(.*\$config:default-template :=).*;$": '"' || $json?template || '";',
         "^(.*\$config:default-view :=).*;$": '"' || $json?default-view || '";',
         "^(.*\$config:search-default :=).*;$": '"' || $json?index || '";',
@@ -450,7 +462,9 @@ declare function deploy:create-app($collection as xs:string, $json as map(*)) {
         deploy:copy-resource($collection || "/templates", $base || "/templates", "api.html", ($json?owner, "tei"), "rw-r--r--"),
         deploy:mkcol($collection || "/data", ($json?owner, "tei"), "rw-r--r--"),
         deploy:copy-resource($collection || "/data", $base || "/data", "taxonomy.xml", ($json?owner, "tei"), "rw-r--r--"),
+        deploy:copy-collection($collection || "/data/registers", $base || "/data/registers", ($json?owner, "tei"), "rw-r--r--"),
         deploy:copy-resource($collection || "/resources/css", $base || "/resources/css", "theme.css", ($json?owner, "tei"), "rw-r--r--"),
+        deploy:copy-resource($collection || "/resources/css", $base || "/resources/css", "annotate.css", ($json?owner, "tei"), "rw-r--r--"),
         deploy:copy-resource($collection || "/resources/i18n", $base || "/resources/i18n", "languages.json", ($json?owner, "tei"), "rw-r--r--"),
         deploy:copy-resource($collection, $base, "icon.png", ($json?owner, "tei"), "rw-r--r--"),
         xmldb:store($collection, "package.json", deploy:package-json($json), "application/json"),
