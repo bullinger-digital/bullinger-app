@@ -456,8 +456,13 @@ declare function dapi:get-fragment($request as map(*), $docs as node()*, $path a
                         $mapped
                 else
                     $xml?data
+            let $should-highlight :=
+                request:get-parameter('user.highlight', ()) and
+                exists(session:get-attribute($config:session-prefix || ".field")) and
+                (: ToDo: verify why it's required to check for emptiness here :)
+                not(session:get-attribute($config:session-prefix || ".search") = '')
             let $data :=
-                if (empty($request?parameters?xpath) and request:get-parameter('user.highlight', ()) and exists(session:get-attribute($config:session-prefix || ".search"))) then
+                if (empty($request?parameters?xpath) and $should-highlight) then
                     query:expand($xml?config, $mapped)[1]
                 else
                     $mapped
