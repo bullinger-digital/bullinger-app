@@ -93,7 +93,8 @@ declare function tpu:get-template-config($request as map(*)) {
                 let $pval := array:fold-right(
                     [
                         request:get-parameter($param, ()),
-                        (: if (map:contains($request, 'parameters')) then $request?parameters($param) else (), :)
+                        (: Uncommented because of issue https://github.com/eeditiones/tei-publisher-app/issues/218 :)
+                        if (map:contains($request, 'parameters')) then $request?parameters($param) else (),
                         request:get-attribute($param),
                         session:get-attribute($config:session-prefix || "." || $param)
                     ], (),
