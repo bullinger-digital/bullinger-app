@@ -287,7 +287,7 @@
             <param name="pers-id" value="fn:upper-case(./@ref)" />
             <param name="label" value="let $ref := ./@ref let $persParam := $parameters?persons/persName[@xml:id = $ref]  return $persParam/forename/text() || &#34; &#34; || $persParam/surname/text()"/>
             <pb:template xmlns="" xml:space="preserve"><pb-popover>
-  <span slot="default">[[content]]</span>
+  <span slot="default"><span class="ne-with-ref">[[content]]</span></span>
   <span slot="alternate"><a href="./persons/[[pers-id]]">[[label]]</a></span>
 </pb-popover></pb:template>
         </model>
@@ -354,8 +354,8 @@
             <param name="content" value="./text()"/>
             <param name="label" value="let $ref := ./@ref let $place := $parameters?places[@xml:id = $ref] return   &lt;a href=&#34;./localities/{$ref}&#34;&gt;{$place}&lt;/a&gt;"/>
             <pb:template xmlns="" xml:space="preserve"><pb-popover>
-  <span slot="default">[[content]]</span>
-  <span slot="alternate">Test [[label]]</span>
+  <span slot="default"><span class="ne-with-ref">[[content]]</span></span>
+  <span slot="alternate">[[label]]</span>
 </pb-popover></pb:template>
         </model>
                     <model behaviour="inline" cssClass="place"/>

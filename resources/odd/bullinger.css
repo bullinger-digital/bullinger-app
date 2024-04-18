@@ -168,3 +168,8 @@ a, a:link, a:visited, a:hover, a:active {
     opacity:0.5;
 }
 .tei-ref { margin-right: 0.5em; }
+
+/* Named entities with ref */
+.ne-with-ref {
+    text-decoration: underline dotted 1px gray;
+}
