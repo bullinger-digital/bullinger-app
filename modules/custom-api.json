@@ -271,7 +271,7 @@
 					{
 						"name": "key",
 						"in": "path",
-						"description": "ID of the person",
+						"description": "ID of the locality",
 						"required": true,
 						"schema": {
 							"type": "string",
