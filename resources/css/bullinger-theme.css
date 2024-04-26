@@ -127,6 +127,7 @@ pb-page {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    width:100%;
 }
 
 .wrapper,
@@ -330,11 +331,10 @@ footer a:visited {
 }
 
 main {
+    width:100%;
     --main-padding: 3rem;
     box-sizing: content-box;
     margin-top: 0;
-
-    flex: 1 1 0%;
     padding-top: calc(var(--bb-header-height) + var(--main-padding));
     padding-bottom: var(--main-padding);
     --pb-browse-toolbar-justify-content: space-between;
@@ -916,6 +916,7 @@ pb-split-list::part(items) {
         display:grid;
         grid-template-columns: repeat(2, 1fr);
         grid-gap: var(--s0);
+        width:100%;
     }
     
     main .pageWrapper > header {

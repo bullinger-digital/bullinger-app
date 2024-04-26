@@ -38,15 +38,6 @@ window.addEventListener('DOMContentLoaded', function() {
     });
 
     pbEvents.subscribe('pb-update', 'facsimile', ev => {
-        // console.log("subscribe-top", ev.target.id)
-        // const pblinks = document.getElementById("facsimile-links");
-        // const empty = pblinks.shadowRoot.querySelector('.content');
-        // console.log("empty is", empty)
-        // if(empty === null) {
-        //     const viewer = document.querySelector('pb-tify').style.display = "none";
-        //     document.getElementById("facsimile-status").style.display ="block";
-        // }
-        document.querySelector('pb-tify').style.display = "block";
         document.getElementById("facsimile-status").style.display ="none";
     });
 
