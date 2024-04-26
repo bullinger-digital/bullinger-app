@@ -17,5 +17,10 @@
     "mobile" : {
         "menu": "Menu (en)"
     },
-    "app-title": "Test EN"
+    "app-title": "Test EN",
+    "index-intro": "index-intro <strong>DE</strong>",
+    "letters": "Letters",
+    "metadata": {
+        "date": "Date"
+    }
 }
