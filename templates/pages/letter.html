@@ -24,22 +24,17 @@
                         <h2>Transkription <span data-template="app:transcription-source"></span> 
                           <small class="small-t"><label for="lang-toggle"><input type="checkbox" name="lang-toggle" id="lang-toggle" value="test" /> Show Language</label></small></h2>
                         <pb-view id="view1" src="document1" column-separator=".tei-cb" append-footnotes="append-footnotes" subscribe="transcription" emit="transcription"/>
-                        <pb-view id="facsimile-links" src="document1" xpath="//facsimile" view="single" wait-for="#facsimile" emit="transcription">
+                        <pb-view id="facsimile-links" src="document1" xpath="//facsimile" view="single" wait-for="#facsimile" emit="facsimile">
                             <pb-param name="view" value="facsimile"/>
                         </pb-view>
                     </div>
                     <div class="facsimile card">
                         <h2>Faksimile <span data-template="app:facsimile-source"></span></h2>
-                        <div id="facsimile-status" style="display:none;">Für diesen Brief ist kein Facsimile verfügbar.</div>
-                        <pb-facsimile id="facsimile"
-                            default-zoom-level="0"
-                            show-sequence-control="	show-sequence-control"
-                            show-navigation-control="show-navigation-control"
-                            show-navigator="show-navigator"
-                            show-full-page-control="show-full-page-control"
-                            reference-strip="reference-strip"
-                            reference-strip-size-ratio="0.1"
-                            subscribe="transcription"></pb-facsimile>
+                        <div id="facsimile-status">Für diesen Brief ist kein Facsimile verfügbar.</div>
+                        <pb-tify id="facsimile"
+                            style="display:none;"
+                            subscribe="facsimile"
+                            ></pb-tify>
                     </div>
                 </div>
             </section>

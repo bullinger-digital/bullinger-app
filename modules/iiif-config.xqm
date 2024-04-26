@@ -11,7 +11,7 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 (:~
  : Base URI of the IIIF image API service to use for the images
  :)
-declare variable $iiifc:IMAGE_API_BASE := "https://apps.existsolutions.com/cantaloupe/iiif/2";
+declare variable $iiifc:IMAGE_API_BASE := "https://iiif.bullinger-digital.ch/iiif/3";
 
 (:~
  : URL prefix to use for the canvas id
@@ -24,7 +24,7 @@ declare variable $iiifc:CANVAS_ID_PREFIX := "https://e-editiones.org/canvas/";
  : @param $doc the document root node to scan
  :)
 declare function iiifc:milestones($doc as node()) {
-    $doc//tei:pb
+    $doc//tei:surface/tei:graphic
 };
 
 (:~
@@ -32,7 +32,7 @@ declare function iiifc:milestones($doc as node()) {
  : out or add something, this is the place. By default strips any prefix before a colon.
  :)
 declare function iiifc:milestone-id($milestone as element()) {
-    replace($milestone/@facs, "^[^:]+:(.*)", "$1")
+    replace($milestone/@url, "https://iiif.bullinger-digital.ch/iiif/3/([^/]+)/.*$", "$1")
 };
 
 (:~
@@ -48,8 +48,8 @@ declare function iiifc:metadata($doc as element(), $id as xs:string) as map(*) {
             map { "label": "Language", "value": nav:get-metadata($doc, "language") },
             map { "label": "Date", "value": nav:get-metadata($doc, "date")/string() }
         ],
-        "license": nav:get-metadata($doc, "license"),
-        "rendering": [
+        "license": nav:get-metadata($doc, "license")
+        (: "rendering": [
             map {
                 "@id": iiif:link("print/" || encode-for-uri($id)),
                 "label": "Print preview",
@@ -60,6 +60,6 @@ declare function iiifc:metadata($doc as element(), $id as xs:string) as map(*) {
                 "label": "ePub",
                 "format": "application/epub+zip"
             }
-        ]
+        ] :)
     }
 };
