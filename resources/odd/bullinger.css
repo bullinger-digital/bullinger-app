@@ -173,3 +173,5 @@ a, a:link, a:visited, a:hover, a:active {
 .ne-with-ref {
     text-decoration: underline dotted 1px gray;
 }
+
+.inline-remark { color: gray; font-style:italic; }

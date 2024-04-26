@@ -392,9 +392,15 @@
                 </elementSpec>
                 <elementSpec ident="ref" mode="change">
                     <model predicate="$parameters?view='metadata'" behaviour="inline">
-                        <param name="nr" value="fn:replace(@target, 'file', '')"/>
-                        <pb:template xmlns="" xml:space="preserve"><a href="file[[nr]]">[[nr]]</a></pb:template>
-                    </model>
+            <param name="nr" value="fn:replace(@target, 'file', '')"/>
+            <pb:template xmlns="" xml:space="preserve"><a href="file[[nr]]">[[nr]]</a></pb:template>
+        </model>
+                </elementSpec>
+            <elementSpec ident="note" mode="change">
+                    <model predicate="@type = 'footnote'" behaviour="note">
+            <param name="place" value="@place"/>
+            <param name="label" value="@n"/>
+        </model>
                 </elementSpec>
             </schemaSpec>
         </body>
