@@ -43,21 +43,7 @@
                 <elementSpec ident="zone" mode="change">
                     <model behaviour="omit"/>
                 </elementSpec>
-            <elementSpec ident="graphic" mode="change">
-                    <model predicate="$parameters?view = &#34;facsimile&#34;" behaviour="inline">
-            <param name="facs" value="let $url := substring-before(@url, '/full/max/0/default.jpg') return $url"/>
-            <param name="order" value="@n"/>
-            <param name="id" value="@xml:id"/>
-            <pb:template xmlns="" xml:space="preserve"><pb-facs-link id="[[id]]" emit="transcription" facs="[[facs]]" order="[[order]]"/></pb:template>
-        </model>
-                    <model behaviour="omit">
-            <param name="url" value="@url"/>
-            <param name="width" value="@width"/>
-            <param name="height" value="@height"/>
-            <param name="scale" value="@scale"/>
-            <param name="title" value="desc"/>
-        </model>
-                </elementSpec>
+            <elementSpec ident="graphic" mode="change"/>
             <elementSpec ident="teiHeader" mode="change">
                     <modelSequence predicate="$parameters?view='metadata'">
             <desc>TEI Header Data for Bullinger Letters</desc>
@@ -87,10 +73,10 @@
                 <param name="hbbw-no" value="$parameters?hbbw-no"/>
                 <param name="hbbw-band" value="$parameters?hbbw-band"/>
                 <param name="hbbw-hidden" value="let $hbbw := $parameters?hbbw-no return if(string-length($hbbw) &gt; 0) then () else ('display:none;')"/>
-                <param name="links-parents-hidden" value="if (exists(.//correspContext/ref[@type='parent'])) then () else ('display:none;')" />
-                <param name="links-children-hidden" value="if (exists(.//correspContext/ref[@type='child'])) then () else ('display:none;')" />
-                <param name="links-parents" value=".//correspContext/ref[@type='parent']" />
-                <param name="links-children" value=".//correspContext/ref[@type='child']" />
+                <param name="links-parents-hidden" value="if (exists(.//correspContext/ref[@type='parent'])) then () else ('display:none;')"/>
+                <param name="links-children-hidden" value="if (exists(.//correspContext/ref[@type='child'])) then () else ('display:none;')"/>
+                <param name="links-parents" value=".//correspContext/ref[@type='parent']"/>
+                <param name="links-children" value=".//correspContext/ref[@type='child']"/>
                 <pb:set-param name="subtype" value="metadata"/>
                 <pb:template xmlns="" xml:space="preserve"><h2>Metadata</h2>
 <div id="sourceDesc">
@@ -163,7 +149,6 @@
             <param name="content" value="text()"/>
             <pb:template xmlns="" xml:space="preserve">[[content]]</pb:template>
         </model>
-        
                     <model output="web" behaviour="pass-through">
             <desc>output specific language usage percentage </desc>
             <param name="id" value="@ident"/>
@@ -173,7 +158,7 @@
                 </elementSpec>
                 <elementSpec ident="langUsage" mode="add">
                     <model predicate="$parameters?view='metadata'" behaviour="block">
-            <param name="content" value="let $langs := (for $l in ./language where $l/@usage > 0 order by $l/@usage descending return $l/text())  return fn:string-join($langs, ', ')"/>
+            <param name="content" value="let $langs := (for $l in ./language where $l/@usage &gt; 0 order by $l/@usage descending return $l/text())  return fn:string-join($langs, ', ')"/>
             <pb:template xmlns="" xml:space="preserve"><div>Sprachen</div><div>[[content]]</div></pb:template>
         </model>
                 </elementSpec>
@@ -248,7 +233,6 @@
             <param name="level" value="5"/>
         </model>
                     <modelSequence output="web" predicate="$parameters?header='short'">
-            
             <model behaviour="link" pb:mode="header">
                 <desc>Title in search results</desc>
                 <param name="uri" value="$parameters?doc || '?highlight=yes'"/>
@@ -265,7 +249,6 @@
                     </div>
                 </pb:template>
             </model>
-
             <model behaviour="block">
                 <param name="content" value="subsequence(title, 2)"/>
             </model>
@@ -284,7 +267,7 @@
                     <model predicate="@ref" behaviour="inline" cssClass="person">
             <desc>persName in TEI Text</desc>
             <param name="content" value="./text()"/>
-            <param name="pers-id" value="fn:upper-case(./@ref)" />
+            <param name="pers-id" value="fn:upper-case(./@ref)"/>
             <param name="label" value="let $ref := ./@ref let $persParam := $parameters?persons/persName[@xml:id = $ref]  return $persParam/forename/text() || &#34; &#34; || $persParam/surname/text()"/>
             <pb:template xmlns="" xml:space="preserve"><pb-popover>
   <span slot="default"><span class="ne-with-ref">[[content]]</span></span>
@@ -317,7 +300,7 @@
                 <param name="repository" value=".//repository"/>
                 <param name="idno" value="let $sub := @subtype  return (', ' || ./msIdentifier/idno[@subtype=$sub]/text())"/>
                 <param name="note" value="./msIdentifier/idno[@subtype='Hinweis']/text()"/>
-                <param name="has-note" value="if (string-length(./msIdentifier/idno[@subtype='Hinweis']/text()) &gt; 0) then () else ('display: none;')" />
+                <param name="has-note" value="if (string-length(./msIdentifier/idno[@subtype='Hinweis']/text()) &gt; 0) then () else ('display: none;')"/>
                 <param name="subtype" value="fn:replace(@subtype, '__', ' ')"/>
                 <pb:set-param name="archive" value="let $archive-id := ./msIdentifier/repository/@ref return doc('/db/apps/bullinger-data/data/index/archives.xml')//org[@xml:id=$archive-id]"/>
                 <pb:template xmlns="" xml:space="preserve"><div>[[subtype]]</div>
@@ -400,6 +383,13 @@
                     <model predicate="@type = 'footnote'" behaviour="note">
             <param name="place" value="@place"/>
             <param name="label" value="@n"/>
+        </model>
+                    <model behaviour="inline" cssClass="inline-remark"/>
+                </elementSpec>
+                <elementSpec ident="facsimile" mode="add">
+                    <model behaviour="inline">
+            <param name="path" value="root(.)/TEI/@xml:id"/>
+            <pb:template xmlns="" xml:space="preserve"><pb-facs-link facs="api/iiif/[[path]]" emit="facsimile" emit-on-load=""/></pb:template>
         </model>
                 </elementSpec>
             </schemaSpec>

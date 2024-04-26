@@ -66,15 +66,15 @@ declare %private function iiif:canvases($doc as node()) {
                     },
                     "on": $iiifc:CANVAS_ID_PREFIX || $id
                 }
-            ],
-            "rendering": [
+            ]
+            (: "rendering": [
                 map {
                     "@id": iiif:link("api/parts/" || encode-for-uri(config:get-relpath($doc)) || "/html") || 
                         "?root=" || util:node-id($pb),
                     "format": "text/html",
                     "label": "Transcription of page"
                 }
-            ]
+            ] :)
         }
 };
 
@@ -95,7 +95,8 @@ declare %private function iiif:link($relpath as xs:string) {
  : has pb elements with a facs attribute pointing to the image.
  :)
 declare function iiif:manifest($request as map(*)) {
-    let $id := $request?parameters?path
+    let $id := xmldb:decode-uri($request?parameters?path)
+    let $log := util:log("info", $id)
     let $doc := config:get-document($id)/tei:TEI
     let $canvases := iiif:canvases($doc)
     return
