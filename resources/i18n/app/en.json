@@ -1,20 +1,26 @@
 {
     "facets": {
-        "addressee": "Empfänger",
-        "archive":"Archiv",                
-        "correspondent": "Korrespondent",
-        "date": "Datum",
-        "group":"Gruppe",
-        "institution":"Institution",
-        "keyword": "Schlagwort",
-        "mentioned": "Erwähnte Person",
-        "number": "Nummer",
-        "place": "Ort",
-        "provenience": "Provenienz",
-        "sender": "Absender",
-        "type": "Dokumenttyp"  
+        "addressee": "Empfänger (en)",
+        "archive":"Archiv (en)",                
+        "correspondent": "Korrespondent (en)",
+        "date": "Datum (en)",
+        "group":"Gruppe (en)",
+        "institution":"Institution (en)",
+        "keyword": "Schlagwort (en)",
+        "mentioned": "Erwähnte Person (en)",
+        "number": "Nummer (en)",
+        "place": "Ort (en)",
+        "provenience": "Provenienz (en)",
+        "sender": "Absender (en)",
+        "type": "Dokumenttyp (en)"  
     },
     "mobile" : {
-        "menu": "Menu"
+        "menu": "Menu (en)"
+    },
+    "app-title": "Test EN",
+    "index-intro": "index-intro <strong>DE</strong>",
+    "letters": "Letters",
+    "metadata": {
+        "date": "Date"
     }
 }
