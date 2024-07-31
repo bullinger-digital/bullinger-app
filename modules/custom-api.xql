@@ -601,7 +601,7 @@ declare function api:get-orgName($orgName as element(tei:orgName)?){
     let $org := id($orgName/@ref, $config:orgs)
     (: let $log := util:log("info", "api:get-orgName orgName/@ref: " || $orgName/@ref) :)
     return  
-        $org/tei:name[@xml:lang="de"][@type=$orgName/@type]/text()
+        $org/string()
 
 };
 declare function api:get-roleName($roleName as element(tei:roleName)?){

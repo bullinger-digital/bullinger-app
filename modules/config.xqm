@@ -221,13 +221,13 @@ declare variable $config:facets := [
     },
     map {
         "dimension": "institution",
-        "heading": "Institution",
+        "heading": "Institution / Gruppe",
         "max": $config:max-facets,
         (: "max": 5,
         "hierarchical": false(), :)
         "source": "api/facets/institution",
         "output": function($label) {
-            $config:orgs/id($label)/tei:name[@xml:lang="de"][@type="sg"]/text()
+            $config:orgs/id($label)/string()
         }
     },
     map {
@@ -464,7 +464,7 @@ declare variable $config:data-root := "/db/apps/bullinger-data/data";
 
 declare variable $config:persons := doc($config:data-root || '/index/persons.xml');
 declare variable $config:localities := doc($config:data-root || '/index/localities.xml');
-declare variable $config:orgs := doc($config:data-root || '/index/institutions.xml');
+declare variable $config:orgs := doc($config:data-root || '/index/organizations.xml');
 declare variable $config:roles := doc($config:data-root || '/index/groups.xml');
 declare variable $config:archives := doc($config:data-root || '/index/archives.xml');
 

@@ -11,7 +11,11 @@ declare default element namespace "http://www.tei-c.org/ns/1.0";
 declare function ext:correspondents-by-letter($letter, $type as xs:string) {
     let $items := for $item in $letter//correspAction[@type = $type]/(persName,orgName,roleName)
         return ext:correspondent-by-item($item)
-    return string-join($items, ', ')
+    let $correspondents := string-join($items, ', ')
+    return if(fn:string-length($correspondents) > 0) then
+        $correspondents
+    else
+        "[...]"
 };
 
 
@@ -23,7 +27,9 @@ declare function ext:correspondent-by-item($item) {
             return
                 $persName/forename || " " || $persName/surname
         case element(orgName) return
-            id($item/@ref, $config:orgs)/name[@xml:lang='de'][@type=$item/@type]
+            if(fn:string-length($item/text()) > 0) then
+                ($item/text())
+            else (id($item/@ref, $config:orgs)/string())
         case element(roleName) return
             id($item/@ref, $config:roles)/form[@xml:lang="de"][@type=$item/@type]
         default return
