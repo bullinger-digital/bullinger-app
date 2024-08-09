@@ -39,15 +39,16 @@ declare function api:persons-all-list($request as map(*)) {
     (: let $log := util:log("info","api:persons-all-list")  :)
     let $search := normalize-space($request?parameters?search)
     let $letterParam := $request?parameters?category
+    let $correspondentsFilter := if ($request?parameters?view = "all") then "" else " AND (sent-count:[1 TO *] OR received-count:[1 TO *])"
     let $limit := $request?parameters?limit
     (: let $log := util:log("info","api:names-all-list $search:"||$search || " - $letterParam:"||$letterParam||" - $limit:" || $limit )  :)
     let $items :=     
             if ($search and $search != '') 
             then (
-                $config:persons//tei:person[ft:query(., 'name:(' || $search || '*)')]
+                $config:persons//tei:person[ft:query(., 'name:(' || $search || '*)' || $correspondentsFilter)]
             ) 
             else (
-                $config:persons//tei:person[ft:query(., 'name:*', map {
+                $config:persons//tei:person[ft:query(., 'name:*' || $correspondentsFilter, map {
                     "leading-wildcard": "yes",
                     "filter-rewrite": "yes"
                 })]

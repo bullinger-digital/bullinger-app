@@ -763,8 +763,9 @@ pb-view {
 
 .register-list pb-custom-form {
     justify-self: start;
-    max-width: 25rem;
+    max-width: 30rem;
     width: 100%;
+    margin-bottom: 1rem;
 }
 
 .register__localities {
@@ -895,6 +896,10 @@ pb-split-list::part(active-category) {
 
 pb-split-list::part(items) {
     margin-top: 1em;
+}
+
+pb-split-list::part(items) {
+    grid-auto-rows: min-content;
 }
 
 .itemList {
