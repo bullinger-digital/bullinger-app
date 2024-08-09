@@ -279,7 +279,7 @@
                     <model predicate="$parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
             <param name="org" value="let $ref := @ref  let $type := @type return if(fn:string-length(./text()) > 0) then (./text()) else ($parameters?orgs[@xml:id = $ref]/string())"/>
             <param name="place" value="let $placeref := ../placeName/@source  return if($parameters?places[@xml:id=$placeref])  then ( (&#34;, &#34;, $parameters?places[@xml:id=$placeref]) ) else ()"/>
-            <pb:template xmlns="" xml:space="preserve">[[org]][[place]]</pb:template>
+            <pb:template xmlns="" xml:space="preserve">[[org]]</pb:template>
         </model>
                 </elementSpec>
                 <elementSpec ident="personGrp" mode="add"/>
