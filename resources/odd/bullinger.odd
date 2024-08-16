@@ -60,7 +60,7 @@
             </model>
             <model behaviour="section">
                 <desc>Person Images</desc>
-                <param name="pictures" value="$parameters?persons[idno/@subtype=&#34;portrait&#34;]"/>
+                <param name="pictures" value="$parameters?persons-correspondents-only[idno/@subtype=&#34;portrait&#34;]"/>
                 <pb:set-param name="subtype" value="'pictures'"/>
                 <pb:template xmlns="" xml:space="preserve"><div>[[pictures]]</div></pb:template>
             </model>
@@ -134,6 +134,7 @@
             <pb:set-param name="hbbw-no" value="if(fn:starts-with(./@source/string(), 'HBBW') and string-length(./@n/string()) &gt; 0) then (./@n/string()) else ()"/>
             <pb:set-param name="hbbw-band" value="if(fn:starts-with(./@source/string(), 'HBBW-')) then (fn:substring-after(./@source/string(), '-')) else ()"/>
             <pb:set-param name="persons" value="let $persons := doc('/db/apps/bullinger-data/data/index/persons.xml') return     for $person in .//teiHeader//persName[@ref]      group by $persref := $person/@ref     return         id($persref,$persons)/ancestor::person"/>
+            <pb:set-param name="persons-correspondents-only" value="let $persons := doc('/db/apps/bullinger-data/data/index/persons.xml') return     for $person in .//teiHeader//correspDesc//persName[@ref]      group by $persref := $person/@ref     return         id($persref,$persons)/ancestor::person"/>
             <pb:set-param name="orgs" value="let $orgs := doc('/db/apps/bullinger-data/data/index/organizations.xml') return  for $org in .//teiHeader//orgName[@ref]  group by $orgref := $org/@ref return id($orgref,$orgs)"/>
             <pb:set-param name="places" value="let $places := doc('/db/apps/bullinger-data/data/index/localities.xml')  return   for $place in .//teiHeader//placeName[@source or @ref] group by $placeref := ($place/@source, $place/@ref)[1]  return id($placeref,$places)"/>
             <pb:set-param name="archives" value="let $archives := doc('/db/apps/bullinger-data/data/index/archives.xml')  return   for $archive in .//teiHeader//repository[@ref] group by $archiveref := $archive/@ref  return id($archiveref,$archives)"/>
