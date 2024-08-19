@@ -5,6 +5,7 @@ module namespace iiifc="https://e-editiones.org/api/iiif/config";
 
 import module namespace iiif="https://e-editiones.org/api/iiif" at "lib/api/iiif.xql";
 import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "navigation.xql";
+import module namespace ext="http://teipublisher.com/ext-common" at "ext-common.xql";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
@@ -41,9 +42,9 @@ declare function iiifc:milestone-id($milestone as element()) {
  :)
 declare function iiifc:metadata($doc as element(), $id as xs:string) as map(*) {
     map {
-        "label": nav:get-metadata($doc, "title")/string(),
+        "label": ext:get-title($doc),
         "metadata": [
-            map { "label": "Title", "value": nav:get-metadata($doc, "title")/string() },
+            map { "label": "Title", "value": ext:get-title($doc) },
             map { "label": "Creator", "value": nav:get-metadata($doc, "author")/string() },
             map { "label": "Language", "value": nav:get-metadata($doc, "language") },
             map { "label": "Date", "value": nav:get-metadata($doc, "date")/string() }

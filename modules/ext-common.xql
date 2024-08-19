@@ -7,6 +7,13 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 (: declare namespace tei="http://www.tei-c.org/ns/1.0"; :)
 declare default element namespace "http://www.tei-c.org/ns/1.0";
 
+
+declare function ext:get-title($letter) {
+    let $senders := ext:correspondents-by-letter($letter, 'sent')
+    let $receivers := ext:correspondents-by-letter($letter, 'received')
+    return $senders || " an " || $receivers
+};
+
 (: $type should be either 'sent' or 'received :)
 declare function ext:correspondents-by-letter($letter, $type as xs:string) {
     let $items := for $item in $letter//correspAction[@type = $type]/(persName,orgName,roleName)
