@@ -946,3 +946,7 @@ pb-split-list::part(items) {
     font-family: var(--bb-font-family-serif);
     color: var(--bb-dark-gray)
 }
+
+.dropdown-register {
+    margin-top: 1px;
+}
