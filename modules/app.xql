@@ -296,12 +296,13 @@ declare
 function app:transcription-source($node as node(), $model as map(*)) {
     let $tei := collection($config:data-default)//tei:TEI[@xml:id=$model?doc]
     let $bibl := $tei//tei:sourceDesc/tei:bibl[@type="transcription"]
+    let $text := if ($bibl) then ("Quelle: " || $bibl/text()) else if ($tei/@source/string() = "keine") then ("Automatische Transkription") else ""
     return
-        if($bibl) 
+        if(fn:string-length($text) > 0)
         then (
             <pb-popover class="source-info" persistent="true" theme="light">
                 <iron-icon slot="default" icon="info" class="source-info--icon"/>
-                <span slot="alternate">Quelle: {$bibl/text()}</span>
+                <span slot="alternate">{$text}</span>
             </pb-popover>
         ) else ()
 };
