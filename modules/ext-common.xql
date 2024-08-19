@@ -68,7 +68,19 @@ declare function ext:format-date($date as xs:string?){
 };
 
 
-declare function ext:place-by-letter($letter) {
-    let $place-id := $letter//correspAction[@type = 'sent']/placeName/@source
+declare function ext:place-name($place) {
+    let $settlement := $place//settlement/text()
+    let $district := $place//district/text()
+    let $country := $place//country/text()
+    let $place-name := if($settlement) then ($settlement) else if ($district) then ($district) else ($country)
+    return $place-name
+};
+
+declare function ext:place-by-letter($letter, $type as xs:string) {
+    let $place-id := $letter//correspAction[@type = $type]/placeName/@ref
     return $config:localities//place[@xml:id=$place-id]
+};
+
+declare function ext:place-by-letter($letter) {
+    ext:place-by-letter($letter, 'sent')
 };

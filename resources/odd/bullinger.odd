@@ -136,7 +136,7 @@
             <pb:set-param name="persons" value="let $persons := doc('/db/apps/bullinger-data/data/index/persons.xml') return     for $person in .//teiHeader//persName[@ref]      group by $persref := $person/@ref     return         id($persref,$persons)/ancestor::person"/>
             <pb:set-param name="persons-correspondents-only" value="let $persons := doc('/db/apps/bullinger-data/data/index/persons.xml') return     for $person in .//teiHeader//correspDesc//persName[@ref]      group by $persref := $person/@ref     return         id($persref,$persons)/ancestor::person"/>
             <pb:set-param name="orgs" value="let $orgs := doc('/db/apps/bullinger-data/data/index/organizations.xml') return  for $org in .//teiHeader//orgName[@ref]  group by $orgref := $org/@ref return id($orgref,$orgs)"/>
-            <pb:set-param name="places" value="let $places := doc('/db/apps/bullinger-data/data/index/localities.xml')  return   for $place in .//teiHeader//placeName[@source or @ref] group by $placeref := ($place/@source, $place/@ref)[1]  return id($placeref,$places)"/>
+            <pb:set-param name="places" value="let $places := doc('/db/apps/bullinger-data/data/index/localities.xml')  return   for $place in .//teiHeader//placeName[@ref] group by $placeref := ($place/@ref, $place/@ref)[1]  return id($placeref,$places)"/>
             <pb:set-param name="archives" value="let $archives := doc('/db/apps/bullinger-data/data/index/archives.xml')  return   for $archive in .//teiHeader//repository[@ref] group by $archiveref := $archive/@ref  return id($archiveref,$archives)"/>
             <pb:template xmlns="" xml:space="preserve"><div id="metaWrapper">
  [[content]]
@@ -261,7 +261,7 @@
                 <elementSpec ident="persName" mode="add">
                     <model predicate="$parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
             <param name="name" value="let $ref := ./@ref  let $persName := $parameters?persons/persName[@xml:id = $ref] return   &lt;a href=&#34;./persons/{fn:upper-case($ref)}&#34;&gt;{$persName/forename/text() || &#34; &#34; || $persName/surname/text()}&lt;/a&gt;"/>
-            <param name="place" value="let $placeref := ../placeName/@source  return if($parameters?places[@xml:id=$placeref])  then ( (&#34;, &#34;, $parameters?places[@xml:id=$placeref]) ) else ()"/>
+            <param name="place" value="let $placeref := ../placeName/@ref  return if($parameters?places[@xml:id=$placeref])  then ( (&#34;, &#34;, $parameters?places[@xml:id=$placeref]) ) else ()"/>
             <pb:template xmlns="" xml:space="preserve"><span>[[name]][[place]]</span></pb:template>
         </model>
                     <model predicate="@ref" behaviour="inline" cssClass="person">
@@ -279,7 +279,7 @@
                 <elementSpec ident="orgName" mode="add">
                     <model predicate="$parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
             <param name="org" value="let $ref := @ref  let $type := @type return if(fn:string-length(./text()) > 0) then (./text()) else ($parameters?orgs[@xml:id = $ref]/string())"/>
-            <param name="place" value="let $placeref := ../placeName/@source  return if($parameters?places[@xml:id=$placeref])  then ( (&#34;, &#34;, $parameters?places[@xml:id=$placeref]) ) else ()"/>
+            <param name="place" value="let $placeref := ../placeName/@ref  return if($parameters?places[@xml:id=$placeref])  then ( (&#34;, &#34;, $parameters?places[@xml:id=$placeref]) ) else ()"/>
             <pb:template xmlns="" xml:space="preserve">[[org]]</pb:template>
         </model>
                 </elementSpec>
@@ -328,7 +328,7 @@
         </model>
                 </elementSpec>
             <elementSpec ident="placeName" mode="add">
-                    <model predicate="@source and $parameters?view='metadata'" behaviour="pass-through">
+                    <model predicate="@ref and $parameters?view='metadata'" behaviour="pass-through">
             <param name="placename" value="let $source := @source return $parameters?places[@xml:id=$source]"/>
             <pb:template xmlns="" xml:space="preserve">[[placename]]</pb:template>
         </model>
@@ -353,7 +353,7 @@
                 <elementSpec ident="roleName" mode="add">
                     <model predicate="$parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
             <param name="name" value="let $ref := @ref let $type := @type return $parameters?roles[@xml:id=$ref]/form[@xml:lang='de'][@type=$type]/text()"/>
-            <param name="send-from" value="let $placeref := ../placeName/@source  return if($parameters?places[@xml:id=$placeref])  then ( (&#34;, &#34;, $parameters?places[@xml:id=$placeref]) ) else ()"/>
+            <param name="send-from" value="let $placeref := ../placeName/@ref  return if($parameters?places[@xml:id=$placeref])  then ( (&#34;, &#34;, $parameters?places[@xml:id=$placeref]) ) else ()"/>
             <param name="place" value="let $placeref := .//placeName/@ref  return if($parameters?places[@xml:id=$placeref])  then ( (&#34; &#34;, $parameters?places[@xml:id=$placeref]) ) else ()"/>
             <param name="org" value="let $orgref := .//orgName/@ref  let $type := .//orgName/@type   return    if($parameters?orgs[@xml:id=$orgref])     then (      (&#34; &#34;, $parameters?orgs[@xml:id = $orgref]/name[@xml:lang='de'][@type=$type]/text())    ) else ()"/>
             <pb:template xmlns="" xml:space="preserve">[[name]][[place]][[org]]</pb:template>

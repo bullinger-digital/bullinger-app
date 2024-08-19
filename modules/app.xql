@@ -181,7 +181,7 @@ function app:locality-is-recipient($node as node(), $model as map(*)) {
 };
 
 declare function app:locality-in-corresp-action($node, $model, $person, $type) {
-    let $matches := collection($config:data-default)//tei:correspAction[@type=$type]//tei:placeName[@source = $person/@xml:id]
+    let $matches := collection($config:data-default)//tei:correspAction[@type=$type]//tei:placeName[@ref = $person/@xml:id]
     (: let $log := util:log("info", "app:locality-in-corresp-action: $matches: " || count($matches) || " in type " || $type)     :)
     return
         if (count($matches) eq 0)

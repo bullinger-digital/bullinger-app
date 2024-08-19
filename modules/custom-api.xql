@@ -269,7 +269,7 @@ declare function api:sort($entries as element()*, $sortBy as xs:string, $dir as 
                 case "title" return
                     lower-case($letter//tei:titleStmt/tei:title)
                 case "place" return
-                    let $send-place := id($letter//tei:correspAction[@type="sent"]/tei:placeName/@source/string(), $config:localities)
+                    let $send-place := id($letter//tei:correspAction[@type="sent"]/tei:placeName/@ref/string(), $config:localities)
                     return
                         lower-case(api:get-place-name($send-place))
                 case "date" return
@@ -279,7 +279,7 @@ declare function api:sort($entries as element()*, $sortBy as xs:string, $dir as 
                 case "recipients" return
                     lower-case(api:get-persons-from-correspAction($letter//tei:correspAction[@type="received"]))
                 case "recipients-place" return
-                        let $recipients-place := id($letter//tei:correspAction[@type="received"]/tei:placeName/@source/string(), $config:localities)
+                        let $recipients-place := id($letter//tei:correspAction[@type="received"]/tei:placeName/@ref/string(), $config:localities)
                         return 
                             lower-case(api:get-place-name($recipients-place))
                 default return
@@ -558,14 +558,12 @@ declare function api:register-person-detail($request as map(*)) {
                 array {
                     for $letter in $subset
                         let $id := $letter/@xml:id/string()
-                        let $title := $letter//tei:titleStmt/tei:title/text()
-                        let $senders := api:get-persons-from-correspAction($letter//tei:correspAction[@type="sent"])
-                        let $send-place := id($letter//tei:correspAction[@type="sent"]/tei:placeName/@source/string(), $config:localities)
-                        let $send-place-name := api:get-place-name($send-place)
+                        let $title := ext:correspondents-by-letter($letter, 'sent') || " an " || ext:correspondents-by-letter($letter, 'received')
+                        let $senders := ext:correspondents-by-letter($letter, 'sent')
+                        let $send-place-name := ext:place-name(ext:place-by-letter($letter, 'sent'))
                         let $date := ext:date-by-letter($letter)
-                        let $recipients := api:get-persons-from-correspAction($letter//tei:correspAction[@type="received"])
-                        let $recipients-place := id($letter//tei:correspAction[@type="received"]/tei:placeName/@source/string(), $config:localities)
-                        let $recipients-place-name := api:get-place-name($recipients-place)
+                        let $recipients := ext:correspondents-by-letter($letter, 'received')
+                        let $recipients-place-name :=  ext:place-name(ext:place-by-letter($letter, 'received'))
                         return
                             map {
                                 "title": <a style="color:var(--bb-beige);text-decoration:none;" href="../{$id}">{$title}</a>,
@@ -657,11 +655,11 @@ declare function api:register-locality-detail($request as map(*)) {
                         (: let $log := util:log("info", ("api:locality-is-sender $correspAction: ",$letter//tei:correspAction[@type="sent"])) :)
                         let $senders := api:get-persons-from-correspAction($letter//tei:correspAction[@type="sent"])
                         (: let $log := util:log("info", ("api:locality-is-sender $senders: ",$senders)) :)
-                        let $send-place := id($letter//tei:correspAction[@type="sent"]/tei:placeName/@source/string(), $config:localities)
+                        let $send-place := id($letter//tei:correspAction[@type="sent"]/tei:placeName/@ref/string(), $config:localities)
                         let $send-place-name := api:get-place-name($send-place)
                         let $date := ext:date-by-letter($letter)
                         let $recipients := api:get-persons-from-correspAction($letter//tei:correspAction[@type="received"])
-                        let $recipients-place := id($letter//tei:correspAction[@type="received"]/tei:placeName/@source/string(), $config:localities)
+                        let $recipients-place := id($letter//tei:correspAction[@type="received"]/tei:placeName/@ref/string(), $config:localities)
                         let $recipients-place-name := api:get-place-name($recipients-place)
                         return
                             map {
