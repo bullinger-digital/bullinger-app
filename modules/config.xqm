@@ -209,23 +209,12 @@ declare variable $config:facets := [
         }
     },
     map {
-        "dimension": "group",
-        "heading": "Titel/Gruppe",
-        "max": $config:max-facets,
-        (: "max": 5,
-        "hierarchical": false(), :)
-        "source": "api/facets/group",
-        "output": function($label) {
-            $config:roles/id($label)/tei:form[@xml:lang="de"][@type="sg"]/text()
-        }
-    },
-    map {
-        "dimension": "institution",
+        "dimension": "organization",
         "heading": "Institution / Gruppe",
         "max": $config:max-facets,
         (: "max": 5,
         "hierarchical": false(), :)
-        "source": "api/facets/institution",
+        "source": "api/facets/organization",
         "output": function($label) {
             $config:orgs/id($label)/string()
         }

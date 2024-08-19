@@ -333,8 +333,7 @@ declare function api:get-register-query-options() {
 declare function api:register-select($request as map(*)) {
     switch($request?parameters?type)
         case "archives" return api:archives($request)
-        case "institutions" return api:institutions($request)
-        case "groups" return api:groups($request)
+        case "organizations" return api:organizations($request)
         default return ()
 };
 
@@ -400,7 +399,7 @@ declare function api:archives-sort($entries as element()*, $sortBy as xs:string,
             reverse($sorted)
 };
 
-declare function api:institutions($request as map(*)) {
+declare function api:organizations($request as map(*)) {
     let $key := $request?parameters?key
     let $sortBy := $request?parameters?order
     let $sortDir := $request?parameters?dir
@@ -408,128 +407,51 @@ declare function api:institutions($request as map(*)) {
     let $start := $request?parameters?start    
     let $filter := $request?parameters?search
     
-    let $entries := api:institutions-filter($filter)
+    let $entries := api:organizations-filter($filter)
     (: let $log := util:log("info", "api:institutions entries: " || count($entries)) :)
-    let $sorted := api:institutions-sort($entries, $sortBy, $sortDir)
+    let $sorted := api:organizations-sort($entries, $sortBy, $sortDir)
     (: let $log := util:log("info", "api:institutions $sorted: " || count($sorted)) :)
     let $subset := subsequence($sorted, $start, $limit)
     return (
-        session:set-attribute($config:session-prefix || ".institutions.hits", $entries),
-        session:set-attribute($config:session-prefix || ".institutions.hitCount", count($entries)),
+        session:set-attribute($config:session-prefix || ".organizations.hits", $entries),
+        session:set-attribute($config:session-prefix || ".organizations.hitCount", count($entries)),
         map {
             "count": count($entries),
             "results":
                 array {
                     for $org at $index in $subset
-                        let $singular := ft:field($org, 'org-name-sing')[1]
-                        let $plural := ft:field($org, 'org-name-plur')[1]
-                        let $sent := ft:field($org, 'org-sent-count')[1]
-                        let $received := ft:field($org, 'org-received-count')[1]
+                        let $name := ft:field($org, 'org-name')[1]
+                        let $count := ft:field($org, 'org-count')[1]
                         return
                             map {
-                                "singular": $singular,
-                                "plural": $plural,
-                                "sent": $sent,
-                                "received": $received
+                                "name": <a style="color:var(--bb-beige);text-decoration:none;" href="../letters.html?facet-organization={$org/@xml:id}">{$name}</a>,
+                                "count": $count
                             }
                 }
         })
 };
 
-declare function api:institutions-filter($filter as xs:string?) {    
+declare function api:organizations-filter($filter as xs:string?) {    
     let $options := api:get-register-query-options() 
-    let $institutions := $config:orgs//tei:org
+    let $organizations := $config:orgs//tei:orgName[ft:query(., '*:* AND NOT org-count:0')]
     let $result := 
         if ($filter) then
-            $institutions[ft:query(., 'org-name-plur:(' || $filter || '*)', $options)]
+            $organizations[ft:query(., 'org-name:(' || $filter || '*)', $options)]
         else
-            $institutions[ft:query(., 'org-name-plur:*', $options)]
+            $organizations[ft:query(., 'org-name:*', $options)]
     return 
         $result
 };
 
-declare function api:institutions-sort($entries as element()*, $sortBy as xs:string, $dir as xs:string) {
-    (: let $log := util:log("info", ("api:institutions-sort $sortBy: ", $sortBy, " - $dir: ", $dir)) :)
+declare function api:organizations-sort($entries as element()*, $sortBy as xs:string, $dir as xs:string) {
+    (: let $log := util:log("info", ("api:organizations-sort $sortBy: ", $sortBy, " - $dir: ", $dir)) :)
     let $sorted :=
         sort($entries, (), function($org) {
             switch ($sortBy)
-                case "sent" return 
-                    xs:integer(ft:field($org, 'org-sent-count')[1])
-                case "received" return
-                    xs:integer(ft:field($org, 'org-received-count')[1])
+                case "count" return 
+                    xs:integer(ft:field($org, 'org-count')[1])
                 default return
-                    lower-case(ft:field($org, 'org-name-plur')[1])
-        })
-    return
-        if ($dir = "asc") then
-            $sorted
-        else
-            reverse($sorted)
-};
-
-declare function api:groups($request as map(*)) {
-    let $key := $request?parameters?key
-    let $sortBy := $request?parameters?order
-    let $sortDir := $request?parameters?dir
-    let $limit := $request?parameters?limit
-    let $start := $request?parameters?start    
-    let $filter := $request?parameters?search
-    
-    let $entries := api:groups-filter($filter)
-    (: let $log := util:log("info", "api:groups entries: " || count($entries)) :)
-    let $sorted := api:groups-sort($entries, $sortBy, $sortDir)
-    (: let $log := util:log("info", "api:groups $sorted: " || count($sorted)) :)
-    let $subset := subsequence($sorted, $start, $limit)
-    return (
-        session:set-attribute($config:session-prefix || ".groups.hits", $entries),
-        session:set-attribute($config:session-prefix || ".groups.hitCount", count($entries)),
-        map {
-            "count": count($entries),
-            "results":
-                array {
-                    for $org at $index in $subset
-                        let $singular := ft:field($org, 'group-name-sing')[1]
-                        let $plural := ft:field($org, 'group-name-plur')[1]
-                        let $sent := ft:field($org, 'group-sent-count')[1]
-                        let $received := ft:field($org, 'group-received-count')[1]
-                        let $total := ft:field($org, 'group-total-count')[1]
-                        return
-                            map {
-                                "singular": $singular,
-                                "plural": $plural,
-                                "sent": $sent,
-                                "received": $received,
-                                "total": $total
-                            }
-                }
-        })
-};
-
-declare function api:groups-filter($filter as xs:string?) {    
-    let $options := api:get-register-query-options() 
-    let $roles := $config:roles//tei:nym
-    let $result := 
-        if ($filter) then
-            $roles[ft:query(., 'group-name-plur:(' || $filter || '*)', $options)]
-        else
-            $roles[ft:query(., 'group-name-plur:*', $options)]
-    return 
-        $result
-};
-
-declare function api:groups-sort($entries as element()*, $sortBy as xs:string, $dir as xs:string) {
-    (: let $log := util:log("info", ("api:groups-sort $sortBy: ", $sortBy, " - $dir: ", $dir)) :)
-    let $sorted :=
-        sort($entries, (), function($org) {
-            switch ($sortBy)
-                case "sent" return 
-                    xs:integer(ft:field($org, 'group-sent-count')[1])
-                case "received" return
-                    xs:integer(ft:field($org, 'group-received-count')[1])
-                case "total" return
-                    xs:integer(ft:field($org, 'group-total-count')[1])
-                default return
-                    lower-case(ft:field($org, 'org-name-plur')[1])
+                    lower-case(ft:field($org, 'org-name')[1])
         })
     return
         if ($dir = "asc") then
@@ -751,16 +673,16 @@ declare function api:facets-search($request as map(*)) {
                         let $_ := util:log("info", "api:facets-search: place: $archive: " || $archive/@xml:id)
                         return
                             string-join(($archive/tei:orgName/text(), $archive/tei:addName/text()), ", ")
-                    case "institution" return
+                    (: case "institution" return
                         let $org := $config:orgs/id($key)
                         let $_ := util:log("info", "api:facets-search: place: $institution: " || $org/@xml:id)
                         return
-                            $org/tei:name[@xml:lang="de"][@type="pl"]/text()
-                    case "group" return
-                        let $group := $config:roles/id($key)
-                        let $_ := util:log("info", "api:facets-search: place: $group: " || $group/@xml:id)
+                            $org/tei:name[@xml:lang="de"][@type="pl"]/text() :)
+                    case "organization" return
+                        let $group := $config:orgs/id($key)
+                        let $_ := util:log("info", "api:facets-search: organization: $group: " || $group/@xml:id)
                         return
-                            $group/tei:form[@xml:lang="de"][@type="pl"]/text()
+                            string($group)
                     default return 
                         let $_ := util:log("info", "api:facets-search: default return, $type: " || $type)
                         return 

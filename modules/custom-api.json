@@ -84,9 +84,9 @@
 				}
 			}
         }, 
-		"/groups/": {
+		"/organizations/": {
             "get": {
-				"summary": "Landing page for groups",
+				"summary": "Landing page for Organizations",
 				"description": "Retrieve an HTML page expanded through eXist templating.",
 				"tags": ["view"],
 				"operationId": "vapi:html",
@@ -97,7 +97,7 @@
 						"in": "query",
 						"schema": {
 							"type": "string",
-                            "default": "groups"
+                            "default": "organizations"
 						}
 					},
 					{
@@ -105,66 +105,7 @@
 						"in": "query",
 						"schema": {
 							"type": "string",
-							"default": "/groups/"
-						}					
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "HTML of the page",
-						"content": {
-							"text/html": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					},
-					"404": {
-						"description": "The document was not found",
-						"content": {
-							"text/html": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "An error occurred",
-						"content": {
-							"text/html": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				}
-			}
-        },
-		"/institutions/": {
-            "get": {
-				"summary": "Landing page for Institutions",
-				"description": "Retrieve an HTML page expanded through eXist templating.",
-				"tags": ["view"],
-				"operationId": "vapi:html",
-				"x-error-handler": "vapi:handle-error",
-				"parameters": [
-					{
-						"name": "file",
-						"in": "query",
-						"schema": {
-							"type": "string",
-                            "default": "institutions"
-						}
-					},
-					{
-						"name": "uri",
-						"in": "query",
-						"schema": {
-							"type": "string",
-							"default": "/institutions/"
+							"default": "/organizations/"
 						}					
 					}
 				],
