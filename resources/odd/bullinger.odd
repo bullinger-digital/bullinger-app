@@ -380,6 +380,10 @@
         </model>
                 </elementSpec>
             <elementSpec ident="note" mode="change">
+                <model predicate="@type = 'footnote' and @subtype = 'metadata'" cssClass="footnote-metadata" behaviour="note">
+                    <param name="place" value="@place"/>
+                    <param name="label" value="@n"/>
+                </model>
                     <model predicate="@type = 'footnote'" behaviour="note">
             <param name="place" value="@place"/>
             <param name="label" value="@n"/>
