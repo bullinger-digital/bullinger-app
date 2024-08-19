@@ -12,7 +12,7 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 (:~
  : Base URI of the IIIF image API service to use for the images
  :)
-declare variable $iiifc:IMAGE_API_BASE := "https://iiif.bullinger-digital.ch/iiif/3";
+declare variable $iiifc:IMAGE_API_BASE := "https://iiif.bullinger-digital.ch/iiif/2";
 
 (:~
  : URL prefix to use for the canvas id
