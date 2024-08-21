@@ -300,14 +300,15 @@
                 <param name="repository" value=".//repository"/>
                 <param name="idno" value="let $sub := @subtype  return (', ' || ./msIdentifier/idno[@subtype=$sub]/text())"/>
                 <param name="note" value="./msIdentifier/idno[@subtype='Hinweis']/text()"/>
-                <param name="has-note" value="if (string-length(./msIdentifier/idno[@subtype='Hinweis']/text()) &gt; 0) then () else ('display: none;')"/>
+                <param name="author" value="let $author := .//author/text()  return if(exists($author)) then ('Autor: ' || $author) else ()" />
+                <param name="has-note" value="if (string-length(./msIdentifier/idno[@subtype='Hinweis']/text() || .//author/text()) &gt; 0) then () else ('display: none;')"/>
                 <param name="subtype" value="fn:replace(@subtype, '__', ' ')"/>
                 <param name="era" value="let $era := .//idno[@subtype='Ära']/text()  return if (exists($era)) then (' (' || $era || ')') else ()" />
                 <pb:set-param name="archive" value="let $archive-id := ./msIdentifier/repository/@ref return doc('/db/apps/bullinger-data/data/index/archives.xml')//org[@xml:id=$archive-id]"/>
                 <pb:template xmlns="" xml:space="preserve"><div>[[subtype]]</div>
 <div>[[repository]] [[idno]][[era]]<span style="[[has-note]]"><pb-popover>
     <span slot="default"><iron-icon class="metadata-info-icon" title="Hinweis" id="info-outline" icon="info-outline"/></span>
-    <span slot="alternate">[[note]]</span>
+    <span slot="alternate">[[note]]<br />[[author]]</span>
   </pb-popover></span></div></pb:template>
             </model>
         </modelSequence>
