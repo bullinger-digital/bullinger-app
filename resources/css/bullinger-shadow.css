@@ -40,3 +40,35 @@
     height: 6rem;
     bottom: 0rem;
 }
+
+
+.portrait {
+    position:relative;
+    border-radius: 50%;
+    width: 5rem;
+    height: 5rem;
+    display:inline-block;
+    overflow:hidden;
+    margin-left:-2rem;
+    z-index: 10;
+    outline: 2px solid #fff;
+    border: 1px solid #000;
+    transition: margin-left 0.2s;
+}
+.portrait:first-child {
+    margin-left:0;
+}
+.portrait:hover {
+    z-index:12;
+}
+.portrait img {
+    width:100%;
+    height:auto;
+}
+
+.portrait-container {
+    text-align:right;
+}
+.portrait-container:hover .portrait {
+    margin-left:-1rem;
+}

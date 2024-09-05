@@ -62,7 +62,7 @@
                 <desc>Person Images</desc>
                 <param name="pictures" value="$parameters?persons-correspondents-only[idno/@subtype=&#34;portrait&#34;]"/>
                 <pb:set-param name="subtype" value="'pictures'"/>
-                <pb:template xmlns="" xml:space="preserve"><div>[[pictures]]</div></pb:template>
+                <pb:template xmlns="" xml:space="preserve"><div class="portrait-container">[[pictures]]</div></pb:template>
             </model>
             <model behaviour="section">
                 <desc>Bullinger Metadata</desc>
@@ -323,10 +323,10 @@
         </model>
                 </elementSpec>
             <elementSpec ident="person" mode="add">
-                    <model predicate="$parameters?subtype = 'pictures'" behaviour="graphic" cssClass="portrait">
+                    <model predicate="$parameters?subtype = 'pictures'" behaviour="inline" cssClass="portrait">
             <param name="url" value="'resources/portraits/' || ./idno[@subtype='portrait']/text()"/>
             <param name="title" value="./persName[@type='main']/forename || &#34; &#34; || ./persName[@type='main']/surname"/>
-            <pb:template xmlns="" xml:space="preserve"><img src="[[url]]" alt="[[title]]"/></pb:template>
+            <pb:template xmlns="" xml:space="preserve"><img title="[[title]]" src="[[url]]" alt="[[title]]"/></pb:template>
         </model>
                 </elementSpec>
             <elementSpec ident="placeName" mode="add">

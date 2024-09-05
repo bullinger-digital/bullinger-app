@@ -18,11 +18,7 @@
     white-space:nowrap;
     padding-right:1rem;
 }
-#metaWrapper img {
-    border-radius: 50%;
-    width: 7rem;
-    height: 7rem;
-}
+
 .subtitle { 
     display: flex;
     align-items: center;
