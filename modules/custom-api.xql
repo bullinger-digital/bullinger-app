@@ -364,7 +364,7 @@ declare function api:archives($request as map(*)) {
                         return
                             map {
                                 "archive": <a style="color:var(--bb-beige);text-decoration:none;" href="{$url}" target="_blank">{$name}</a>,
-                                "document-count": $count
+                                "document-count": <a style="color:var(--bb-beige);text-decoration:none;" href="../letters.html?facet-archive={$org/@xml:id}">{$count}</a>
                             }
                 }
         })
