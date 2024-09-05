@@ -942,9 +942,23 @@ pb-split-list::part(items) {
 }
 
 .search-result {
+    display: flex;
+    justify-content: space-between;
     font-size: var(--s0);
     font-family: var(--bb-font-family-serif);
     color: var(--bb-dark-gray)
+}
+
+.search-result-facsimile {
+    height: 100px;
+}
+.search-result-facsimile div {
+    max-height: 100px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+.search-result-facsimile img {
+    margin-right: 0;
 }
 
 .dropdown-register {

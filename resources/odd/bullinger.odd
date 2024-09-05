@@ -242,10 +242,19 @@
                 <param name="date" value="ext:date-by-letter(ancestor::teiHeader)"/>
                 <param name="place" value="ext:place-by-letter(ancestor::teiHeader)"/>
                 <param name="type" value="ancestor::TEI/@type/string()"/>
+                <param name="has-facsimile" value="if (exists(ancestor::TEI//facsimile//graphic)) then ('display: block;') else ('display: none;')"/>
+                <param name="first-facsimile" value="let $path := ancestor::TEI//facsimile//graphic/desc[@subtype='path'][1]  return if(exists($path)) then (fn:encode-for-uri($path/text())) else ()"/>
                 <pb:template xmlns="" xml:space="preserve">
                     <div class="search-result">
-                        <div class="search-result-title"><span style="color:var(--bb-beige);">[[sender]]</span> an <span style="color:var(--bb-beige);">[[receiver]]</span></div>
-                        <div class="search-result-subtitle">[[date]], <span>[[place]]</span> <span class="doc-type"> ([[type]])</span></div>
+                        <div>
+                            <div class="search-result-title"><span style="color:var(--bb-beige);">[[sender]]</span> an <span style="color:var(--bb-beige);">[[receiver]]</span></div>
+                            <div class="search-result-subtitle">[[date]], <span>[[place]]</span> <span class="doc-type"> ([[type]])</span></div>
+                        </div>
+                        <div style="[[has-facsimile]]" class="search-result-facsimile">
+                            <div>
+                                <img src="https://iiif.bullinger-digital.ch/iiif/3/[[first-facsimile]]/full/100,/0/default.jpg" style="[[has-facsimile]]"/>
+                            </div>
+                        </div>
                     </div>
                 </pb:template>
             </model>
