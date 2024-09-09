@@ -39,12 +39,12 @@ RUN if [ "${INSTALL_TEXLIVE}" = "true" ]; then \
 WORKDIR /workspaces
 
 # Install tei-publisher-ner plus German and English language models
-RUN git clone https://github.com/eeditiones/tei-publisher-ner.git \
-    && cd tei-publisher-ner \
-    && pip3 install --no-cache-dir --upgrade -r requirements.txt \
-    && pip3 install --no-cache-dir gunicorn \
-    && python3 -m spacy download de_core_news_sm \
-    && python3 -m spacy download en_core_web_sm
+# RUN git clone https://github.com/eeditiones/tei-publisher-ner.git \
+#     && cd tei-publisher-ner \
+#     && pip3 install --no-cache-dir --upgrade -r requirements.txt \
+#     && pip3 install --no-cache-dir gunicorn \
+#     && python3 -m spacy download de_core_news_sm \
+#     && python3 -m spacy download en_core_web_sm
 
 # Download and install eXist-db
 RUN curl -L -o exist-distribution-${EXIST_VERSION}-unix.tar.bz2 https://github.com/eXist-db/exist/releases/download/eXist-${EXIST_VERSION}/exist-distribution-${EXIST_VERSION}-unix.tar.bz2 \
