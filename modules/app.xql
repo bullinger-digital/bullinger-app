@@ -296,7 +296,11 @@ declare
 function app:transcription-source($node as node(), $model as map(*)) {
     let $tei := collection($config:data-default)//tei:TEI[@xml:id=$model?doc]
     let $bibl := $tei//tei:sourceDesc/tei:bibl[@type="transcription"]
-    let $text := if ($bibl) then ("Quelle: " || $bibl/text()) else if ($tei/@source/string() = "keine") then ("Automatische Transkription") else ""
+    let $text := if ($bibl) then (
+        <span><pb-i18n key="source">(Quelle)</pb-i18n>: {$bibl/text()}</span>
+    ) else if ($tei/@source/string() = "keine") then (
+        <pb-i18n key="automaticTranscription">(Automatische Transkription)</pb-i18n>
+    ) else ""
     return
         if(fn:string-length($text) > 0)
         then (
@@ -317,18 +321,7 @@ function app:facsimile-source($node as node(), $model as map(*)) {
         then (
             <pb-popover class="source-info" persistent="true" theme="light">
                 <iron-icon slot="default" icon="info" class="source-info--icon"/>
-                <span slot="alternate">Quelle: {$bibl/text()}</span>
+                <span slot="alternate"><pb-i18n key="source">(Quelle)</pb-i18n>: {$bibl/text()}</span>
             </pb-popover>
         ) else ()
-};
-
-declare
-    %templates:wrap
-function app:include-static-content($node as node(), $model as map(*), $page) as node()* {
-    let $source-document := $page || "-" || $model?lang || ".html"
-    let $path := $config:app-root || "/static/" || $source-document
-    return
-        if (not(doc-available($path)))
-        then error((), "The content page could not be found: " || $source-document)
-        else doc($path)//main/node()
 };

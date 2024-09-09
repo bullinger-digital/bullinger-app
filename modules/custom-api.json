@@ -383,10 +383,10 @@
 				}
 			}
         },
-		"/content/{page}": {
+		"/api/content/{page}": {
 			"get": {
 				"summary": "Show static content page",
-				"operationId": "vapi:html",
+				"operationId": "custom:include-static-content",
 				"tags": ["content"],
 				"parameters": [
 					{
@@ -398,7 +398,7 @@
 						}
 					},
 					{
-						"name": "lang",
+						"name": "language",
 						"in": "query",
 						"required": true,
 						"schema": {

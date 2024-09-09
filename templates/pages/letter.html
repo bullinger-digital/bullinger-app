@@ -5,7 +5,8 @@
     <meta data-target="title-template" name="description" content="Bullinger Digital Letter View"/>
 </head>
 <body>
-    <pb-page data-template="pages:pb-page" unresolved="unresolved">
+    <pb-page data-template="pages:pb-page" unresolved="unresolved" locales="resources/i18n/{{ns}}/{{lng}}.json"
+        require-language="require-language" locale-fallback-ns="app">
         <pb-document id="document1" data-template="pages:pb-document"/>
         <header class="top-header">
             <nav data-template="lib:include" data-template-path="templates/menu.html"></nav>
@@ -21,8 +22,8 @@
             <section class="text">
                 <div class="pageWrapper">
                     <div class="transkription card">
-                        <h2>Brieftext <span data-template="app:transcription-source"></span> 
-                          <small class="small-t"><label for="lang-toggle"><input type="checkbox" name="lang-toggle" id="lang-toggle" value="test" /> Show Language</label></small></h2>
+                        <h2><pb-i18n key="letterText">(Brieftext)</pb-i18n> <span data-template="app:transcription-source"></span> 
+                          <small class="small-t"><label for="lang-toggle"><input type="checkbox" name="lang-toggle" id="lang-toggle" value="test" />&#160;<pb-i18n key="showLanguage">(Show Language)</pb-i18n></label></small></h2>
                         <pb-view id="view1" src="document1" column-separator=".tei-cb" append-footnotes="append-footnotes" subscribe="transcription" emit="transcription"/>
                         <pb-view id="facsimile-links" src="document1" xpath="//facsimile" view="single" wait-for="#facsimile" emit="facsimile">
                             <pb-param name="view" value="facsimile"/>

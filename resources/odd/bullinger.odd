@@ -55,8 +55,8 @@
                 <param name="date" value="ext:date-by-letter(.)"/>
                 <param name="place" value="ext:place-by-letter(.)"/>
                 <param name="type" value="../@type/string()"/>
-                <pb:template xmlns="" xml:space="preserve"><h1><span><span style="color:var(--bb-beige);">[[sender]]</span> an <span style="color:var(--bb-beige);">[[receiver]]</span></span></h1>
-<div class="subtitle"><iron-icon id="date-range" icon="date-range"/>[[date]] <iron-icon id="map-near-me" icon="maps:near-me"/>[[place]] <span class="doc-type">[[type]]</span></div></pb:template>
+                <pb:template xmlns="" xml:space="preserve"><h1><span><span style="color:var(--bb-beige);">[[sender]]</span>&#8199;<pb-i18n key="_to_">(an)</pb-i18n>&#8199;<span style="color:var(--bb-beige);">[[receiver]]</span></span></h1>
+<div class="subtitle"><iron-icon id="date-range" icon="date-range"/>[[date]] <iron-icon id="map-near-me" icon="maps:near-me"/>[[place]] <span class="doc-type"><pb-i18n key="metadata.types.[[type]]">([[type]])</pb-i18n></span></div></pb:template>
             </model>
             <model behaviour="section">
                 <desc>Person Images</desc>
@@ -78,7 +78,7 @@
                 <param name="links-parents" value=".//correspContext/ref[@type='parent']"/>
                 <param name="links-children" value=".//correspContext/ref[@type='child']"/>
                 <pb:set-param name="subtype" value="metadata"/>
-                <pb:template xmlns="" xml:space="preserve"><h2>Metadata</h2>
+                <pb:template xmlns="" xml:space="preserve">
 <div id="sourceDesc">
   [[correspAction]]
   [[msDesc]]
@@ -89,11 +89,11 @@
     <div><a target="_blank" href="http://teoirgsed.uzh.ch/SedWEB.cgi?Alias=Briefe&amp;Lng=1&amp;aheight=910&amp;PrjName=Bullinger+-+Briefwechsel&amp;fld_418=[[hbbw-no]]">Band [[hbbw-band]], Nr. [[hbbw-no]]</a></div>
   </div>
   <div style="[[links-parents-hidden]]">
-    <div>Dieser Eintrag verweist auf</div>
+    <div><pb-i18n key="metadata.referenced">(Verweise auf diesen Eintrag)</pb-i18n></div>
     <div>[[links-parents]]</div>
   </div>
   <div style="[[links-children-hidden]]">
-    <div>Verweise auf diesen Eintrag</div>
+    <div><pb-i18n key="metadata.references">(Dieser Eintrag verweist auf)</pb-i18n></div>
     <div>[[links-children]]</div>
   </div>
 </div></pb:template>
@@ -103,7 +103,7 @@
                 <param name="content" value=".//msContents/summary"/>
                 <param name="source" value=".//bibl[@type='regest']"/>
                 <param name="overlength" value="let $request := .//msContents/summary/p/text() let $text := string-join($request, &#34; &#34;) return   if(exists($request) and string-length($text) &lt; 300)    then ()   else (&#34;overlength&#34;)"/>
-                <pb:template xmlns="" xml:space="preserve"><h2>Regest [[source]]</h2>
+                <pb:template xmlns="" xml:space="preserve"><h2><pb-i18n key="regest">(Regest)</pb-i18n>&#160;[[source]]</h2>
 <div class="regesttext [[overlength]]">
   <div id="regest" class="metaregest">[[content]]</div>
   <div class="expander"><iron-icon icon="arrow-drop-down"/></div>
@@ -145,21 +145,23 @@
                     <model behaviour="document"/>
                 </elementSpec>
             <elementSpec ident="language" mode="add">
-                    <model predicate="$parameters?view='metadata'" behaviour="block">
-            <param name="content" value="text()"/>
-            <pb:template xmlns="" xml:space="preserve">[[content]]</pb:template>
+                    <model predicate="$parameters?view='metadata'" behaviour="inline" cssClass="meta-language">
+            <param name="ident" value="@ident"/>
+            <pb:template xmlns="" xml:space="preserve">
+                <pb-i18n key="metadata.language.[[ident]]">(ident)</pb-i18n>
+            </pb:template>
         </model>
                     <model output="web" behaviour="pass-through">
             <desc>output specific language usage percentage </desc>
-            <param name="id" value="@ident"/>
+            <param name="ident" value="@ident"/>
             <param name="percentage" value="let $usage := xs:integer(@usage) return if ($usage = 0 ) then ( $usage ) else ( $usage div 10 )"/>
-            <pb:template xmlns="" xml:space="preserve"><span class="lang-[[id]] lang__usage">[[content]]<span class="lang-usage-percent">[[percentage]]%</span></span></pb:template>
+            <pb:template xmlns="" xml:space="preserve"><span class="lang-[[ident]] lang__usage"><pb-i18n key="metadata.language.[[ident]]">(ident)</pb-i18n> <span class="lang-usage-percent">[[percentage]]%</span></span></pb:template>
         </model>
                 </elementSpec>
                 <elementSpec ident="langUsage" mode="add">
                     <model predicate="$parameters?view='metadata'" behaviour="block">
-            <param name="content" value="let $langs := (for $l in ./language where $l/@usage &gt; 0 order by $l/@usage descending return $l/text())  return fn:string-join($langs, ', ')"/>
-            <pb:template xmlns="" xml:space="preserve"><div>Sprachen</div><div>[[content]]</div></pb:template>
+            <param name="langs" value="let $langs := (for $l in ./language where $l/@usage &gt; 0 order by $l/@usage div 10 descending return $l)  return $langs"/>
+            <pb:template xmlns="" xml:space="preserve"><div><pb-i18n key="metadata.languages">(Sprachen)</pb-i18n></div><div>[[langs]]</div></pb:template>
         </model>
                 </elementSpec>
                 <elementSpec ident="msIdentifier" mode="add"/>
@@ -169,7 +171,7 @@
                 <desc>Date with a Note</desc>
                 <param name="content" value="ext:date-by-letter(.)"/>
                 <param name="note" value="./date/note/text()"/>
-                <pb:template xmlns="" xml:space="preserve"><div><pb-i18n key="metadata.date">Date</pb-i18n></div>
+                <pb:template xmlns="" xml:space="preserve"><div><pb-i18n key="metadata.date">(Date)</pb-i18n></div>
 <div>[[content]]<pb-popover>
     <span slot="default"><iron-icon class="metadata-info-icon" title="Hinweis zum Datum" id="info-outline" icon="info-outline"/></span>
     <span slot="alternate">[[note]]</span>
@@ -179,20 +181,20 @@
             <model predicate="not(exists(date/note))" behaviour="block">
                 <desc>Date without Note</desc>
                 <param name="content" value="ext:date-by-letter(.)"/>
-                <pb:template xmlns="" xml:space="preserve"><div>Date</div>
+                <pb:template xmlns="" xml:space="preserve"><div><pb-i18n key="metadata.date">(Date)</pb-i18n></div>
 <div>[[content]]</div>
 </pb:template>
             </model>
             <model behaviour="block" pb:mode="metadata">
                 <desc>Sender</desc>
                 <param name="sender" value="(persName,orgName,roleName)"/>
-                <pb:template xmlns="" xml:space="preserve"><div>Absender</div>
+                <pb:template xmlns="" xml:space="preserve"><div><pb-i18n key="metadata.sender">(Absender)</pb-i18n></div>
 <div>[[sender]]</div></pb:template>
             </model>
         </modelSequence>
                     <model predicate="@type = &#34;received&#34; and $parameters?view='metadata'" behaviour="block">
             <param name="receiver" value="(persName,orgName,roleName)"/>
-            <pb:template xmlns="" xml:space="preserve"><div>Empfänger</div>
+            <pb:template xmlns="" xml:space="preserve"><div><pb-i18n key="metadata.addressee">(Empfänger)</pb-i18n></div>
 <div>[[receiver]]</div></pb:template>
         </model>
                 </elementSpec>
@@ -201,7 +203,7 @@
             <desc>info popover next to regest</desc>
             <pb:template xmlns="" xml:space="preserve"><pb-popover class="source-info">
   <iron-icon slot="default" icon="info" class="source-info--icon"/>
-  <span slot="alternate">Quelle: [[content]]</span>
+  <span slot="alternate"><pb-i18n key="source">(Quelle)</pb-i18n>: [[content]]</span>
 </pb-popover></pb:template>
         </model>
                     <model predicate="$parameters?view='metadata' and @type='Gedruckt' and @subtype!='Gedruckt' and string-length(@subtype) &gt; 0" behaviour="listItem">
@@ -243,16 +245,16 @@
                 <param name="place" value="ext:place-by-letter(ancestor::teiHeader)"/>
                 <param name="type" value="ancestor::TEI/@type/string()"/>
                 <param name="has-facsimile" value="if (exists(ancestor::TEI//facsimile//graphic)) then ('display: block;') else ('display: none;')"/>
-                <param name="first-facsimile" value="let $path := ancestor::TEI//facsimile//graphic/desc[@subtype='path'][1]  return if(exists($path)) then (fn:encode-for-uri($path/text())) else ()"/>
+                <param name="first-facsimile" value="let $path := ancestor::TEI//facsimile//graphic/desc[@subtype='path'][1]  return if(exists($path)) then ('https://iiif.bullinger-digital.ch/iiif/3/' || fn:encode-for-uri($path/text()) || '/full/100,/0/default.jpg') else ('')"/>
                 <pb:template xmlns="" xml:space="preserve">
                     <div class="search-result">
                         <div>
-                            <div class="search-result-title"><span style="color:var(--bb-beige);">[[sender]]</span> an <span style="color:var(--bb-beige);">[[receiver]]</span></div>
-                            <div class="search-result-subtitle">[[date]], <span>[[place]]</span> <span class="doc-type"> ([[type]])</span></div>
+                            <div class="search-result-title"><span style="color:var(--bb-beige);">[[sender]]</span>&#8199;<pb-i18n key="_to_">(an)</pb-i18n>&#8199;<span style="color:var(--bb-beige);">[[receiver]]</span></div>
+                            <div class="search-result-subtitle">[[date]], <span>[[place]]</span> <span class="doc-type"> (<pb-i18n key="metadata.types.[[type]]">_[[type]]_</pb-i18n>)</span></div>
                         </div>
                         <div style="[[has-facsimile]]" class="search-result-facsimile">
                             <div>
-                                <img src="https://iiif.bullinger-digital.ch/iiif/3/[[first-facsimile]]/full/100,/0/default.jpg" style="[[has-facsimile]]"/>
+                                <img src="[[first-facsimile]]" style="[[has-facsimile]]"/>
                             </div>
                         </div>
                     </div>
@@ -296,7 +298,7 @@
                 <elementSpec ident="listBibl" mode="change">
                     <model predicate="$parameters?view='metadata'" behaviour="block">
             <param name="printed" value="let $printed := (for $b in bibl where $b/@type = 'Gedruckt' order by fn:starts-with($b/title/text(), 'HBBW') descending return $b)  return $printed"/>
-            <pb:template xmlns="" xml:space="preserve"><div>Gedruckt</div>
+            <pb:template xmlns="" xml:space="preserve"><div><pb-i18n key="metadata.printed">(Gedruckt)</pb-i18n></div>
 <div><ul>[[printed]]</ul></div></pb:template>
         </model>
                     <model predicate="bibl" behaviour="list">
@@ -314,7 +316,7 @@
                 <param name="subtype" value="fn:replace(@subtype, '__', ' ')"/>
                 <param name="era" value="let $era := .//idno[@subtype='Ära']/text()  return if (exists($era)) then (' (' || $era || ')') else ()" />
                 <pb:set-param name="archive" value="let $archive-id := ./msIdentifier/repository/@ref return doc('/db/apps/bullinger-data/data/index/archives.xml')//org[@xml:id=$archive-id]"/>
-                <pb:template xmlns="" xml:space="preserve"><div>[[subtype]]</div>
+                <pb:template xmlns="" xml:space="preserve"><div><pb-i18n key="metadata.documents.[[subtype]]">([[subtype]])</pb-i18n></div>
 <div>[[repository]] [[idno]][[era]]<span style="[[has-note]]"><pb-popover>
     <span slot="default"><iron-icon class="metadata-info-icon" title="Hinweis" id="info-outline" icon="info-outline"/></span>
     <span slot="alternate">[[note]]<br />[[author]]</span>

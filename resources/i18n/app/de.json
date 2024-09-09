@@ -1,26 +1,94 @@
 {
+    "_to_": "an",
     "facets": {
         "addressee": "Empfänger",
         "archive":"Archiv",                
-        "correspondent": "Korrespondent",
         "date": "Datum",
-        "group":"Gruppe",
-        "institution":"Institution",
-        "keyword": "Schlagwort",
-        "mentioned": "Erwähnte Person",
-        "number": "Nummer",
-        "place": "Ort",
-        "provenience": "Provenienz",
-        "sender": "Absender",
-        "type": "Dokumenttyp"  
+        "organization": "Institution / Gruppe",
+        "sender": "Absender"
+    },
+    "search": {
+        "title": "Titel",
+        "fulltext": "Volltext"
     },
     "mobile" : {
         "menu": "Menü"
     },
-    "app-title": "Test DE",
-    "index-intro": "index-intro <strong>DE</strong>",
+    "app-title": "Briefsuche",
     "letters": "Briefe",
     "metadata": {
-        "date": "Datum"
-    }
+        "date": "Datum",
+        "sender": "Absender",
+        "addressee": "Empfänger",
+        "autograph": "Autograph",
+        "types": {
+            "Begleitbrief": "Begleitbrief",
+            "Beilage": "Beilage",
+            "Brief": "Brief",
+            "Briefanfang": "Briefanfang",
+            "Briefschluss": "Briefschluss",
+            "Forschungskorrespondenz": "Forschungskorrespondenz",
+            "Gutachten": "Gutachten",
+            "Hinweis": "Hinweis",
+            "Literaturhinweis": "Literaturhinweis",
+            "Nachschrift": "Nachschrift",
+            "Neue__Zeitung": "Neue Zeitung",
+            "Regest": "Regest",
+            "Rede": "Rede",
+            "Rückseite": "Rückseite",
+            "Testament": "Testament",
+            "Verweis": "Verweis",
+            "Widmung": "Widmung",
+            "Widmungsvorrede": "Widmungsvorrede"
+        },
+        "documents": {
+            "Autograph__(Kopie)": "Autograph (Kopie)",
+            "Autograph__(Konzept)": "Autograph (Konzept)",
+            "Kopie__(Entwurf)": "Kopie (Entwurf)",
+            "Original__(Entwurf)": "Original (Entwurf)",
+            "Übersetzung": "Übersetzung",
+            "Xeroxkopie": "Xeroxkopie",
+            "Exzerpt": "Exzerpt",
+            "Fotokopie": "Fotokopie",
+            "Teilkopie": "Teilkopie",
+            "Mikrofilm": "Mikrofilm",
+            "Ära": "Ära",
+            "Teilentwurf": "Teilentwurf",
+            "Kopie": "Kopie",
+            "Beilage": "Beilage",
+            "Hinweis": "Hinweis",
+            "Zustand": "Zustand",
+            "Autograph": "Autograph",
+            "Quelle": "Quelle",
+            "Original": "Original",
+            "Druck": "Druck",
+            "Teilübersetzung": "Teilübersetzung",
+            "Autograph__(Entwurf)": "Autograph (Entwurf)"
+        },
+        "language": {
+            "la": "Latein",
+            "it": "Italienisch",
+            "en": "Englisch",
+            "el": "Griechisch",
+            "he": "Hebräisch",
+            "fr": "Französisch",
+            "de": "Deutsch"
+        },
+        "copy": "Kopie",
+        "languages": "Sprachen",
+        "printed": "Gedruckt",
+        "references": "Verweise auf diesen Eintrag",
+        "referenced": "Dieser Eintrag verweist auf"
+    },
+    "menu": {
+        "persons": "Personen",
+        "localities": "Orte",
+        "organizations": "Institutionen / Gruppen",
+        "archives": "Archive"
+    },
+    "regest": "Regest",
+    "letterText": "Brieftext",
+    "showLanguage": "Sprachen anzeigen",
+    "source": "Quelle",
+    "automaticTranscription": "Automatische Transkription"
 }

@@ -1,3 +1,8 @@
+#sourceDesc {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
 #sourceDesc ul {
     padding-left:1rem;
 }
@@ -91,6 +96,13 @@ display: block;
 .tei-p.tei-p {
     text-align: left;
     line-height: 1.337;
+}
+
+.meta-language::after {
+    content: ', ';
+}
+.meta-language:last-child::after {
+    content: '';
 }
 
 [class*='lang-']::before,
