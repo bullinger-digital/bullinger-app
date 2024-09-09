@@ -44,6 +44,7 @@ declare function ext:correspondent-by-item($item) {
 };
 
 declare function ext:date-by-letter($item) {
+    (: Todo: Translations for month names and additional date text :)
     let $date := typeswitch($item)
         case element(correspAction) return $item/date
         default return $item//correspAction[@type = "sent"]/date

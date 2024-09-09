@@ -122,7 +122,7 @@ declare variable $config:max-facets := 5;
 declare variable $config:facets := [
     map {
         "dimension": "sender",
-        "heading": "Absender",
+        "heading": "facets.sender",
         "max": $config:max-facets,
         (: "max": 5,
         "hierarchical": false(), :)
@@ -137,7 +137,7 @@ declare variable $config:facets := [
     },    
     map {
         "dimension": "recipient",
-        "heading": "Empfänger",
+        "heading": "facets.addressee",
         "max": $config:max-facets,
         (: "max": 5,
         "hierarchical": false(), :)
@@ -178,7 +178,7 @@ declare variable $config:facets := [
     },     :)
     map {
         "dimension": "place",
-        "heading": "Ort",
+        "heading": "facets.place",
         "max": $config:max-facets,
         (: "max": 5,
         "hierarchical": false(), :)
@@ -199,7 +199,7 @@ declare variable $config:facets := [
     },
     map {
         "dimension": "archive",
-        "heading": "Archiv",
+        "heading": "facets.archive",
         "max": $config:max-facets,
         (: "max": 5,
         "hierarchical": false(), :)
@@ -210,7 +210,7 @@ declare variable $config:facets := [
     },
     map {
         "dimension": "organization",
-        "heading": "Institution / Gruppe",
+        "heading": "facets.organization",
         "max": $config:max-facets,
         (: "max": 5,
         "hierarchical": false(), :)

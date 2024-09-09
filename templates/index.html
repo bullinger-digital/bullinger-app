@@ -11,15 +11,7 @@
                 <nav data-template="lib:include" data-template-path="templates/menu.html"></nav>
             </header>
             <main class="center-l indexpage">
-                <pb-i18n key="index-intro">Willkommen...</pb-i18n>
-                <h1 class="tp-title">Willkommen bei der Demo-Version von Bullinger Digital</h1>
-                <p>Hier zeigen wir, wie Bullinger Digital im TEI-Publisher aussehen und funktionieren könnte. 
-                    Bitte beachten Sie, dass diese Version im Aufbau ist und nicht die aktuellen Daten enthält. 
-                </p>
-                <p>Die offizielle Projektwebsite mit den aktuellen Daten und dem vollständigen Online-Suchsystem 
-                    finden Sie unter <a target="_blank" href="https://www.bullinger-digital.ch">www.bullinger-digital.ch</a>.
-                </p>
-                <h3><a href="letters.html">Zur Demo-Version</a></h3>
+                <pb-load url="api/content/home" auto="" use-language="true">Loading...</pb-load>
             </main>
             <footer data-template="lib:include" data-template-path="templates/footer.html"/> 
         </pb-page>

@@ -19,8 +19,12 @@
                     <pb-custom-form class="options">
                         <input type="hidden" name="collection" value="${collection}" data-template="pages:parse-params"/>
                         <pb-select label="search.scope" name="field" value="${field}" data-template="pages:parse-params">
-                            <paper-item value="title">Titel</paper-item>
-                            <paper-item value="text" selected="">Volltext</paper-item>
+                            <paper-item value="title">
+                                <pb-i18n key="search.title">Titel</pb-i18n>
+                            </paper-item>
+                            <paper-item value="text" selected="">
+                                <pb-i18n key="search.fulltext">Volltext</pb-i18n>
+                            </paper-item>
                         </pb-select>
                     </pb-custom-form>
                     <pb-search id="search-form" subscribe="search" data-template="pages:parse-params" value="${query}"

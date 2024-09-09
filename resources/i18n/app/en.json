@@ -1,26 +1,94 @@
 {
+    "_to_": "to",
     "facets": {
-        "addressee": "Empfänger (en)",
-        "archive":"Archiv (en)",                
-        "correspondent": "Korrespondent (en)",
-        "date": "Datum (en)",
-        "group":"Gruppe (en)",
-        "institution":"Institution (en)",
-        "keyword": "Schlagwort (en)",
-        "mentioned": "Erwähnte Person (en)",
-        "number": "Nummer (en)",
-        "place": "Ort (en)",
-        "provenience": "Provenienz (en)",
-        "sender": "Absender (en)",
-        "type": "Dokumenttyp (en)"  
+        "addressee": "Recipient",
+        "archive": "Archive",
+        "date": "Date",
+        "organization": "Institution / Group",
+        "sender": "Sender"
+    },
+    "search": {
+        "title": "Title",
+        "fulltext": "Fulltext"
     },
     "mobile" : {
         "menu": "Menu (en)"
     },
-    "app-title": "Test EN",
-    "index-intro": "index-intro <strong>DE</strong>",
+    "app-title": "Search letters",
     "letters": "Letters",
     "metadata": {
-        "date": "Date"
-    }
+        "date": "Date",
+        "sender": "Sender",
+        "addressee": "Addressee",
+        "autograph": "Autograph",
+        "types": {
+            "Begleitbrief": "Cover Letter",
+            "Beilage": "Enclosure",
+            "Brief": "Letter",
+            "Briefanfang": "Letter Beginning",
+            "Briefschluss": "Letter Conclusion",
+            "Forschungskorrespondenz": "Research Correspondence",
+            "Gutachten": "Expert Opinion",
+            "Hinweis": "Note",
+            "Literaturhinweis": "Literature Reference",
+            "Nachschrift": "Postscript",
+            "Neue__Zeitung": "Neue Zeitung",
+            "Regest": "Summary",
+            "Rede": "Speech",
+            "Rückseite": "Backside",
+            "Testament": "Will",
+            "Verweis": "Reference",
+            "Widmung": "Dedication",
+            "Widmungsvorrede": "Dedication Preface"
+        },
+        "documents": {
+            "Autograph__(Kopie)": "Autograph (Copy)",
+            "Autograph__(Konzept)": "Autograph (Concept)",
+            "Kopie__(Entwurf)": "Copy (Draft)",
+            "Original__(Entwurf)": "Original (Draft)",
+            "Übersetzung": "Translation",
+            "Xeroxkopie": "Xerox Copy",
+            "Exzerpt": "Excerpt",
+            "Fotokopie": "Photocopy",
+            "Teilkopie": "Partial Copy",
+            "Mikrofilm": "Microfilm",
+            "Ära": "Era",
+            "Teilentwurf": "Partial Draft",
+            "Kopie": "Copy",
+            "Beilage": "Enclosure",
+            "Hinweis": "Note",
+            "Zustand": "Condition",
+            "Autograph": "Autograph",
+            "Quelle": "Source",
+            "Original": "Original",
+            "Druck": "Print",
+            "Teilübersetzung": "Partial Translation",
+            "Autograph__(Entwurf)": "Autograph (Draft)"
+        },
+        "language": {
+            "la": "Latin",
+            "it": "Italian",
+            "en": "English",
+            "el": "Greek",
+            "he": "Hebrew",
+            "fr": "French",
+            "de": "German"
+        },
+        "copy": "Copy",
+        "languages": "Languages",
+        "printed": "Printed",
+        "references": "References to this entry",
+        "referenced": "This entry refers to"
+    },
+    "menu": {
+        "persons": "Persons",
+        "localities": "Places",
+        "organizations": "Institutions / Groups",
+        "archives": "Archives"
+    },
+    "regest": "Regest",
+    "letterText": "Letter text",
+    "showLanguage": "Show languages",
+    "source": "Source",
+    "automaticTranscription": "Automatic transcription"
 }

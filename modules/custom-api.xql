@@ -705,9 +705,16 @@ declare function api:facets-search($request as map(*)) {
             array { $filtered }
 };
 
-
-
-
+declare function api:include-static-content($request as map(*)) as node()* {
+    let $page := $request?parameters?page
+    let $language := $request?parameters?language
+    let $source-document := $page || "-" || $language || ".html"
+    let $path := $config:app-root || "/static/" || $source-document
+    return
+        if (not(doc-available($path)))
+        then error((), "The content page could not be found: " || $source-document)
+        else doc($path)//main/node()
+};
 
 
 
