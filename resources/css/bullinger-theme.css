@@ -126,6 +126,7 @@ body {
 pb-page {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     min-height: 100vh;
     width:100%;
 }
@@ -943,6 +944,7 @@ pb-split-list::part(items) {
 
 .search-result {
     display: flex;
+    gap: 4rem;
     justify-content: space-between;
     font-size: var(--s0);
     font-family: var(--bb-font-family-serif);
