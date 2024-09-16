@@ -14,12 +14,13 @@
     "mobile" : {
         "menu": "Menu (en)"
     },
-    "app-title": "Search letters",
+    "app-title": "Search",
     "letters": "Letters",
+    "register": "Index",
     "metadata": {
         "date": "Date",
         "sender": "Sender",
-        "addressee": "Addressee",
+        "addressee": "Receiver",
         "autograph": "Autograph",
         "types": {
             "Begleitbrief": "Cover Letter",
@@ -75,7 +76,7 @@
             "de": "German"
         },
         "copy": "Copy",
-        "languages": "Languages",
+        "languages": "Language(s)",
         "printed": "Printed",
         "references": "References to this entry",
         "referenced": "This entry refers to"
@@ -106,5 +107,11 @@
     "sent": "Sent",
     "received": "Received",
     "total": "Total",
-    "further-names": "Further names"
+    "further-names": "Further names",
+    "footer": {
+        "text": "Department of Computational Linguistics, University of Zurich, 2024",
+        "contact": "Contact",
+        "imprint": "Imprint",
+        "privacy": "Privacy"
+    }
 }
