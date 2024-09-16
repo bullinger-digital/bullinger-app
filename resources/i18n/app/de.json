@@ -14,8 +14,9 @@
     "mobile" : {
         "menu": "Menü"
     },
-    "app-title": "Briefsuche",
+    "app-title": "Suche",
     "letters": "Briefe",
+    "register": "Register",
     "metadata": {
         "date": "Datum",
         "sender": "Absender",
@@ -75,7 +76,7 @@
             "de": "Deutsch"
         },
         "copy": "Kopie",
-        "languages": "Sprachen",
+        "languages": "Sprache(n)",
         "printed": "Gedruckt",
         "references": "Verweise auf diesen Eintrag",
         "referenced": "Dieser Eintrag verweist auf"
@@ -106,5 +107,11 @@
     "sent": "Gesendet",
     "received": "Empfangen",
     "total": "Total",
-    "further-names": "Weitere Namen"
+    "further-names": "Weitere Namen",
+    "footer": {
+        "text": "Institut für Computerlinguistik, Universität Zürich, 2024",
+        "contact": "Kontakt",
+        "imprint": "Impressum",
+        "privacy": "Datenschutz"
+    }
 }

@@ -198,17 +198,6 @@ declare variable $config:facets := [
         }
     },
     map {
-        "dimension": "archive",
-        "heading": "facets.archive",
-        "max": $config:max-facets,
-        (: "max": 5,
-        "hierarchical": false(), :)
-        "source": "api/facets/archive",
-        "output": function($label) {
-            $config:archives/id($label)/tei:orgName/text()
-        }
-    },
-    map {
         "dimension": "organization",
         "heading": "facets.organization",
         "max": $config:max-facets,
@@ -224,6 +213,17 @@ declare variable $config:facets := [
         "heading": "facets.date",
         "max": 5,
         "hierarchical": true()
+    },
+    map {
+        "dimension": "archive",
+        "heading": "facets.archive",
+        "max": $config:max-facets,
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "source": "api/facets/archive",
+        "output": function($label) {
+            $config:archives/id($label)/tei:orgName/text()
+        }
     }
 ];
 
