@@ -5,22 +5,23 @@
     </head>
 
     <body>
-        <pb-page data-template="pages:pb-page" locales="resources/i18n/{{ns}}/{{lng}}.json" require-language="require-language" unresolved="unresolved" api-version="1.0.0">
+        <pb-page data-template="pages:pb-page" locales="resources/i18n/{{ns}}/{{lng}}.json" require-language="require-language"
+        locale-fallback-ns="app" unresolved="unresolved" api-version="1.0.0">
             <header class="top-header">
                 <nav data-template="lib:include" data-template-path="templates/menu.html"></nav>
             </header>
             <main class="center-l people register">
                 <div class="register-list">
                     <pb-custom-form id="options" auto-submit="input,paper-input,paper-icon-button" emit="transcription">
-                        <paper-input id="query" name="search" label="Suche" data-template="templates:form-control">
+                        <paper-input id="query" name="search" data-i18n="[label]registers.search" label="(Search)" data-template="templates:form-control">
                             <paper-icon-button icon="search" slot="suffix"/>
                         </paper-input>
                         <div class="radios">
                             <label>
-                                <input type="radio" name="view" checked="checked" value="correspondents" data-template="templates:form-control"/> Korrespondenten
+                                <input type="radio" name="view" checked="checked" value="correspondents" data-template="templates:form-control"/> <pb-i18n key="registers.correspondents">(Korrespondenten)</pb-i18n>
                             </label>
                             <label>
-                                <input type="radio" name="view" value="all" data-template="templates:form-control"/> Korrespondenten und erwähnte Personen
+                                <input type="radio" name="view" value="all" data-template="templates:form-control"/> <pb-i18n key="registers.correspondentsAndMentioned">(Korresopndenten und erwähnte Personen)</pb-i18n>
                             </label>
                         </div>
                     </pb-custom-form>
