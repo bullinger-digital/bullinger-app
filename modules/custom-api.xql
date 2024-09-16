@@ -98,7 +98,7 @@ declare function api:persons-all-list($request as map(*)) {
                     map {
                         "category": "[A-Z]",
                         "count": count($items),
-                        "label": <pb-i18n key="all">Alle</pb-i18n>
+                        "label": <pb-i18n key="registers.all">Alle</pb-i18n>
                     }
                 }
         }
@@ -185,7 +185,7 @@ declare function api:localities-all-list($request as map(*)) {
                     map {
                         "category": "[A-Z]",
                         "count": count($places),
-                        "label": <pb-i18n key="all">Alle</pb-i18n>
+                        "label": <pb-i18n key="registers.all">Alle</pb-i18n>
                     }
                 }
         }
@@ -707,7 +707,7 @@ declare function api:facets-search($request as map(*)) {
 
 declare function api:include-static-content($request as map(*)) as node()* {
     let $page := $request?parameters?page
-    let $language := $request?parameters?language
+    let $language := tokenize($request?parameters?language, '-')[1]
     let $source-document := $page || "-" || $language || ".html"
     let $path := $config:app-root || "/static/" || $source-document
     return

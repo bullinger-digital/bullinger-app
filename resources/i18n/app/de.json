@@ -90,5 +90,21 @@
     "letterText": "Brieftext",
     "showLanguage": "Sprachen anzeigen",
     "source": "Quelle",
-    "automaticTranscription": "Automatische Transkription"
+    "automaticTranscription": "Automatische Transkription",
+    "facsimile": "Faksimile",
+    "facsimileUnavailable": "Für diesen Brief ist kein Facsimile verfügbar.",
+    "registers": {
+        "search": "Suche",
+        "correspondents": "Korrespondenten",
+        "correspondentsAndMentioned": "Korrespondenten und erwähnte Personen",
+        "all": "Alle",
+        "organizations": {
+            "name": "Name",
+            "count": "Anzahl Briefe"
+        }
+    },
+    "sent": "Gesendet",
+    "received": "Empfangen",
+    "total": "Total",
+    "further-names": "Weitere Namen"
 }

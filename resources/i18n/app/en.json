@@ -90,5 +90,21 @@
     "letterText": "Letter text",
     "showLanguage": "Show languages",
     "source": "Source",
-    "automaticTranscription": "Automatic transcription"
+    "automaticTranscription": "Automatic transcription",
+    "facsimile": "Facsimile",
+    "facsimileUnavailable": "Facsimile for this letter is not available.",
+    "registers": {
+        "search": "Search",
+        "correspondents": "Correspondents",
+        "correspondentsAndMentioned": "Correspondents and mentioned persons",
+        "all": "All",
+        "organizations": {
+            "name": "Name",
+            "count": "Number of letters"
+        }
+    },
+    "sent": "Sent",
+    "received": "Received",
+    "total": "Total",
+    "further-names": "Further names"
 }
