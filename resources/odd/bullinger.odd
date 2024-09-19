@@ -409,6 +409,21 @@
             <pb:template xmlns="" xml:space="preserve"><pb-facs-link facs="api/iiif/[[path]]" emit="facsimile" emit-on-load=""/></pb:template>
         </model>
                 </elementSpec>
+                <elementSpec ident="pb" mode="change">
+                    <model predicate="not(@type = 'edition')" behaviour="break" useSourceRendition="true">
+                        <param name="type" value="'page'"/>
+                        <param name="label" value="(concat(if(@n) then concat(@n,' ') else '',if(@facs) then                   concat('@',@facs) else ''))"/>
+                        <outputRendition xml:space="preserve">
+                        display: block; margin-left: 4pt; color: grey; float: right;
+                        </outputRendition>
+                        <outputRendition xml:space="preserve" scope="before">
+                        content: '[Page ';
+                        </outputRendition>
+                        <outputRendition xml:space="preserve" scope="after">
+                        content: ']';
+                        </outputRendition>
+                    </model>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>
