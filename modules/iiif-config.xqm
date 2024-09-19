@@ -41,13 +41,25 @@ declare function iiifc:milestone-id($milestone as element()) {
  : root of the presentation manifest. 
  :)
 declare function iiifc:metadata($doc as element(), $id as xs:string) as map(*) {
-    map {
+    (: Hack: get source signatures for facsimiles :)
+    let $signatures := for $doctypes in $doc//tei:graphic/tei:desc[@subtype='path']/(tokenize(text(), '/')[2])
+        group by $doctype := $doctypes
+        let $msDesc := $doc//tei:sourceDesc/tei:msDesc[@subtype=$doctype][1]
+        let $archiveRef := $msDesc/tei:msIdentifier/tei:repository/@ref
+        return concat(
+            doc("/db/apps/bullinger-data/data/index/archives.xml")//tei:org[@xml:id=$archiveRef]/tei:orgName/text(),
+            ', ',
+            $msDesc/tei:msIdentifier//tei:idno[@subtype=$doctype][1]/text()
+        )
+
+    return map {
         "label": ext:get-title($doc),
         "metadata": [
-            map { "label": "Title", "value": ext:get-title($doc) },
-            map { "label": "Creator", "value": nav:get-metadata($doc, "author")/string() },
+            map { "label": "Titel", "value": ext:get-title($doc) },
+            map { "label": "Zitiervorschlag", "value": string-join($signatures, "<br />") }
+            (: map { "label": "Autor", "value": nav:get-metadata($doc, "author")/string() }
             map { "label": "Language", "value": nav:get-metadata($doc, "language") },
-            map { "label": "Date", "value": nav:get-metadata($doc, "date")/string() }
+            map { "label": "Date", "value": nav:get-metadata($doc, "date")/string() } :)
         ],
         "license": nav:get-metadata($doc, "license")
         (: "rendering": [
