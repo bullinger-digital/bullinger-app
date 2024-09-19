@@ -113,5 +113,7 @@
         "contact": "Contact",
         "imprint": "Imprint",
         "privacy": "Privacy"
-    }
+    },
+    "color-legend": "Color legend",
+    "further-information": "Further information"
 }
