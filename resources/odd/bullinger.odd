@@ -309,7 +309,7 @@
                     <modelSequence predicate="$parameters?view='metadata'">
             <model predicate="exists(./msIdentifier/idno)" behaviour="block">
                 <param name="repository" value=".//repository"/>
-                <param name="idno" value="let $sub := @subtype  return (', ' || ./msIdentifier/idno[@subtype=$sub]/text())"/>
+                <param name="idno" value="let $sub := @subtype  return (', ' || (./msIdentifier/idno[@subtype=$sub]/text())[1])"/>
                 <param name="note" value="./msIdentifier/idno[@subtype='Hinweis']/text()"/>
                 <param name="author" value="let $author := .//author/text()  return if(exists($author)) then ('Autor: ' || $author) else ()" />
                 <param name="has-note" value="if (string-length(./msIdentifier/idno[@subtype='Hinweis']/text() || .//author/text()) &gt; 0) then () else ('display: none;')"/>
