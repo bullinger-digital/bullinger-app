@@ -9,7 +9,11 @@
     },
     "search": {
         "title": "Titel",
-        "fulltext": "Volltext"
+        "fulltext": "Brieftext",
+        "regest": "Regest",
+        "footnotes": "Fussnoten",
+        "print-literature": "Gedruckt und Literatur",
+        "notes": "Hinweise"
     },
     "mobile" : {
         "menu": "Menü"

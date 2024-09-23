@@ -8,8 +8,12 @@
         "sender": "Sender"
     },
     "search": {
-        "title": "Title",
-        "fulltext": "Fulltext"
+        "title": "Titel",
+        "fulltext": "Letter text",
+        "regest": "Regest",
+        "footnotes": "Footnotes",
+        "print-literature": "Printed and Literature",
+        "notes": "Notes"
     },
     "mobile" : {
         "menu": "Menu (en)"

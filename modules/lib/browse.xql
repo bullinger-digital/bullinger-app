@@ -188,6 +188,7 @@ declare function app:show-hits($node as node(), $model as map(*)) {
         ()
     else
         for $field in ft:highlight-field-matches($model?work, query:field-prefix($model?work) || $model?field)
+        where count($field//exist:match) > 0
         let $matches := $field//exist:match
         return
             <div class="matches">
