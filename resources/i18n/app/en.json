@@ -13,7 +13,8 @@
         "regest": "Regest",
         "footnotes": "Footnotes",
         "print-literature": "Printed and Literature",
-        "notes": "Notes"
+        "notes": "Notes",
+        "fnhd-normalization": "Normalized German"
     },
     "mobile" : {
         "menu": "Menu (en)"

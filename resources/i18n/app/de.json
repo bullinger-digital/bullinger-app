@@ -13,7 +13,8 @@
         "regest": "Regest",
         "footnotes": "Fussnoten",
         "print-literature": "Gedruckt und Literatur",
-        "notes": "Hinweise"
+        "notes": "Hinweise",
+        "fnhd-normalization": "Normalisiertes Deutsch"
     },
     "mobile" : {
         "menu": "Menü"
