@@ -5,7 +5,8 @@
         "archive":"Archiv",                
         "date": "Datum",
         "organization": "Institution / Gruppe",
-        "sender": "Absender"
+        "sender": "Absender",
+        "place": "Ortschaft"
     },
     "search": {
         "title": "Titel",
