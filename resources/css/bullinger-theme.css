@@ -114,6 +114,26 @@ body {
     background-color: var(--bb-page-bg-color);
 }
 
+.bullinger-intro {
+    max-width: 50rem;
+    margin: 0 auto;
+    text-align:center;
+    font-weight:300;
+    font-size: 1.25rem
+}
+.bullinger-button {
+    background-color: var(--bb-beige);
+    color: #fff!important;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    font-weight: 400;
+    display: inline-block;
+}
+.bullinger-button:hover {
+    background-color: #8a6e4e;
+}
+
 .center-l {
     box-sizing: content-box;
     max-width: 78rem;
