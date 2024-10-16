@@ -185,3 +185,8 @@ a, a:link, a:visited, a:hover, a:active {
 .inline-remark { color: gray; font-style:italic; }
 /* Hide metadata footnote links in letter text */
 .footnote-metadata { display:none; }
+
+.letter-navigation a[href='./'] {
+    color: #BDBDBD;
+    pointer-events: none;
+}
