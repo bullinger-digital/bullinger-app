@@ -405,7 +405,7 @@
                 </elementSpec>
                 <elementSpec ident="facsimile" mode="add">
                     <model behaviour="inline">
-            <param name="path" value="root(.)/TEI/@xml:id"/>
+            <param name="path" value="./ancestor-or-self::TEI/@xml:id"/>
             <pb:template xmlns="" xml:space="preserve"><pb-facs-link facs="api/iiif/[[path]]" emit="facsimile" emit-on-load=""/></pb:template>
         </model>
                 </elementSpec>
