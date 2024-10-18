@@ -175,7 +175,7 @@ a, a:link, a:visited, a:hover, a:active {
     margin-top:-4px;
     opacity:0.5;
 }
-.tei-ref { margin-right: 0.5em; }
+.tei-refs-metadata .tei-ref { margin-right: 0.5em; }
 
 /* Named entities with ref */
 .ne-with-ref {

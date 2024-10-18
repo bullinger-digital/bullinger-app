@@ -101,11 +101,11 @@
   </div>
   <div style="[[links-parents-hidden]]">
     <div><pb-i18n key="metadata.referenced">(Verweise auf diesen Eintrag)</pb-i18n></div>
-    <div>[[links-parents]]</div>
+    <div class="tei-refs-metadata">[[links-parents]]</div>
   </div>
   <div style="[[links-children-hidden]]">
     <div><pb-i18n key="metadata.references">(Dieser Eintrag verweist auf)</pb-i18n></div>
-    <div>[[links-children]]</div>
+    <div class="tei-refs-metadata">[[links-children]]</div>
   </div>
 </div></pb:template>
             </model>
@@ -398,9 +398,11 @@
         </model>
                 </elementSpec>
                 <elementSpec ident="ref" mode="change">
-                    <model predicate="$parameters?view='metadata'" behaviour="inline">
+                    <model predicate="$parameters?view='metadata' and @target" behaviour="inline">
             <param name="nr" value="fn:replace(@target, 'file', '')"/>
-            <pb:template xmlns="" xml:space="preserve"><a href="file[[nr]]">[[nr]]</a></pb:template>
+            <!-- If ref contains text node, set label to that, else use the same as nr-->
+            <param name="label" value="if (exists(./text())) then (./text()) else (fn:replace(@target, 'file', ''))"/>
+            <pb:template xmlns="" xml:space="preserve"><a href="file[[nr]]">[[label]]</a></pb:template>
         </model>
                 </elementSpec>
             <elementSpec ident="note" mode="change">
@@ -433,6 +435,12 @@
                         <outputRendition xml:space="preserve" scope="after">
                         content: ']';
                         </outputRendition>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="cit" mode="add">
+                    <model behaviour="inline">
+                        <param name="text" value="./ref/text()"/>
+                        <pb:template xmlns="" xml:space="preserve"><span class="citation">[[text]]</span></pb:template>
                     </model>
                 </elementSpec>
             </schemaSpec>
