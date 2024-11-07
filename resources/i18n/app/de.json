@@ -123,6 +123,7 @@
     "color-legend": "Farblegende",
     "further-information": "Weitere Informationen",
     "dates": {
-        "between": "Zwischen"
+        "between": "Zwischen",
+        "hint": "Hinweis zum Datum"
     }
 }

@@ -123,6 +123,7 @@
     "color-legend": "Color legend",
     "further-information": "Further information",
     "dates": {
-        "between": "Between"
+        "between": "Between",
+        "hint": "Date remarks"
     }
 }
