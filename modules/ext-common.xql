@@ -43,7 +43,10 @@ declare function ext:correspondent-by-item($item) {
             ()
 };
 
-declare function ext:date-by-letter($item) {
+declare function ext:date-by-letter($item, $lang-browser as xs:string?) {
+    let $lang := if(starts-with($lang-browser, 'de')) then 'de' else 'en'
+    let $log := util:log('info', 'language is ' || $lang-browser)
+    
     (: Todo: Translations for month names and additional date text :)
     let $date := typeswitch($item)
         case element(correspAction) return $item/date
@@ -51,26 +54,26 @@ declare function ext:date-by-letter($item) {
     return if(fn:string-length($date/text()) > 0) then
         $date/text()
     else if(exists($date/@when)) then
-        ext:format-date($date/@when)
+        ext:format-date($date/@when, $lang)
     else if (exists($date/@notBefore) and exists($date/@notAfter)) then
-        "Zwischen " || ext:format-date($date/@notBefore) || " und " || ext:format-date($date/@notAfter)
+        "Zwischen " || ext:format-date($date/@notBefore, $lang) || " und " || ext:format-date($date/@notAfter, $lang)
     else if(exists($date/@notBefore)) then
-        "Nach " || ext:format-date($date/@notBefore)
+        "Nach " || ext:format-date($date/@notBefore, $lang)
     else if(exists($date/@notAfter)) then
-        "Vor " || ext:format-date($date/@notAfter)
+        "Vor " || ext:format-date($date/@notAfter, $lang)
     else
         "Unbekannt"
 };
 
-declare function ext:format-date($date as xs:string?){
+declare function ext:format-date($date as xs:string?, $lang as xs:string){
     if(string-length($date) = 0) then
         ()
     else if(matches($date, '^\d{4}$')) then
         $date
     else if (matches($date, '^\d{4}-\d{2}$')) then
-        format-date(xs:date($date || '-01'), '[MNn] [Y]', "de", (), ())
+        format-date(xs:date($date || '-01'), '[MNn] [Y]', $lang, (), ())
     else if (matches($date, '^\d{4}-\d{2}-\d{2}$')) then
-        format-date(xs:date($date), '[D]. [MNn] [Y]', "de", (), ())
+        format-date(xs:date($date), '[D]. [MNn] [Y]', $lang, (), ())
     else
         $date
 };

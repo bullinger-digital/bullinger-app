@@ -16,6 +16,7 @@ import module namespace query="http://www.tei-c.org/tei-simple/query" at "../que
 import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "../navigation.xql";
 
 declare function capi:list($request as map(*)) {
+    let $_ := util:log('info', 'capi:list language ' || $request?parameters?language)
     let $path := if ($request?parameters?path) then xmldb:decode($request?parameters?path) else ()
     let $params := capi:params2map($path)
     let $cached := session:get-attribute($config:session-prefix || ".works")
@@ -42,7 +43,8 @@ declare function capi:list($request as map(*)) {
     }
     let $model := map:merge(($works, map {
         "app": $config:context-path,
-        "mode": "browse"
+        "mode": "browse",
+        "language": $request?parameters?language
     }))
     return
         templates:apply(doc($template), $lookup, $model, tpu:get-template-config($request))
