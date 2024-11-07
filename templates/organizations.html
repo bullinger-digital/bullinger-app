@@ -12,6 +12,27 @@
             <main class="register register__organizations center-l">
                 <div class="register-list">
                     <h1><pb-i18n key="menu.organizations">(Institutionen / Gruppen)</pb-i18n></h1>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const radios = document.querySelectorAll('pb-custom-form input[type="radio"]');
+                            radios.forEach(radio => {
+                                radio.addEventListener('change', function() {
+                                    const form = document.querySelector('pb-custom-form');
+                                    form.submit()
+                                });
+                            });
+                        });
+                    </script>
+                    <pb-custom-form class="facets" event="pb-results-received" subscribe="grid" emit="grid">
+                        <div class="radios">
+                            <label>
+                                <input type="radio" name="view" checked="checked" value="correspondents" data-template="templates:form-control"/> <pb-i18n key="registers.correspondents">(Korrespondenten)</pb-i18n>
+                            </label>
+                            <label>
+                                <input type="radio" name="view" value="all" data-template="templates:form-control"/> <pb-i18n key="registers.correspondentsAndMentioned">(Korresopndenten und erwähnte Personen)</pb-i18n>
+                            </label>
+                        </div>
+                    </pb-custom-form>
                     <pb-table-grid source="api/register/organizations" resizable="" emit="grid" search="" subscribe="grid" per-page="200">
                         <pb-table-column label="Name" property="name" sort=""></pb-table-column>
                         <pb-table-column label="Anzahl / Count" property="count" sort=""></pb-table-column>
