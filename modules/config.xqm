@@ -217,12 +217,21 @@ declare variable $config:facets := [
     map {
         "dimension": "archive",
         "heading": "facets.archive",
-        "max": $config:max-facets,
-        (: "max": 5,
-        "hierarchical": false(), :)
         "source": "api/facets/archive",
+        "max": 0,
         "output": function($label) {
             $config:archives/id($label)/tei:orgName/text()
+        }
+    },
+    map {
+        "dimension": "has-facsimile",
+        "source": "api/facets/has-facsimile",
+        "max": 1,
+        "output": function($label, $language) {
+            if ($language = "de") then
+                "Mit Faksimile"
+            else
+                "With facsimile"
         }
     }
 ];
