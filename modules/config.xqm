@@ -222,8 +222,8 @@ declare variable $config:facets := [
         "output": function($label) {
             $config:archives/id($label)/tei:orgName/text()
         }
-    },
-    map {
+    }
+    (: map {
         "dimension": "has-facsimile",
         "source": "api/facets/has-facsimile",
         "max": 1,
@@ -233,7 +233,9 @@ declare variable $config:facets := [
             else
                 "With facsimile"
         }
-    }
+    } :)
+
+    (: Suche in weiteren Namen evtl. durch zweites Facet lösen :)
 ];
 
 declare variable $config:facets-persons := [
