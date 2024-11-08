@@ -483,7 +483,7 @@ declare function api:register-person-detail($request as map(*)) {
                         let $title := ext:correspondents-by-letter($letter, 'sent') || " an " || ext:correspondents-by-letter($letter, 'received')
                         let $senders := ext:correspondents-by-letter($letter, 'sent')
                         let $send-place-name := ext:place-name(ext:place-by-letter($letter, 'sent'))
-                        let $date := ext:date-by-letter($letter)
+                        let $date := ext:date-by-letter($letter, $request?parameters?lang)
                         let $recipients := ext:correspondents-by-letter($letter, 'received')
                         let $recipients-place-name :=  ext:place-name(ext:place-by-letter($letter, 'received'))
                         return
@@ -579,7 +579,7 @@ declare function api:register-locality-detail($request as map(*)) {
                         (: let $log := util:log("info", ("api:locality-is-sender $senders: ",$senders)) :)
                         let $send-place := id($letter//tei:correspAction[@type="sent"]/tei:placeName/@ref/string(), $config:localities)
                         let $send-place-name := api:get-place-name($send-place)
-                        let $date := ext:date-by-letter($letter)
+                        let $date := ext:date-by-letter($letter, $request?parameters?lang)
                         let $recipients := api:get-persons-from-correspAction($letter//tei:correspAction[@type="received"])
                         let $recipients-place := id($letter//tei:correspAction[@type="received"]/tei:placeName/@ref/string(), $config:localities)
                         let $recipients-place-name := api:get-place-name($recipients-place)

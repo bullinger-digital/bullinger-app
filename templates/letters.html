@@ -6,7 +6,7 @@
 </head>
 <body>
     <pb-page data-template="pages:pb-page" unresolved="unresolved" locales="resources/i18n/{{ns}}/{{lng}}.json"
-        locale-fallback-ns="app">
+        locale-fallback-ns="app" require-language="require-language">
         <header class="top-header">
             <nav data-template="lib:include" data-template-path="templates/menu.html"></nav>
         </header>
@@ -53,7 +53,7 @@
 
                 <div id="document-list">
                     <pb-paginate id="paginate" per-page="20" range="5" subscribe="search" emit="search"></pb-paginate>
-                    <pb-load url="api/collection/{collection}" expand="" emit="search"></pb-load>
+                    <pb-load url="api/collection/{collection}" expand="" emit="search" use-language=""></pb-load>
                 </div>
             </section>
         </main>

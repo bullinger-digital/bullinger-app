@@ -114,6 +114,7 @@ function app:browse($node as node(), $model as map(*), $start as xs:int, $per-pa
 declare
     %templates:wrap
 function app:short-header($node as node(), $model as map(*)) {
+        let $_ := util:log("info", "app:short-header language " || $model?language)
         let $work := root($model("work"))/*
         let $relPath := config:get-identifier($work)
         return
@@ -122,7 +123,8 @@ function app:short-header($node as node(), $model as map(*)) {
                 let $header :=
                     $pm-config:web-transform(nav:get-header($model?config, $work), map {
                         "header": "short",
-                        "doc": $relPath
+                        "doc": $relPath,
+                        "language": $model?language
                     }, $config?odd)
                 return
                     if ($header) then
