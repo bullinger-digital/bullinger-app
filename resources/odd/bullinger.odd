@@ -52,7 +52,7 @@
                 <param name="level" value="1"/>
                 <param name="sender" value="ext:correspondents-by-letter(., 'sent')"/>
                 <param name="receiver" value="ext:correspondents-by-letter(., 'received')"/>
-                <param name="date" value="ext:date-by-letter(.)"/>
+                <param name="date" value="ext:date-by-letter(., $parameters?language)"/>
                 <param name="place" value="ext:place-by-letter(.)"/>
                 <param name="type" value="../@type/string()"/>
                 <param name="previous-letter" value="ancestor::TEI//correspContext/ref[@type='prev_chronologically']/@target" />
@@ -67,7 +67,7 @@
                         <a title="Nächster Brief (nach Datum)" href="./[[next-letter]]"><iron-icon icon="chevron-right"/></a>
                     </div>
                 <h1><span><span style="color:var(--bb-beige);">[[sender]]</span>&#8199;<pb-i18n key="_to_">(an)</pb-i18n>&#8199;<span style="color:var(--bb-beige);">[[receiver]]</span></span></h1>
-<div class="subtitle"><iron-icon id="date-range" icon="date-range"/>[[date]] <iron-icon id="map-near-me" icon="maps:near-me"/>[[place]] <span class="doc-type"><pb-i18n key="metadata.types.[[type]]">([[type]])</pb-i18n></span></div></pb:template>
+<div class="subtitle"><iron-icon id="date-range" icon="date-range"/><div>[[date]]</div> <iron-icon id="map-near-me" icon="maps:near-me"/>[[place]] <span class="doc-type"><pb-i18n key="metadata.types.[[type]]">([[type]])</pb-i18n></span></div></pb:template>
             </model>
             <model behaviour="section">
                 <desc>Person Images</desc>
@@ -180,18 +180,18 @@
                     <modelSequence predicate="@type = &#34;sent&#34; and $parameters?view='metadata'">
             <model predicate="exists(date/note)" behaviour="block">
                 <desc>Date with a Note</desc>
-                <param name="content" value="ext:date-by-letter(.)"/>
+                <param name="content" value="ext:date-by-letter(., $parameters?language)"/>
                 <param name="note" value="./date/note/text()"/>
                 <pb:template xmlns="" xml:space="preserve"><div><pb-i18n key="metadata.date">(Date)</pb-i18n></div>
 <div>[[content]]<pb-popover>
-    <span slot="default"><iron-icon class="metadata-info-icon" title="Hinweis zum Datum" id="info-outline" icon="info-outline"/></span>
+    <span slot="default"><iron-icon class="metadata-info-icon" id="info-outline" icon="info-outline"/></span>
     <span slot="alternate">[[note]]</span>
   </pb-popover></div>
 </pb:template>
             </model>
             <model predicate="not(exists(date/note))" behaviour="block">
                 <desc>Date without Note</desc>
-                <param name="content" value="ext:date-by-letter(.)"/>
+                <param name="content" value="ext:date-by-letter(., $parameters?language)"/>
                 <pb:template xmlns="" xml:space="preserve"><div><pb-i18n key="metadata.date">(Date)</pb-i18n></div>
 <div>[[content]]</div>
 </pb:template>
@@ -252,7 +252,7 @@
                 <param name="level" value="1"/>
                 <param name="sender" value="ext:correspondents-by-letter(ancestor::teiHeader, 'sent')"/>
                 <param name="receiver" value="ext:correspondents-by-letter(ancestor::teiHeader, 'received')"/>
-                <param name="date" value="ext:date-by-letter(ancestor::teiHeader)"/>
+                <param name="date" value="ext:date-by-letter(ancestor::teiHeader, $parameters?language)"/>
                 <param name="place" value="ext:place-by-letter(ancestor::teiHeader)"/>
                 <param name="type" value="ancestor::TEI/@type/string()"/>
                 <param name="has-facsimile" value="if (exists(ancestor::TEI//facsimile//graphic)) then ('display: block;') else ('display: none;')"/>

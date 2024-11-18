@@ -122,7 +122,8 @@ function app:short-header($node as node(), $model as map(*)) {
                 let $header :=
                     $pm-config:web-transform(nav:get-header($model?config, $work), map {
                         "header": "short",
-                        "doc": $relPath
+                        "doc": $relPath,
+                        "language": $model?language
                     }, $config?odd)
                 return
                     if ($header) then

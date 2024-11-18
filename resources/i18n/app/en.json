@@ -121,5 +121,12 @@
         "privacy": "Privacy"
     },
     "color-legend": "Color legend",
-    "further-information": "Further information"
+    "further-information": "Further information",
+    "dates": {
+        "between": "between",
+        "and": "and",
+        "after": "after",
+        "before": "before",
+        "unknown": "unknown"
+    }
 }
