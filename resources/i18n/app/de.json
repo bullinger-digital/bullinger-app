@@ -121,5 +121,12 @@
         "privacy": "Datenschutz"
     },
     "color-legend": "Farblegende",
-    "further-information": "Weitere Informationen"
+    "further-information": "Weitere Informationen",
+    "dates": {
+        "between": "zwischen",
+        "and": "und",
+        "after": "nach",
+        "before": "vor",
+        "unknown": "unbekannt"
+    }
 }

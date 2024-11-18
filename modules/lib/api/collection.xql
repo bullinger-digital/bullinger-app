@@ -42,7 +42,8 @@ declare function capi:list($request as map(*)) {
     }
     let $model := map:merge(($works, map {
         "app": $config:context-path,
-        "mode": "browse"
+        "mode": "browse",
+        "language": $request?parameters?language
     }))
     return
         templates:apply(doc($template), $lookup, $model, tpu:get-template-config($request))
