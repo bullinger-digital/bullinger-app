@@ -36,72 +36,70 @@ declare function api:lookup($name as xs:string, $arity as xs:integer) {
 };
 
 declare function api:persons-all-list($request as map(*)) {
-    (: let $log := util:log("info","api:persons-all-list")  :)
-    let $search := normalize-space($request?parameters?search)
-    let $letterParam := $request?parameters?category
-    let $correspondentsFilter := if ($request?parameters?view = "all") then "" else " AND (sent-count:[1 TO *] OR received-count:[1 TO *])"
+    let $key := $request?parameters?key
+    let $sortBy := $request?parameters?order
+    let $sortDir := $request?parameters?dir
     let $limit := $request?parameters?limit
-    (: let $log := util:log("info","api:names-all-list $search:"||$search || " - $letterParam:"||$letterParam||" - $limit:" || $limit )  :)
+    let $start := $request?parameters?start
+    let $filter := $request?parameters?search
+    let $correspondentsOnly := $request?parameters?view != "all"
+    
+    let $entries := api:persons-all-list-filter($filter, $correspondentsOnly)
+    let $log := util:log("info", "api:persons-all-list entries: " || count($entries))
+    let $sorted := api:persons-all-list-sort($entries, $sortBy, $sortDir)
+    let $log := util:log("info", "api:persons-all-list $sorted: " || count($sorted))
+    let $subset := subsequence($sorted, $start, $limit)
+    return (
+        session:set-attribute($config:session-prefix || ".persons.hits", $entries),
+        session:set-attribute($config:session-prefix || ".persons.hitCount", count($entries)),
+        map {
+            "count": count($entries),
+            "results":
+                array {
+                    for $person at $index in $subset
+                        let $link := function($content) {
+                            <a style="color:var(--bb-beige);text-decoration:none;" href="../persons/{$person/@xml:id}">{$content}</a>
+                        }
+                        return
+                            map {
+                                "forename": $link(ft:field($person, 'forename')[1]),
+                                "surname": $link(ft:field($person, 'surname')[1]),
+                                "sent-count": ft:field($person, 'sent-count')[1],
+                                "received-count": ft:field($person, 'received-count')[1]
+                            }
+                }
+        })
+};
+
+declare function api:persons-all-list-filter($filter as xs:string?, $correspondentsOnly as xs:boolean?) {    
+    let $options := api:get-register-query-options()
+    let $correspondentsFilter := if ($correspondentsOnly) then " AND (sent-count:[1 TO *] OR received-count:[1 TO *])" else ""
     let $items :=     
-            if ($search and $search != '') 
+            if ($filter and $filter != '') 
             then (
-                $config:persons//tei:person[ft:query(., 'name:(' || $search || '*)' || $correspondentsFilter)]
+                $config:persons//tei:person[ft:query(., 'name:(' || $filter || '*)' || $correspondentsFilter, $options)]
             ) 
             else (
-                $config:persons//tei:person[ft:query(., 'name:*' || $correspondentsFilter, map {
-                    "leading-wildcard": "yes",
-                    "filter-rewrite": "yes"
-                })]
+                $config:persons//tei:person[ft:query(., 'name:*' || $correspondentsFilter, $options)]
             )
+    return 
+        $items
+};
 
-    (: let $log := util:log("info", map {
-        "function":"api:names-all-list $search:",
-        "items count":count($items)
-    })          :)
-    let $byLetter := 
-        map:merge(
-            for $item in $items
-                let $name := ft:field($item, 'name')[1]
-                order by $name
-                group by $letter := substring($name, 1, 1) => upper-case()
-                return
-                    map:entry($letter, $item)
-    )
-    let $letter :=
-        if ((count($items) < $limit) or $search != '') then
-            "[A-Z]"
-        else if (not($letterParam) or $letterParam = '') then
-            head(sort(map:keys($byLetter)))
-        else
-            $letterParam
-    let $itemsToShow :=
-        if ($letter = '[A-Z]') then
-            $items
-        else
-            $byLetter($letter)
+declare function api:persons-all-list-sort($entries as element()*, $sortBy as xs:string?, $dir as xs:string?) {
+    let $sorted :=
+        sort($entries, (), function($person) {
+            switch ($sortBy)
+                case "name" return 
+                    xs:integer(ft:field($person, 'name')[1])
+                default return
+                    lower-case(ft:field($person, 'name')[1])
+        })
     return
-        map {
-            "items": api:output-name($itemsToShow, $letter, $search),
-            "categories":
-                if ((count($items) < $limit)  or $search != '') then
-                    []
-                else array {
-                    for $index in 1 to string-length('0123456789AÄBCDEFGHIJKLMNOÖPQRSTUÜVWXYZ')
-                    let $alpha := substring('0123456789AÄBCDEFGHIJKLMNOÖPQRSTUÜVWXYZ', $index, 1)
-                    let $hits := count($byLetter($alpha))
-                    where $hits > 0
-                    return
-                        map {
-                            "category": $alpha,
-                            "count": $hits
-                        },
-                    map {
-                        "category": "[A-Z]",
-                        "count": count($items),
-                        "label": <pb-i18n key="registers.all">Alle</pb-i18n>
-                    }
-                }
-        }
+        if ($dir = "asc") then
+            $sorted
+        else
+            reverse($sorted)
 };
 
 declare function api:output-name($list, $letter as xs:string, $search as xs:string?) {
