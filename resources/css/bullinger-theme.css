@@ -986,3 +986,14 @@ pb-split-list::part(items) {
 .dropdown-register {
     margin-top: 1px;
 }
+
+.search-keyword-help {
+    padding: 5px;
+}
+.search-keyword-help-character {
+    font-weight: bold;
+    padding: 1px 5px;
+    background: #EEE;
+    border-radius: 5px;
+    display:inline-block;
+}

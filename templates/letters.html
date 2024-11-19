@@ -44,7 +44,15 @@
                     </pb-custom-form>
                     <pb-search id="search-form" subscribe="search" data-template="pages:parse-params" value="${query}"
                         subforms=".facets,.options" submit-on-load="submit-on-load">
-                        <paper-button slot="searchButton" class="btn-search"><pb-i18n key="search.search">Search</pb-i18n></paper-button>
+                        <div style="display:flex; justify-content: space-between;">
+                            <paper-button slot="searchButton" class="btn-search"><pb-i18n key="search.search">Search</pb-i18n></paper-button>
+                            <pb-popover theme="light">
+                                <iron-icon icon="info" style="color: #AFAFAF" />
+                                <div slot="alternate">
+                                    <pb-load url="api/content/search-keyword-help" auto="" use-language="true">Loading...</pb-load>
+                                </div>
+                            </pb-popover>
+                        </div>
                     </pb-search>
 
                     <pb-custom-form id="facets" class="facets" url="api/search/facets" event="pb-results-received"
