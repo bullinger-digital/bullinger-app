@@ -685,7 +685,15 @@
                             "type": "string",
                             "default": "asc"
                         }
-                    },					
+                    },
+					{
+						"name": "order",
+						"in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": ""
+                        }
+					},
                     {
                         "name": "limit",
                         "in": "query",

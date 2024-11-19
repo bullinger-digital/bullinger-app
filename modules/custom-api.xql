@@ -87,13 +87,22 @@ declare function api:persons-all-list-filter($filter as xs:string?, $corresponde
 };
 
 declare function api:persons-all-list-sort($entries as element()*, $sortBy as xs:string?, $dir as xs:string?) {
+    let $collation := "http://www.w3.org/2013/collation/UCA?lang=de"
     let $sorted :=
-        sort($entries, (), function($person) {
+        sort($entries, $collation, function($person) {
             switch ($sortBy)
                 case "name" return 
-                    xs:integer(ft:field($person, 'name')[1])
-                default return
                     lower-case(ft:field($person, 'name')[1])
+                case "surname" return 
+                    lower-case(ft:field($person, 'surname')[1])
+                case "forename" return 
+                    lower-case(ft:field($person, 'forename')[1])
+                case "sent-count" return
+                    xs:integer(ft:field($person, 'sent-count')[1])
+                case "received-count" return
+                    xs:integer(ft:field($person, 'received-count')[1])
+                default return
+                    lower-case(ft:field($person, 'surname')[1])
         })
     return
         if ($dir = "asc") then
