@@ -12,24 +12,34 @@
             </header>
             <main class="center-l people register">
                 <div class="register-list">
-                    <pb-custom-form id="options" auto-submit="input,paper-input,paper-icon-button" emit="transcription">
-                        <paper-input id="query" name="search" data-i18n="[label]registers.search" label="(Search)" data-template="templates:form-control">
-                            <paper-icon-button icon="search" slot="suffix"/>
-                        </paper-input>
+                    <h1><pb-i18n key="menu.persons">(Personen)</pb-i18n></h1>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const radios = document.querySelectorAll('pb-custom-form input[type="radio"]');
+                            radios.forEach(radio => {
+                                radio.addEventListener('change', function() {
+                                    const form = document.querySelector('pb-custom-form');
+                                    form.submit()
+                                });
+                            });
+                        });
+                    </script>
+                    <pb-custom-form class="facets" event="pb-results-received" subscribe="grid" emit="grid">
                         <div class="radios">
                             <label>
                                 <input type="radio" name="view" checked="checked" value="correspondents" data-template="templates:form-control"/> <pb-i18n key="registers.correspondents">(Korrespondenten)</pb-i18n>
                             </label>
                             <label>
-                                <input type="radio" name="view" value="all" data-template="templates:form-control"/> <pb-i18n key="registers.correspondentsAndMentioned">(Korresopndenten und erwähnte Personen)</pb-i18n>
+                                <input type="radio" name="view" value="all" data-template="templates:form-control"/> <pb-i18n key="registers.correspondentsAndMentioned">(Korrespondenten und erwähnte Personen)</pb-i18n>
                             </label>
                         </div>
                     </pb-custom-form>
-                    <pb-split-list class="register-split-list" 
-                        url="api/persons-all-list"
-                        subforms="#options" selected="A"
-                        emit="transcription" subscribe="transcription"
-                        data-template="pages:parse-params"></pb-split-list>
+                    <pb-table-grid source="api/persons-all-list" resizable="" emit="grid" search="" subscribe="grid" per-page="10">
+                        <pb-table-column label="Vorname" property="forename" sort=""></pb-table-column>
+                        <pb-table-column label="Nachname" property="surname" sort=""></pb-table-column>
+                        <pb-table-column label="Gesendet" property="sent-count" sort=""></pb-table-column>
+                        <pb-table-column label="Empfangen" property="received-count" sort=""></pb-table-column>
+                    </pb-table-grid>
                 </div>
             </main>
         </pb-page>

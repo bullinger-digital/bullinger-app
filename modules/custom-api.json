@@ -674,17 +674,10 @@
         },    
         "/api/persons-all-list": {
             "get": {
-                "summary": "List names",
-                "description": "Retrieve list of places in format required by pb-split-list",
+                "summary": "List persons",
+                "description": "Retrieve list of persons in format required by pb-table-grid",
                 "operationId": "custom:persons-all-list",
                 "parameters": [
-					{
-						"name": "category",
-						"in": "query",
-						"schema": {
-							"type": "string"
-						}
-					},					
                     {
                         "name": "dir",
                         "in": "query",
@@ -698,7 +691,15 @@
                         "in": "query",
                         "schema": {
                             "type": "integer",
-                            "default": 50
+                            "default": 10
+                        }
+                    },
+					{
+                        "name": "start",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "default": 0
                         }
                     },
                     {
