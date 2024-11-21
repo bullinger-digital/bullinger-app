@@ -14,6 +14,14 @@
             <h1 class="tp-title">
                 <pb-i18n key="app-title">app-title</pb-i18n>
             </h1>
+            <div class="timeline">
+                <pb-timeline url="api/timeline" scopes="[&#34;D&#34;, &#34;M&#34;, &#34;Y&#34;, &#34;5Y&#34;, &#34;10Y&#34;]" resettable="" max-interval="80" subscribe="search" emit="timeline">
+                    <span slot="label">Angezeigter Zeitraum: </span>
+                </pb-timeline>
+                <pb-custom-form id="timeline-options" emit="search" style="display: none">
+                    <input type="hidden" name="dates" value="${dates}" data-template="pages:parse-params" />
+                </pb-custom-form>
+            </div>
             <section class="panels">
                 <aside data-template="browse:form">
                     <pb-custom-form class="options">
@@ -43,7 +51,7 @@
                         </pb-select>
                     </pb-custom-form>
                     <pb-search id="search-form" subscribe="search" data-template="pages:parse-params" value="${query}"
-                        subforms=".facets,.options" submit-on-load="submit-on-load">
+                        subforms=".facets,.options,#timeline-options" submit-on-load="submit-on-load">
                         <div style="display:flex; justify-content: space-between;">
                             <paper-button slot="searchButton" class="btn-search"><pb-i18n key="search.search">Search</pb-i18n></paper-button>
                             <pb-popover theme="light">
@@ -68,5 +76,6 @@
         <footer data-template="lib:include" data-template-path="templates/footer.html"></footer>
     </pb-page>
     <script src="resources/scripts/browse.js"></script>
+    <script src="resources/scripts/timeline.js"></script>
 </body>
 </html>
