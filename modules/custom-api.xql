@@ -690,10 +690,18 @@ declare function api:facets-search($request as map(*)) {
                         let $_ := util:log("info", "api:facets-search: organization: $group: " || $group/@xml:id)
                         return
                             string($group)
+                    case "hbbw-number" return
+                        $key
+                    case "signature" return
+                        $key
+                    case "letter-id" return
+                        $key
                     default return 
                         let $_ := util:log("info", "api:facets-search: default return, $type: " || $type)
                         return 
                             ("unknown facet type " || $type)
+            (: Numerical values should be sorted by number and ascending (double negation using - and descending) :)
+            order by if($type = 'hbbw-number' or $type = 'letter-id') then -(xs:integer(replace($text, "[^\d]+", ""))) else $facets($key) descending, $text
             return 
                 map {
                     "text": $text,

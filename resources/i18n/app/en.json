@@ -6,7 +6,10 @@
         "date": "Date",
         "organization": "Institution / Group",
         "sender": "Sender",
-        "place": "Place"
+        "place": "Place",
+        "hbbw-number": "HBBW Number",
+        "signature": "Signature",
+        "letter-id": "Letter ID"
     },
     "search": {
         "title": "Titel",
@@ -15,7 +18,10 @@
         "footnotes": "Footnotes",
         "print-literature": "Printed and Literature",
         "notes": "Notes",
-        "fnhd-normalization": "Normalized German"
+        "fnhd-normalization": "Normalized German",
+        "displayed-period": "Displayed period",
+        "filters": "Filters",
+        "additional-filters": "More filters"
     },
     "mobile" : {
         "menu": "Menu"

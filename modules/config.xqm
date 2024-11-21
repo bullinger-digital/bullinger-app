@@ -120,12 +120,12 @@ declare variable $config:max-facets := 5;
  :)
 
 declare variable $config:facets := [
+    (: Todo: i18n :)
+    <h2><pb-i18n key="search.filters">(Filters)</pb-i18n></h2>,
     map {
         "dimension": "sender",
         "heading": "facets.sender",
-        "max": $config:max-facets,
-        (: "max": 5,
-        "hierarchical": false(), :)
+        "max": 0,
         "source": "api/facets/sender",
         "output": function($label) {
             let $person := $config:persons/id($label)/parent::tei:person/tei:persName[@type='main']
@@ -138,16 +138,27 @@ declare variable $config:facets := [
     map {
         "dimension": "recipient",
         "heading": "facets.addressee",
-        "max": $config:max-facets,
+        "max": 0,
         (: "max": 5,
         "hierarchical": false(), :)
-        "source": "api/facets/sender",
+        "source": "api/facets/recipient",
         "output": function($label) {
             let $person := $config:persons/id($label)/parent::tei:person/tei:persName[@type='main']
             return 
                 if ($person) 
                 then (string-join(($person/*),", "))
                 else ($label)
+        }
+    },
+    map {
+        "dimension": "organization",
+        "heading": "facets.organization",
+        "max": 0,
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "source": "api/facets/organization",
+        "output": function($label) {
+            $config:orgs/id($label)/string()
         }
     },
     (: map {
@@ -179,7 +190,7 @@ declare variable $config:facets := [
     map {
         "dimension": "place",
         "heading": "facets.place",
-        "max": $config:max-facets,
+        "max": 0,
         (: "max": 5,
         "hierarchical": false(), :)
         "source": "api/facets/place",
@@ -197,33 +208,52 @@ declare variable $config:facets := [
                 else ($label)
         }
     },
-    map {
-        "dimension": "organization",
-        "heading": "facets.organization",
-        "max": $config:max-facets,
-        (: "max": 5,
-        "hierarchical": false(), :)
-        "source": "api/facets/organization",
-        "output": function($label) {
-            $config:orgs/id($label)/string()
-        }
-    },
-    map {
+    (: map {
         "dimension": "date",
         "heading": "facets.date",
         "max": 5,
         "hierarchical": true()
-    },
+    }, :)
+    <a class="additional-facets-trigger">
+        <pb-i18n key="search.additional-filters">Weitere Filter</pb-i18n>
+    </a>,
     map {
         "dimension": "archive",
         "heading": "facets.archive",
-        "max": $config:max-facets,
-        (: "max": 5,
-        "hierarchical": false(), :)
         "source": "api/facets/archive",
+        "max": 0,
         "output": function($label) {
             $config:archives/id($label)/tei:orgName/text()
         }
+    },
+    (: map {
+        "dimension": "has-facsimile",
+        "source": "api/facets/has-facsimile",
+        "max": 1,
+        "output": function($label, $language) {
+            if ($language = "de") then
+                "Mit Faksimile"
+            else
+                "With facsimile"
+        }
+    }, :)
+    map {
+        "dimension": "hbbw-number",
+        "heading": "facets.hbbw-number",
+        "source": "api/facets/hbbw-number",
+        "max": 0
+    },
+    map {
+        "dimension": "signature",
+        "heading": "facets.signature",
+        "source": "api/facets/signature",
+        "max": 0
+    },
+    map {
+        "dimension": "letter-id",
+        "heading": "facets.letter-id",
+        "source": "api/facets/letter-id",
+        "max": 0
     }
 ];
 

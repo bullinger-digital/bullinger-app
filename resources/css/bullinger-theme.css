@@ -470,6 +470,9 @@ pb-collapse > div{
     font-size: var(--bb-font-size-small);
     min-width: initial;
 }
+.facets pb-combo-box {
+    margin-bottom: 0.2rem;
+}
 
 @media (max-width: 1023px) {
     .doclist {
@@ -996,4 +999,22 @@ pb-split-list::part(items) {
     background: #EEE;
     border-radius: 5px;
     display:inline-block;
+}
+
+.freq {
+    font-weight: bold;
+    float: right;
+}
+
+
+.additional-facets-trigger {
+    margin-top: 1.5rem;
+    display: block;
+    cursor: pointer;
+}
+.additional-facets-trigger ~ .facet-dimension {
+    display: none;
+}
+.additional-facets-trigger-active ~ .facet-dimension {
+    display: block;
 }
