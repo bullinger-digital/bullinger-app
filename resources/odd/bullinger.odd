@@ -224,6 +224,10 @@
         </model>
                     <model predicate="$parameters?view='metadata' and @type='Gedruckt'" behaviour="listItem"/>
                     <model predicate="parent::listBibl" behaviour="listItem"/>
+                    <model predicate="@source" behaviour="inline">
+                        <param name="source" value="@source"/>
+                        <pb:template xmlns="" xml:space="preserve"><a target="_blank" href="[[source]]">[[content]]</a></pb:template>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="repository" mode="add">
                     <model predicate="$parameters?view='metadata' and exists($parameters?archive/idno[@subtype='url'])" behaviour="inline">
