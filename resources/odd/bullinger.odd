@@ -408,6 +408,10 @@
             <param name="label" value="if (exists(./text())) then (./text()) else (fn:replace(@target, 'file', ''))"/>
             <pb:template xmlns="" xml:space="preserve"><a href="file[[nr]]">[[label]]</a></pb:template>
         </model>
+                <model predicate="@target" behaviour="inline">
+                    <param name="nr" value="fn:replace(@target, 'file', '')"/>
+                    <pb:template xmlns="" xml:space="preserve"><a target="_blank" href="file[[nr]]">[[content]]</a></pb:template>
+                </model>
                 </elementSpec>
             <elementSpec ident="note" mode="change">
                 <model predicate="@type = 'footnote' and @subtype = 'metadata'" cssClass="footnote-metadata" behaviour="note">
