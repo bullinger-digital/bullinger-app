@@ -58,6 +58,18 @@
                         <pb-table-column label="Empfangsort" property="recipients-place" sort=""></pb-table-column>
                     </pb-table-grid>
                 </section>
+
+                <div id="metagrid-widget">
+                    <div id="metagrid-widget-gnd" style="display:none" data-template="app:person-gnd"></div>
+                </div>
+                <script type="module">
+                    import { widget } from "https://unpkg.com/@metagrid/modern-metagrid-widget@1.0.2/dist/index.es.js";
+                    const widgetElement = document.getElementById('metagrid-widget');
+                    const gnd = widgetElement.querySelector("#metagrid-widget-gnd").innerText;
+                    if(gnd) {
+                        widget(widgetElement, 'gnd', gnd);
+                    }
+                </script>
             </main>
         </pb-page>
         <footer data-template="templates:include" data-template-path="templates/footer.html"/>        

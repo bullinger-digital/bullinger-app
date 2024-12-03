@@ -88,6 +88,14 @@ function app:person-name-full($node as node(), $model as map(*)) {
         $persName/tei:forename/text() || " " || $persName/tei:surname/text()
 };
 
+declare %templates:wrap    
+function app:person-gnd($node as node(), $model as map(*)) {
+    let $gnd := replace(($model?data)//tei:idno[@subtype="gnd"], "^https://d-nb.info/gnd/", "")
+    return  
+        $gnd
+};
+
+
 declare %templates:replace   
 function app:name-alternatives($node as node(), $model as map(*)) {    
     let $aliases := ($model?data)//tei:persName[@type="alias"]
