@@ -721,7 +721,8 @@
                         "name": "view",
                         "in": "query",
                         "schema":{
-                            "type": "string"
+                            "type": "string",
+							"default": "correspondents"
                         }
                     }
                 ],
