@@ -25,6 +25,37 @@
         }
     },
     "paths": {
+		"/letter/{id}": {
+			"get": {
+				"summary": "Redirect old letter urls (/letter/[id])",
+				"description": "Redirect from /letter/[id] to /file[id] to make old urls (Bullinger Digital 1.0) work",
+				"operationId": "custom:redirect-old-url",
+				"parameters": [
+					{
+						"name": "id",
+						"required": true,
+						"in": "path",
+						"schema": {
+							"type": "integer"
+						}
+					}
+				],
+				"responses": {
+					"301": {
+						"description": "Redirect /file[id]",
+						"headers": {
+							"Location": {
+								"description": "The URL to which the client should be redirected",
+								"schema": {
+								"type": "string",
+								"format": "uri"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/archives/": {
             "get": {
 				"summary": "Landing page for archives",

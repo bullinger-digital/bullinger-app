@@ -16,6 +16,8 @@ import module namespace cr="jinntec.de/cleanup-register-data" at "util/cleanup-r
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace facets="http://teipublisher.com/facets" at "facets.xql";
 
+import module namespace roaster="http://e-editiones.org/roaster";
+
 import module namespace ext="http://teipublisher.com/ext-common" at "ext.xql";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
 
@@ -752,4 +754,9 @@ declare function api:timeline($request as map(*)) {
                     "info": ''
                 })
         )
+};
+
+declare function api:redirect-old-url($request as map(*)) {
+    let $uri := replace($request?path, "/letter/", "../file")
+    return roaster:response(301,  "text/plain", "Redirected from old url", map { "Location": $uri })
 };
