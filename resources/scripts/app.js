@@ -60,6 +60,24 @@ window.addEventListener('DOMContentLoaded', function() {
                 regest.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
             }
         });
+
+        // Link regest divisions to letter text
+         const links = shadowroot.querySelectorAll('a.link-regest');
+         links.forEach(element => {
+            element.addEventListener('click', ev => {
+                ev.preventDefault();
+
+                const textView = document.getElementById("view1");
+                const allTargets = textView.shadowRoot.querySelectorAll('div.link-regest')
+                allTargets.forEach(e => e.classList.remove("active"));
+                const id = element.getAttribute("href").replace("#", "");
+                const targetElement = textView.shadowRoot.getElementById(id);
+                if(targetElement) {
+                    targetElement.scrollIntoView({ behavior: "smooth" });
+                    targetElement.classList.add("active");
+                }
+            })
+         });
     });
 
 });

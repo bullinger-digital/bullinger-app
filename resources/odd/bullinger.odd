@@ -453,6 +453,25 @@
                         <pb:template xmlns="" xml:space="preserve"><span class="citation">[[text]]</span></pb:template>
                     </model>
                 </elementSpec>
+                <elementSpec ident="div" mode="change">
+                    <model predicate="@corresp" behaviour="section">
+                        <param name="regest-div-id" value="@corresp"/>
+                        <pb:template xmlns="" xml:space="preserve"><div class="link-regest" id="link-[[regest-div-id]]">[[content]]</div></pb:template>
+                    </model>
+                    <model behaviour="block"></model>
+                </elementSpec>
+                <elementSpec ident="p" mode="change">
+                    <model predicate="exists(ancestor::summary)" behaviour="paragraph">
+                        <param name="regest-div-id" value="@xml:id"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <span>[[content]]</span>
+                            <a class="link-regest" href="#link-[[regest-div-id]]">
+                                <iron-icon icon="expand-more"/>
+                            </a>
+                        </pb:template>
+                    </model>
+                    <model behaviour="paragraph"></model>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>

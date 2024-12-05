@@ -190,3 +190,19 @@ a, a:link, a:visited, a:hover, a:active {
     color: #BDBDBD;
     pointer-events: none;
 }
+
+@keyframes link-regest-transition {
+    0% {
+        background-color: #dcefff;
+    }
+    100% {
+        background-color: #ffffff;
+    }
+}
+div.link-regest {
+    scroll-margin-top: 70px;
+}
+div.link-regest.active {
+    background: #dcefff;
+    animation: link-regest-transition 1s ease-in-out 1s forwards;
+}
