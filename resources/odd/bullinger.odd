@@ -346,6 +346,7 @@
                     <model behaviour="body">
             <pb:set-param name="persons" value="let $persons := doc('/db/apps/bullinger-data/data/index/persons.xml') return     for $person in .//persName[@ref]      group by $persref := $person/@ref     return       id($persref,$persons)/ancestor::person"/>
             <pb:set-param name="places" value="let $places := doc('/db/apps/bullinger-data/data/index/localities.xml') return   for $place in .//placeName[@ref]   group by $placeref := $place/@ref  return id($placeref,$places)"/>
+            <param name="content" value="(./note[@type='footnote'], ancestor::TEI//summary//note[@type='footnote'], ./*[not(self::note)])" />
         </model>
                 </elementSpec>
             <elementSpec ident="person" mode="add">
@@ -414,7 +415,8 @@
                 </model>
                 </elementSpec>
             <elementSpec ident="note" mode="change">
-                <model predicate="@type = 'footnote' and @subtype = 'metadata'" cssClass="footnote-metadata" behaviour="note">
+                <model predicate="@type = 'footnote' and (@subtype = 'metadata' or ($parameters?view!='metadata' and exists(ancestor::summary)))" cssClass="footnote-metadata" behaviour="note">
+                    <desc>Metadata or regest footnotes are processed but hidden with CSS to display them in the footnote list</desc>
                     <param name="place" value="@place"/>
                     <param name="label" value="@n"/>
                 </model>
