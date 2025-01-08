@@ -21,14 +21,6 @@
             </section>
             <section class="text">
                 <div class="pageWrapper">
-                    <div class="transkription card">
-                        <h2><pb-i18n key="letterText">(Brieftext)</pb-i18n> <span data-template="app:transcription-source"></span> 
-                          <small class="small-t"><label for="lang-toggle"><input type="checkbox" name="lang-toggle" id="lang-toggle" value="test" />&#160;<pb-i18n key="showLanguage">(Show Language)</pb-i18n></label></small></h2>
-                        <pb-view id="view1" src="document1" column-separator=".tei-cb" append-footnotes="append-footnotes" subscribe="transcription" emit="transcription" use-language="" />
-                        <pb-view id="facsimile-links" src="document1" xpath="//facsimile" view="single" wait-for="#facsimile" emit="facsimile" use-language="">
-                            <pb-param name="view" value="facsimile"/>
-                        </pb-view>
-                    </div>
                     <div class="facsimile card">
                         <h2><pb-i18n key="facsimile">(Faksimile)</pb-i18n> <span data-template="app:facsimile-source"></span></h2>
                         <div id="facsimile-status"><pb-i18n key="facsimileUnavailable">(faksimileUnavailable)</pb-i18n></div>
@@ -38,6 +30,14 @@
                             subscribe="facsimile"
                             ></pb-tify>
                         </div>
+                    </div>
+                    <div class="transkription card">
+                        <h2><pb-i18n key="letterText">(Brieftext)</pb-i18n> <span data-template="app:transcription-source"></span> 
+                          <small class="small-t"><label for="lang-toggle"><input type="checkbox" name="lang-toggle" id="lang-toggle" value="test" />&#160;<pb-i18n key="showLanguage">(Show Language)</pb-i18n></label></small></h2>
+                        <pb-view id="view1" src="document1" column-separator=".tei-cb" append-footnotes="append-footnotes" subscribe="transcription" emit="transcription" use-language="" />
+                        <pb-view id="facsimile-links" src="document1" xpath="//facsimile" view="single" wait-for="#facsimile" emit="facsimile" use-language="">
+                            <pb-param name="view" value="facsimile"/>
+                        </pb-view>
                     </div>
                 </div>
             </section>
