@@ -419,6 +419,16 @@
                     <desc>Metadata or regest footnotes are processed but hidden with CSS to display them in the footnote list</desc>
                     <param name="place" value="@place"/>
                     <param name="label" value="@n"/>
+                    <pb:template xmlns="" xml:space="preserve">
+                        <span>[[content]]
+                            <span className="footnote-metadata-hint">
+                                <pb-popover>
+                                    <span slot="default"><iron-icon class="metadata-info-icon" id="info-outline" icon="info-outline"/></span>
+                                    <span slot="alternate"><pb-i18n key="metadata.footnote">(Fussnote zu Metadaten)</pb-i18n> </span>
+                                </pb-popover>
+                            </span>
+                        </span>
+                    </pb:template>
                 </model>
                     <model predicate="@type = 'footnote'" behaviour="note">
             <param name="place" value="@place"/>

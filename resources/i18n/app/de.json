@@ -91,7 +91,8 @@
         "languages": "Sprache(n)",
         "printed": "Gedruckt",
         "references": "Verweise auf diesen Eintrag",
-        "referenced": "Dieser Eintrag verweist auf"
+        "referenced": "Dieser Eintrag verweist auf",
+        "footnote": "Fussnote zu Metadaten"
     },
     "menu": {
         "persons": "Personen",

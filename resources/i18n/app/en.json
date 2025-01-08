@@ -91,7 +91,8 @@
         "languages": "Language(s)",
         "printed": "Printed",
         "references": "References to this entry",
-        "referenced": "This entry refers to"
+        "referenced": "This entry refers to",
+        "footnote": "Footnote on metadata"
     },
     "menu": {
         "persons": "Persons",
