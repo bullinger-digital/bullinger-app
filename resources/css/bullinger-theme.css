@@ -879,10 +879,6 @@ pb-view {
     background-image: url("../images/wiki-icon.svg");
 }
 
-.meta-info--link__histHub {
-    background-image: url("../images/histhub-icon.svg");
-}
-
 [slot=controls] {
     display: flex;
     justify-content: space-between;

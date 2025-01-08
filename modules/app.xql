@@ -204,7 +204,7 @@ declare function app:locality-in-corresp-action($node, $model, $person, $type) {
 declare %templates:replace
 function app:further-information($node as node(), $model as map(*)) {
     let $data := $model?data
-    let $meta-information := $data//tei:idno[not(@subtype = 'portrait')]
+    let $meta-information := $data//tei:idno[not(@subtype = 'portrait' or @subtype = 'histHub')]
 
     return
         if (count($meta-information) = 0)
