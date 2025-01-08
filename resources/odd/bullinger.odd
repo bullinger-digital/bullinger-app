@@ -78,6 +78,7 @@
             <model behaviour="section">
                 <desc>Bullinger Metadata</desc>
                 <param name="correspAction" value=".//correspAction"/>
+                <param name="place" value=".//correspAction[@type='sent']/placeName" />
                 <param name="msDesc" value=".//msDesc"/>
                 <param name="lang" value=".//langUsage"/>
                 <param name="printed" value="if (exists(.//listBibl/bibl[@type='Gedruckt'])) then .//listBibl else ()"/>
@@ -92,6 +93,7 @@
                 <pb:template xmlns="" xml:space="preserve">
 <div id="sourceDesc">
   [[correspAction]]
+  [[place]]
   [[msDesc]]
   [[lang]]
   [[printed]]
@@ -287,8 +289,7 @@
                 <elementSpec ident="persName" mode="add">
                     <model predicate="$parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
             <param name="name" value="let $ref := ./@ref  let $persName := $parameters?persons/persName[@xml:id = $ref] return   &lt;a href=&#34;./persons/{fn:upper-case($ref)}&#34;&gt;{$persName/forename/text() || &#34; &#34; || $persName/surname/text()}&lt;/a&gt;"/>
-            <param name="place" value="let $placeref := ../placeName/@ref  return if($parameters?places[@xml:id=$placeref])  then ( (&#34;, &#34;, $parameters?places[@xml:id=$placeref]) ) else ()"/>
-            <pb:template xmlns="" xml:space="preserve"><span>[[name]][[place]]</span></pb:template>
+            <pb:template xmlns="" xml:space="preserve"><span>[[name]]</span></pb:template>
         </model>
                     <model predicate="@ref" behaviour="inline" cssClass="person">
             <desc>persName in TEI Text</desc>
@@ -305,7 +306,6 @@
                 <elementSpec ident="orgName" mode="add">
                     <model predicate="$parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
             <param name="org" value="let $ref := @ref  let $type := @type return if(fn:string-length(./text()) > 0) then (./text()) else ($parameters?orgs[@xml:id = $ref]/string())"/>
-            <param name="place" value="let $placeref := ../placeName/@ref  return if($parameters?places[@xml:id=$placeref])  then ( (&#34;, &#34;, $parameters?places[@xml:id=$placeref]) ) else ()"/>
             <pb:template xmlns="" xml:space="preserve">[[org]]</pb:template>
         </model>
                 </elementSpec>
@@ -357,6 +357,13 @@
         </model>
                 </elementSpec>
             <elementSpec ident="placeName" mode="add">
+                <model predicate="$parameters?view='metadata'" behaviour="block">
+                    <param name="placename" value="let $ref := @ref return $parameters?places[@xml:id=$ref]"/>
+                    <pb:template xmlns="" xml:space="preserve">
+                        <div><pb-i18n key="metadata.place">(Absendeort)</pb-i18n></div>
+                        <div>[[placename]]</div>
+                    </pb:template>
+                </model>
                     <model predicate="@ref and $parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="pass-through">
             <param name="placename" value="let $ref := @ref return $parameters?places[@xml:id=$ref]"/>
             <pb:template xmlns="" xml:space="preserve">[[placename]]</pb:template>

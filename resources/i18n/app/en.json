@@ -34,6 +34,7 @@
         "sender": "Sender",
         "addressee": "Receiver",
         "autograph": "Autograph",
+        "place": "Sending location",
         "types": {
             "Begleitbrief": "Cover Letter",
             "Beilage": "Enclosure",
