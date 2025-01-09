@@ -357,7 +357,7 @@
         </model>
                 </elementSpec>
             <elementSpec ident="placeName" mode="add">
-                <model predicate="$parameters?view='metadata'" behaviour="block">
+                <model predicate="@ref and $parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
                     <param name="placename" value="let $ref := @ref return $parameters?places[@xml:id=$ref]"/>
                     <pb:template xmlns="" xml:space="preserve">
                         <div><pb-i18n key="metadata.place">(Absendeort)</pb-i18n></div>
