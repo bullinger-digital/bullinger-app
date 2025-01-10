@@ -1,51 +1,8 @@
 <main>
-    <style>
-        .about h2 { border-bottom: 1px solid #EBEBEB; padding-bottom: 8px; }
-        .about h2 { margin-top:35px; }
-        .about { font-size:1.1rem; line-height:1.6rem; }
-        .about-question { border-left: 10px solid #EBEBEB; padding: 0 0 0 20px; max-width:850px; margin-bottom:35px; }
-        .about h3 { font-size: 1.3rem; margin: 25px 0 0 0; font-weight:bold; }
-        .about-question h3 { margin: 12px 0 10px 0; padding:10px 0; }
-        .diacritics { font-family:'Times New Roman', Times, serif }
-    </style>
-
     <div class="about">
         <div>
             <div>
-                <h2>Information about the Project</h2>
-                <p>
-                    Detailed information about the project is available on the <a target="_blank" href="https://www.cl.uzh.ch/de/research-groups/texttechnologies/research/digital-humanities/bullinger.html">project website</a>.
-                </p>
-                <h3>Contact</h3>
-                <p>
-                    <strong>Department of Computational Linguistics</strong><br />
-                    University of Zurich<br />
-                    Andreasstrasse 15<br />
-                    8050 Zurich<br />
-                    <a href="mailto:bullinger-digital@protonmail.com">bullinger-digital@protonmail.com</a>
-                </p>
-                <p>
-                    <strong>Institute for Swiss Reformation Studies</strong><br />
-                    University of Zurich<br />
-                    Kirchgasse 9<br />
-                    8001 Zurich<br />
-                    <a href="mailto:irg@theol.uzh.ch">irg@theol.uzh.ch</a>
-                </p>
-            </div>
-        </div>
-        <div>
-            <div>
-                <h3>Downloads / Links</h3>
-                <ul>
-                    <li><a href="https://github.com/bullinger-digital/bullinger-korpus-tei" rel="noreferrer" target="_blank" >XML Corpus (TEI) on GitHub</a></li>
-                    <li><a href="https://github.com/bullinger-digital/bullinger-translations" rel="noreferrer" target="_blank" >Machine Translations of Letter Texts</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <div>
-            <div>
-                <h2>Information about the Search System</h2>
+                <h1>About the Search System</h1>
                 <div>
                     <ul>
                         <li><a href="#q-0">What you can find in the online search system</a></li>
@@ -59,7 +16,7 @@
                     </ul>
                 </div>
                 <div id="q-0" class="about-question">
-                    <h3>What you can find in the online search system</h3>
+                    <h2>What you can find in the online search system</h2>
                     <div>
                         The starting point for <i>Bullinger Digital</i> was the information on the Bullinger correspondence provided by the <i>Institute for Swiss Reformation Studies (IRG)</i>, the project partner and publisher of the Heinrich Bullinger Correspondence Edition. Additionally, information from other knowledge sources is available. The following overview shows the information available in the online search system:
                         <ul>
@@ -103,7 +60,81 @@
                         </ul>
                     </div>
                 </div>
-                <!-- Translated content continues similarly for each section -->
+                <div id="q-1" class="about-question">
+                    <h2>Which letters have facsimiles?</h2>
+                    <div>
+                        <ul>
+                            <li>In total, facsimiles are available for 11,200 letters.</li>
+                            <li>
+                                We distinguish between:
+                                <ul>
+                                    <li>Autograph = a document written and sent by the sender themselves</li>
+                                    <li>Original = a document not written by the sender themselves but sent</li>
+                                    <li>(Autograph) Draft = a draft of the letter written by the eventual sender</li>
+                                    <li>(Autograph) Copy / Partial Copy = a copy of the letter written by the actual sender</li>
+                                </ul>
+                            </li>
+                            <li>
+                                If no facsimile of the autograph or original could be created, facsimiles of copies or drafts are provided where possible. These may differ from the transcribed letter text if it relates to another document type.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="q-2" class="about-question">
+                    <h2>What editorial standards apply to <i>Bullinger Digital</i>?</h2>
+                    <div>
+                        The guiding standard is the HBBW Edition:
+                        <ul>
+                            <li>
+                                Summaries and annotations (footnotes) have been adopted 1:1 from the HBBW Edition with a few exceptions. These exceptions are:
+                                <ul>
+                                    <li>
+                                        Signature details for letters with facsimiles reflect the current state at the time of facsimile creation. If these differ from the signatures printed in the HBBW Edition, they are listed as "old signatures" and can be found through search.
+                                    </li>
+                                    <li>
+                                        The notation of footnote references has been standardized in <i>Bullinger Digital</i>. In the earlier volumes, footnote references followed the system a–z, aa–zz, aaa–zzz, etc. In the later volumes (and in <i>Bullinger Digital</i>), the notation follows the system a–z, aa–az, ba–bz, etc.
+                                    </li>
+                                    <li>Marginalia printed in Volume 1 were not included.</li>
+                                    <li>Various dashes and hyphens have been standardized to a simple hyphen "-".</li>
+                                    <li>
+                                        In the footnotes of edited letters, references to line numbers from the HBBW Edition are sometimes found. These line numbers have not been included in <i>Bullinger Digital</i>.
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>The system for automatic handwriting recognition (HTR) was trained using HBBW transcriptions and preliminary transcriptions.</li>
+                            <li>Metadata enclosed in [ ] indicates it was inferred and not found on the letter itself. Square brackets are ignored in search queries.</li>
+                            <li>
+                                Letters not yet published by the HBBW Edition may have metadata that differs from each other. The various versions are linked to one another.
+                            </li>
+                            <li>Generally, metadata for letters from 1548 onwards (not yet revised by the HBBW Edition) are subject to changes and corrections.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="q-3" class="about-question">
+                    <h2>What languages, scripts, and characters appear in <i>Bullinger Digital</i>?</h2>
+                    <div>
+                        <p>
+                            The letters are primarily written in Latin (80%) and Early New High German (FNH German, 18%), often with language switching (code-switching) within the letters. A small number of letters (fewer than 10) are written in French, Greek, and Italian. These languages are also found in quotes and other inserts within Latin and FNH German. There are also a few Hebrew inserts.
+                        </p>
+                        Accordingly, the letters of the Latin alphabet, including historical special characters, primarily appear:
+                        <ul>
+                            <li>
+                                In FNH German: In addition to today's standard umlauts (äöü), umlauts with a superscript "e" (<em class="diacritics">aͤ, oͤ, uͤ</em>) and a superscript "o" (<em class="diacritics">uͦ</em>) are present, as well as the German "ß".
+                            </li>
+                            <li>In Latin, there is also the "ę" (e-caudata).</li>
+                            <li>
+                                In French letters (and also in footnotes), French diacritics appear (à, è, é, ì, ç, …).
+                            </li>
+                        </ul>
+                        <p>
+                            Letters and quotes in Greek use the Greek alphabet, including diacritics (rough breathing, smooth breathing, acute, grave, circumflex, trema, iota subscript), and many combinations thereof.
+                        </p>
+                        <p>Few Hebrew inserts use Hebrew characters.</p>
+                        <p>
+                            Over the years, the HBBW Edition has used various quotation marks, all of which have been adopted in <i>Bullinger Digital</i>. The following are used: " „“ «» ‹›
+                        </p>
+                    </div>
+                </div>                
             </div>
         </div>
     </div>

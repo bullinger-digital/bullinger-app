@@ -100,7 +100,11 @@
         "localities": "Orte",
         "organizations": "Institutionen / Gruppen",
         "archives": "Archive",
-        "about": "Infos"
+        "about-parent": "Infos",
+        "about": "Informationen zum Suchsystem",
+        "about-project": "Informationen zum Projekt",
+        "privacy": "Datenschutz",
+        "imprint": "Impressum"
     },
     "regest": "Regest",
     "letterText": "Brieftext",

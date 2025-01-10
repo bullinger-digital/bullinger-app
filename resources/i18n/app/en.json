@@ -100,7 +100,11 @@
         "localities": "Places",
         "organizations": "Institutions / Groups",
         "archives": "Archives",
-        "about": "About"
+        "about-parent": "About",
+        "about": "About the Search System",
+        "about-project": "About the Project",
+        "privacy": "Privacy",
+        "imprint": "Imprint"
     },
     "regest": "Regest",
     "letterText": "Letter text",

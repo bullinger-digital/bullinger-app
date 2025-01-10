@@ -28,9 +28,30 @@
                 </div>
             </div>
         </div>
-        <a href="${app}/static/about">
-            <pb-i18n key="menu.about">(About)</pb-i18n>
-        </a>
+        <div class="dropdown-menu">
+            <div class="dropdown dropdown-register">
+                <label class="menu-label" for="m-register">
+                    <pb-i18n key="menu.about-parent">(About-Parent)</pb-i18n>
+                </label>
+                <input id="m-register" name="register" type="checkbox"/>
+                <div class="menu-list">
+                    <ul>
+                        <li><a href="${app}/static/about">
+                            <pb-i18n key="menu.about">(About)</pb-i18n>
+                        </a></li>
+                        <li><a href="${app}/static/about-project">
+                            <pb-i18n key="menu.about-project">(About-Project)</pb-i18n>
+                        </a></li>
+                        <li><a href="${app}/static/privacy">
+                            <pb-i18n key="menu.privacy">(Privacy)</pb-i18n>
+                        </a></li>
+                        <li><a href="${app}/static/imprint">
+                            <pb-i18n key="menu.imprint">(Impressum)</pb-i18n>
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </pb-media-query>
 
     <fx-fore src="${app}/fore-search.html" data-template="pages:parse-params"></fx-fore>
@@ -62,9 +83,21 @@
                             <pb-i18n key="menu.archives">Archive</pb-i18n>
                         </a></li>
                     </ul>
-                    <a href="${app}/static/about">
-                        <pb-i18n key="menu.about">(About)</pb-i18n>
-                    </a>
+                    <p><pb-i18n key="menu.about-parent">(About-Parent)</pb-i18n></p>
+                    <ul>
+                        <li><a href="${app}/static/about">
+                            <pb-i18n key="menu.about">(About)</pb-i18n>
+                        </a></li>
+                        <li><a href="${app}/static/about-project">
+                            <pb-i18n key="menu.about-project">(About-Project)</pb-i18n>
+                        </a></li>
+                        <li><a href="${app}/static/privacy">
+                            <pb-i18n key="menu.privacy">(Privacy)</pb-i18n>
+                        </a></li>
+                        <li><a href="${app}/static/imprint">
+                            <pb-i18n key="menu.imprint">(Impressum)</pb-i18n>
+                        </a></li>
+                    </ul>
                 </div>
             </section>
         </details>
