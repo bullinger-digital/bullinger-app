@@ -1,25 +1,19 @@
 <html>
-   <head data-template="lib:include" data-template-path="templates/header.html">
-       <title data-target="title-template" data-template="app:page-title" data-template-page="static"> </title>
-       <meta data-target="title-template" name="pb-template" content="static.html"/>
-   </head>
-   <body>
-       <pb-page data-template="pages:pb-page" unresolved="unresolved"
-           locales="resources/i18n/{{ns}}/{{lng}}.json"
-           require-language="require-language" api-version="1.0.0">
-           <header class="top-header">
-               <nav data-template="lib:include" data-template-path="templates/menu.html"></nav>
-           </header>
-           <div class="center-l breadcrumbs">
-               <!-- <pb-i18n key="register">static</pb-i18n>
-               > <span>something</span> -->
-           </div>
-           <main class="static center-l">
-               <article data-template="app:include-static-content">
-               </article>
-           </main>
-           <footer data-template="templates:include" data-template-path="templates/footer.html"/>
-       </pb-page>
-       <div class="splash"></div>       
-   </body>
+    <head data-template="lib:include" data-template-path="templates/header.html">
+        <title data-target="title-template" data-template-page="index">Bullinger Digital</title>
+        <meta data-target="title-template" name="pb-template" content="index.html"/>
+    </head>
+    <body>
+        <pb-page data-template="pages:pb-page" unresolved="unresolved"
+                locales="resources/i18n/{{ns}}/{{lng}}.json"
+                require-language="require-language" locale-fallback-ns="app">
+            <header class="top-header">
+                <nav data-template="lib:include" data-template-path="templates/menu.html"></nav>
+            </header>
+            <main class="center-l indexpage">
+                <pb-load url="api/content/${page}" data-template="lib:parse-params" auto="" use-language="true">Loading...</pb-load>
+            </main>
+            <footer data-template="lib:include" data-template-path="templates/footer.html"/> 
+        </pb-page>
+    </body>
 </html>

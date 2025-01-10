@@ -414,6 +414,66 @@
 				}
 			}
         },
+		"/static/{page}": {
+            "get": {
+				"summary": "Static content pages",
+				"description": "Retrieve a static content page.",
+				"tags": ["view"],
+				"operationId": "vapi:html",
+				"x-error-handler": "vapi:handle-error",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "path",
+						"description": "Static page key",
+						"schema": {
+							"type": "string",
+                            "default": "about"
+						}
+					},
+					{
+						"name": "file",
+						"in": "query",
+						"schema": {
+							"type": "string",
+                            "default": "static"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "HTML of the page",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The document was not found",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An error occurred",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+        }, 
 		"/api/content/{page}": {
 			"get": {
 				"summary": "Show static content page",

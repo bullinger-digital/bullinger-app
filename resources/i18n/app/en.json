@@ -99,7 +99,8 @@
         "persons": "Persons",
         "localities": "Places",
         "organizations": "Institutions / Groups",
-        "archives": "Archives"
+        "archives": "Archives",
+        "about": "About"
     },
     "regest": "Regest",
     "letterText": "Letter text",
