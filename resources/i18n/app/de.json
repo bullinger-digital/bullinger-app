@@ -16,7 +16,7 @@
         "fulltext": "Brieftext",
         "regest": "Regest",
         "footnotes": "Fussnoten",
-        "print-literature": "Gedruckt",
+        "print-literature": "Gedruckt in",
         "notes": "Hinweise",
         "fnhd-normalization": "Normalisiertes Deutsch",
         "displayed-period": "Angezeigter Zeitraum",
@@ -90,7 +90,7 @@
         },
         "copy": "Kopie",
         "languages": "Sprache(n)",
-        "printed": "Gedruckt",
+        "printed": "Gedruckt in",
         "references": "Verweise auf diesen Eintrag",
         "referenced": "Dieser Eintrag verweist auf",
         "footnote": "Fussnote zu Metadaten"
