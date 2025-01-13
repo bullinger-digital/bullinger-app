@@ -140,7 +140,10 @@ declare function api:localities-all-list($request as map(*)) {
     let $places :=     
             if ($search and $search != '') 
             then (
-                $config:localities//tei:place[ft:query(., 'name:(' || $search || '*)')]
+                $config:localities//tei:place[ft:query(., '(name:(' || $search || '*) OR mentioned-names:(' || $search || '*))', map {
+                    "leading-wildcard": "yes",
+                    "filter-rewrite": "yes"
+                })]
             ) 
             else (
                 $config:localities//tei:place[ft:query(., 'name:*', map {
