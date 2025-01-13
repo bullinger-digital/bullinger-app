@@ -8,7 +8,7 @@
         "sender": "Sender",
         "place": "Place",
         "hbbw-number": "HBBW Number",
-        "signature": "Signature",
+        "signature": "Shelfmark",
         "letter-id": "Letter ID"
     },
     "search": {
@@ -16,7 +16,7 @@
         "fulltext": "Letter text",
         "regest": "Regest",
         "footnotes": "Footnotes",
-        "print-literature": "Printed and Literature",
+        "print-literature": "Printed in",
         "notes": "Notes",
         "fnhd-normalization": "Normalized German",
         "displayed-period": "Displayed period",
@@ -90,7 +90,7 @@
         },
         "copy": "Copy",
         "languages": "Language(s)",
-        "printed": "Printed",
+        "printed": "Printed in",
         "references": "References to this entry",
         "referenced": "This entry refers to",
         "footnote": "Footnote on metadata"
@@ -101,10 +101,10 @@
         "organizations": "Institutions / Groups",
         "archives": "Archives",
         "about-parent": "About",
-        "about": "About the Search System",
-        "about-project": "About the Project",
+        "about": "Search System",
+        "about-project": "Project",
         "privacy": "Privacy",
-        "imprint": "Imprint"
+        "disclaimers": "Disclaimers"
     },
     "regest": "Regest",
     "letterText": "Letter text",
@@ -130,7 +130,7 @@
     "footer": {
         "text": "Department of Computational Linguistics, University of Zurich, 2024",
         "contact": "Contact",
-        "imprint": "Imprint",
+        "disclaimers": "Disclaimers",
         "privacy": "Privacy"
     },
     "color-legend": "Color legend",

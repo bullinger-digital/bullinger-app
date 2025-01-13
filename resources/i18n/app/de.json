@@ -16,7 +16,7 @@
         "fulltext": "Brieftext",
         "regest": "Regest",
         "footnotes": "Fussnoten",
-        "print-literature": "Gedruckt und Literatur",
+        "print-literature": "Gedruckt",
         "notes": "Hinweise",
         "fnhd-normalization": "Normalisiertes Deutsch",
         "displayed-period": "Angezeigter Zeitraum",
@@ -104,7 +104,7 @@
         "about": "Informationen zum Suchsystem",
         "about-project": "Informationen zum Projekt",
         "privacy": "Datenschutz",
-        "imprint": "Impressum"
+        "disclaimers": "Impressum"
     },
     "regest": "Regest",
     "letterText": "Brieftext",
@@ -130,7 +130,7 @@
     "footer": {
         "text": "Institut für Computerlinguistik, Universität Zürich, 2024",
         "contact": "Kontakt",
-        "imprint": "Impressum",
+        "disclaimers": "Impressum",
         "privacy": "Datenschutz"
     },
     "color-legend": "Farblegende",
