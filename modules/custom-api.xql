@@ -79,7 +79,7 @@ declare function api:persons-all-list-filter($filter as xs:string?, $corresponde
     let $items :=     
             if ($filter and $filter != '') 
             then (
-                $config:persons//tei:person[ft:query(., 'all-names:(' || $filter || '*)' || $correspondentsFilter, $options)]
+                $config:persons//tei:person[ft:query(., '(all-names:(' || $filter || '*) OR mentioned-names:(' || $filter || '*))' || $correspondentsFilter, $options)]
             ) 
             else (
                 $config:persons//tei:person[ft:query(., 'all-names:*' || $correspondentsFilter, $options)]
