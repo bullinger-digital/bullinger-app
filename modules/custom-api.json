@@ -960,6 +960,14 @@
                             "type": "integer",
                             "default": 0
                         }
+                    },
+					{
+                        "name": "view",
+                        "in": "query",
+                        "schema":{
+                            "type": "string",
+							"default": ""
+                        }
                     }
                 ],
                 "responses": {

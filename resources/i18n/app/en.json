@@ -118,6 +118,8 @@
         "search": "Search",
         "correspondents": "Correspondents",
         "correspondentsAndMentioned": "Correspondents and mentioned persons",
+        "correspondence": "Correspondence",
+        "correspondenceAndMentions": "Correspondence and mentions",
         "all": "All",
         "organizations": {
             "name": "Name",
@@ -127,6 +129,7 @@
     "sent": "Sent",
     "received": "Received",
     "total": "Total",
+    "mentions": "Mentions",
     "further-names": "Further names",
     "footer": {
         "text": "Department of Computational Linguistics, University of Zurich, 2024",

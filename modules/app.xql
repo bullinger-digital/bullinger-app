@@ -33,6 +33,7 @@ function app:load-person($node as node(), $model as map(*), $key as xs:string) {
     let $sent-count := count(collection($config:data-default)//tei:TEI[ft:query(.//tei:text, 'sender:' || $key)])
     let $received-count := count(collection($config:data-default)//tei:TEI[ft:query(.//tei:text, 'recipient:' || $key)])
     let $total := $sent-count + $received-count
+    let $mentions-count := count(collection($config:data-default)//tei:TEI[ft:query(.//tei:text, 'mentioned-persons:' || $key)])
     return
         map {
             "key": $key,
@@ -40,7 +41,8 @@ function app:load-person($node as node(), $model as map(*), $key as xs:string) {
             "data": $person,
             "sent-count":$sent-count,
             "received-count":$received-count,
-            "total-count":$total
+            "total-count":$total,
+            "mentions-count": $mentions-count
         }
 };
 
@@ -245,13 +247,23 @@ function app:person-letters-received ($node as node(), $model as map(*)) {
         <p class="count">{ $model?received-count }</p>
 };
 declare %templates:wrap
-function app:person-letters-mentioned ($node as node(), $model as map(*)) {    
+function app:person-letters-total ($node as node(), $model as map(*)) {    
     (
         <strong><pb-i18n key="total">Total</pb-i18n></strong>,
         <br/>,
         <p class="count">{ $model?total-count}</p>
     )
 };
+
+declare %templates:wrap
+function app:person-letters-mentions ($node as node(), $model as map(*)) {    
+    (
+        <strong><pb-i18n key="mentions">(Erwähnungen)</pb-i18n></strong>,
+        <br/>,
+        <p class="count">{ $model?mentions-count}</p>
+    )
+};
+
 
 declare 
     %templates:replace

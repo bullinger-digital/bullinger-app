@@ -16,7 +16,8 @@
                         <div data-template="app:further-information"></div>
                         <div data-template="app:person-letters-sent"></div>
                         <div data-template="app:person-letters-received"></div>
-                        <div data-template="app:person-letters-mentioned"></div>
+                        <div data-template="app:person-letters-total"></div>
+                        <div data-template="app:person-letters-mentions"></div>
                     </section>
                     <div id="metagrid-widget" style="margin-bottom:20px;">
                         <div id="metagrid-widget-gnd" style="display:none" data-template="app:person-gnd"></div>
@@ -59,8 +60,28 @@
                         </fx-switch>
                     </fx-fore> -->
                     <!-- <pb-custom-form id="facets" url="api/show-facets/persons" event="pb-results-received" subscribe="grid" emit="grid" use-language="use-language" data-template="pages:parse-params"/> -->
-
-                    <pb-table-grid source="api/person/${key}" resizable="" emit="grid" subscribe="grid" per-page="7" search="" data-template="pages:parse-params">
+                    <pb-custom-form class="facets" event="pb-results-received" subscribe="grid" emit="grid">
+                        <div class="radios">
+                            <label>
+                                <input type="radio" name="view" checked="checked" value="correspondence" data-template="templates:form-control"/> <pb-i18n key="registers.correspondence">(Korrespondenz)</pb-i18n>
+                            </label>
+                            <label>
+                                <input type="radio" name="view" value="all" data-template="templates:form-control"/> <pb-i18n key="registers.correspondenceAndMentions">(Korrespondenz und Erwähnungen)</pb-i18n>
+                            </label>
+                        </div>
+                    </pb-custom-form>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const form = document.querySelector('pb-custom-form');
+                            const radios = document.querySelectorAll('pb-custom-form input[type="radio"]');
+                            radios.forEach(radio => {
+                                radio.addEventListener('change', function() {
+                                    form.submit()
+                                });
+                            });
+                        });
+                    </script>
+                    <pb-table-grid source="api/person/${key}" resizable="" emit="grid" subscribe="grid" per-page="10" search="" data-template="pages:parse-params">
                         <pb-table-column label="Brief" property="title" sort=""></pb-table-column>
                         <pb-table-column label="Absender" property="senders" sort=""></pb-table-column>
                         <pb-table-column label="Absendeort" property="place" sort=""></pb-table-column>

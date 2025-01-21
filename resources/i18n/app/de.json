@@ -118,6 +118,8 @@
         "search": "Suche",
         "correspondents": "Korrespondenten",
         "correspondentsAndMentioned": "Korrespondenten und erwähnte Personen",
+        "correspondence": "Korrespondenz",
+        "correspondenceAndMentions": "Korrespondenz und Erwähnungen",
         "all": "Alle",
         "organizations": {
             "name": "Name",
@@ -127,6 +129,7 @@
     "sent": "Gesendet",
     "received": "Empfangen",
     "total": "Total",
+    "mentions": "Erwähnungen",
     "further-names": "Weitere Namen",
     "footer": {
         "text": "Institut für Computerlinguistik, Universität Zürich, 2024",
