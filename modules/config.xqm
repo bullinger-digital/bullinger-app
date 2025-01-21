@@ -486,6 +486,7 @@ declare variable $config:localities := doc($config:data-root || '/index/localiti
 declare variable $config:orgs := doc($config:data-root || '/index/organizations.xml');
 declare variable $config:roles := doc($config:data-root || '/index/groups.xml');
 declare variable $config:archives := doc($config:data-root || '/index/archives.xml');
+declare variable $config:bibliography := doc($config:data-root || '/index/bibliography.xml');
 
 (:~
  : The root of the collection hierarchy whose files should be displayed

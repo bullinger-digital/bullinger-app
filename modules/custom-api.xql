@@ -346,7 +346,74 @@ declare function api:register-select($request as map(*)) {
     switch($request?parameters?type)
         case "archives" return api:archives($request)
         case "organizations" return api:organizations($request)
+        case "bibliography" return api:bibliography($request)
         default return ()
+};
+
+declare function api:bibliography($request as map(*)) {
+    let $key := $request?parameters?key
+    let $sortBy := $request?parameters?order
+    let $sortDir := $request?parameters?dir
+    let $limit := $request?parameters?limit
+    let $start := $request?parameters?start    
+    let $filter := $request?parameters?search
+    
+    let $log := util:log("info", "api:bibliography started")
+
+    let $entries := api:bibliography-filter($filter)
+    let $log := util:log("info", "api:bibliography entries: " || count($entries))
+    let $sorted := api:bibliography-sort($entries, $sortBy, $sortDir)
+    let $log := util:log("info", "api:bibliography $sorted: " || count($sorted))
+    let $subset := subsequence($sorted, $start, $limit)
+    return (
+        (:session:set-attribute($config:session-prefix || ".bibliography.hits", $entries),
+        session:set-attribute($config:session-prefix || ".bibliography.hitCount", count($entries)),:)
+        map {
+            "count": count($entries),
+            "results":
+                array {
+                    for $bibl in $subset
+                        let $title := ft:field($bibl, "bibl-title")
+                        let $text := ft:field($bibl, "bibl-text")
+                        return
+                            map {
+                                "title": $title,
+                                "text": $text
+                            }
+                }
+        })
+};
+
+declare function api:bibliography-filter($filter as xs:string?) {
+    let $options := api:get-register-query-options()
+    let $bibliography := $config:bibliography//tei:standOff/tei:listBibl
+    let $log := util:log("info", "api:bibliography-filter $bibliography: " || count($bibliography))
+    let $result := 
+        if ($filter) then
+            $bibliography/tei:bibl[ft:query(., 'bibl-title:(' || $filter || '*) OR bibl-text:(' || $filter || '*)', $options)]
+        else
+            $bibliography/tei:bibl[ft:query(., 'bibl-title:*', $options)]
+    return 
+        $result
+};
+
+declare function api:bibliography-sort($entries as element()*, $sortBy as xs:string, $dir as xs:string) {
+    (: let $log := util:log("info", ("api:sort $sortBy: ", $sortBy, " - $dir: ", $dir)) :)
+    let $sorted :=
+        sort($entries, (), function($bibl) {
+            switch ($sortBy)
+                case "title" return
+                    lower-case(ft:field($bibl, 'bibl-title')[1])
+                case "text" return
+                    lower-case(ft:field($bibl, 'bibl-text')[1])
+                default return
+                    lower-case(ft:field($bibl, 'bibl-title')[1])
+        })
+    return
+        if ($dir = "asc") then
+            $sorted
+        else
+            reverse($sorted)
 };
 
 declare function api:archives($request as map(*)) {
@@ -384,12 +451,11 @@ declare function api:archives($request as map(*)) {
 
 declare function api:archives-filter($filter as xs:string?) {    
     let $options := api:get-register-query-options()
-    let $archives := $config:archives//tei:org
     let $result := 
         if ($filter) then
-            $archives[ft:query(., 'archive-name:(' || $filter || '*)', $options)]
+            $config:archives//tei:org[ft:query(., 'archive-name:(' || $filter || '*)', $options)]
         else
-            $archives[ft:query(., 'archive-name:*', $options)]
+            $config:archives//tei:org[ft:query(., 'archive-name:*', $options)]
     return 
         $result
 };

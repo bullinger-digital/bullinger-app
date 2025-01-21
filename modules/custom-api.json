@@ -114,7 +114,66 @@
 					}
 				}
 			}
-        }, 
+        },
+		"/bibliography/": {
+            "get": {
+				"summary": "Landing page for bibliography",
+				"description": "Retrieve an HTML page expanded through eXist templating.",
+				"tags": ["view"],
+				"operationId": "vapi:html",
+				"x-error-handler": "vapi:handle-error",
+				"parameters": [
+					{
+						"name": "file",
+						"in": "query",
+						"schema": {
+							"type": "string",
+                            "default": "bibliography"
+						}
+					},
+					{
+						"name": "uri",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"default": "/bibliography/"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "HTML of the page",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The document was not found",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An error occurred",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+        },
 		"/organizations/": {
             "get": {
 				"summary": "Landing page for Organizations",
