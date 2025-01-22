@@ -11,7 +11,8 @@
         "signature": "Shelfmark",
         "letter-id": "Letter ID",
         "mentioned-persons": "Mentioned persons",
-        "mentioned-places": "Mentioned places"
+        "mentioned-places": "Mentioned places",
+        "has-facsimile": "Facsimile availability"
     },
     "search": {
         "title": "Titel",

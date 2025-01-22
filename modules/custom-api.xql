@@ -779,6 +779,11 @@ declare function api:facets-search($request as map(*)) {
                         $key
                     case "letter-id" return
                         $key
+                    case "has-facsimile" return
+                        switch ($key)
+                            case "true" return "Briefe mit Faksimile / Letters with facsimile"
+                            case "false" return "Briefe ohne Faksimile / Letters without facsimile"
+                            default return "unknown"
                     default return 
                         let $_ := util:log("info", "api:facets-search: default return, $type: " || $type)
                         return 

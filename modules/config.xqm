@@ -288,6 +288,18 @@ declare variable $config:facets := [
         "heading": "facets.letter-id",
         "source": "api/facets/letter-id",
         "max": 0
+    },
+    map {
+        "dimension": "has-facsimile",
+        "heading": "facets.has-facsimile",
+        "source": "api/facets/has-facsimile",
+        "max": 0,
+        "output": function($label) {
+            switch ($label)
+                case "true" return "Briefe mit Faksimile / Letters with facsimile"
+                case "false" return "Briefe ohne Faksimile / Letters without facsimile"
+                default return "unknown"
+        }
     }
 ];
 

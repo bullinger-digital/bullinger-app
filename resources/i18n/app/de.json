@@ -11,7 +11,8 @@
         "signature": "Signatur",
         "letter-id": "Brief-ID",
         "mentioned-persons": "Erwähnte Personen",
-        "mentioned-places": "Erwähnte Ortschaften"
+        "mentioned-places": "Erwähnte Ortschaften",
+        "has-facsimile": "Faksimile Verfügbarkeit"
     },
     "search": {
         "title": "Titel",
