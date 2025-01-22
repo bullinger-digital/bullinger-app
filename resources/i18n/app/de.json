@@ -9,7 +9,9 @@
         "place": "Ortschaft",
         "hbbw-number": "HBBW-Nummer",
         "signature": "Signatur",
-        "letter-id": "Brief-ID"
+        "letter-id": "Brief-ID",
+        "mentioned-persons": "Erwähnte Personen",
+        "mentioned-places": "Erwähnte Ortschaften"
     },
     "search": {
         "title": "Titel",

@@ -738,14 +738,17 @@ declare function api:facets-search($request as map(*)) {
             let $text := 
                 switch($type) 
                     case "sender" 
-                    case "recipient" 
+                    case "recipient"
+                    case "mentioned-persons"
                         return
                             let $persName := $config:persons/id($key)/parent::tei:person/tei:persName[@type='main']
                             let $name := string-join(($persName/tei:surname, $persName/tei:forename), ", ")
                             (: let $_ := util:log("info", "api:facets-search: $name: " || $name) :)
                             return
                                 $name 
-                    case "place" return
+                    case "place"
+                    case "mentioned-places"
+                        return
                             let $place := $config:localities/id($key)
                             let $_ := util:log("info", "api:facets-search: place: $place: " || $place/@xml:id)
                             

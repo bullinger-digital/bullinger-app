@@ -134,7 +134,7 @@ declare variable $config:facets := [
                 then (string-join(($person/*),", "))
                 else ($label)
         }
-    },    
+    },
     map {
         "dimension": "recipient",
         "heading": "facets.addressee",
@@ -217,6 +217,40 @@ declare variable $config:facets := [
     <a class="additional-facets-trigger">
         <pb-i18n key="search.additional-filters">Weitere Filter</pb-i18n>
     </a>,
+    map {
+        "dimension": "mentioned-persons",
+        "heading": "facets.mentioned-persons",
+        "max": 0,
+        "source": "api/facets/mentioned-persons",
+        "output": function($label) {
+            let $person := $config:persons/id($label)/parent::tei:person/tei:persName[@type='main']
+            return 
+                if ($person) 
+                then (string-join(($person/*),", "))
+                else ($label)
+        }
+    },
+    map {
+        "dimension": "mentioned-places",
+        "heading": "facets.mentioned-places",
+        "max": 0,
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "source": "api/facets/mentioned-places",
+        "output": function($label) {
+            let $place := $config:localities/id($label)
+            return 
+                if ($place) 
+                then (
+                    let $settlement := $place//tei:settlement/text()
+                    let $district := $place//tei:district/text()
+                    let $country := $place//tei:country/text()
+                    return
+                        if($settlement) then ($settlement) else if ($district) then ($district) else ($country)
+                )
+                else ($label)
+        }
+    },
     map {
         "dimension": "archive",
         "heading": "facets.archive",

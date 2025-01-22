@@ -9,7 +9,9 @@
         "place": "Place",
         "hbbw-number": "HBBW Number",
         "signature": "Shelfmark",
-        "letter-id": "Letter ID"
+        "letter-id": "Letter ID",
+        "mentioned-persons": "Mentioned persons",
+        "mentioned-places": "Mentioned places"
     },
     "search": {
         "title": "Titel",
