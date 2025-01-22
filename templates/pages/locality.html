@@ -29,6 +29,27 @@
                     </div>
                 </section>
                 <section class="bottom">
+                    <pb-custom-form class="facets" event="pb-results-received" subscribe="grid" emit="grid">
+                        <div class="radios">
+                            <label>
+                                <input type="radio" name="view" checked="checked" value="correspondence" data-template="templates:form-control"/> <pb-i18n key="registers.correspondence">(Korrespondenz)</pb-i18n>
+                            </label>
+                            <label>
+                                <input type="radio" name="view" value="all" data-template="templates:form-control"/> <pb-i18n key="registers.correspondenceAndMentions">(Korrespondenz und Erwähnungen)</pb-i18n>
+                            </label>
+                        </div>
+                    </pb-custom-form>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const form = document.querySelector('pb-custom-form');
+                            const radios = document.querySelectorAll('pb-custom-form input[type="radio"]');
+                            radios.forEach(radio => {
+                                radio.addEventListener('change', function() {
+                                    form.submit()
+                                });
+                            });
+                        });
+                    </script>
                     <pb-table-grid source="api/locality/${key}" resizable="" emit="grid" subscribe="grid" per-page="10" search="" data-template="pages:parse-params">                        
                         <pb-table-column label="Brief" property="title" sort=""></pb-table-column>
                         <pb-table-column label="Absender" property="senders" sort=""></pb-table-column>

@@ -642,8 +642,9 @@ declare function api:register-locality-detail($request as map(*)) {
     let $limit := $request?parameters?limit
     let $start := $request?parameters?start    
     let $filter := $request?parameters?search
+    let $view := $request?parameters?view
     (: let $log := util:log("info", "api:locality-is-sender " || $key) :)
-    let $entries := api:locality-filter($filter,$key)
+    let $entries := api:locality-filter($filter,$key,$view)
     let $sorted := api:sort($entries, $sortBy, $sortDir)
     let $subset := subsequence($sorted, $start, $limit)
     return (
@@ -678,12 +679,16 @@ declare function api:register-locality-detail($request as map(*)) {
         }
 )};
 
-declare function api:locality-filter($filter as xs:string?, $key as xs:string) {    
+declare function api:locality-filter($filter as xs:string?, $key as xs:string, $view as xs:string?) {    
     (: let $log := util:log("info", "api:locality-filter: found locality: " || $key)     :)
     let $options := api:get-register-query-options()
 
     let $all-letters := collection($config:data-default)//tei:TEI
-    let $letters := $all-letters[ft:query(.//tei:text, 'place:' || $key , $options)]
+    let $letters := switch ($view)
+        case "all" return
+            $all-letters[ft:query(.//tei:text, 'place:' || $key || ' OR mentioned-places:' || $key , $options)]
+        default return
+            $all-letters[ft:query(.//tei:text, 'place:' || $key , $options)]
     let $result := 
         if ($filter) then
             $letters[ft:query(.//tei:text, 'title:(' || $filter || '*)', $options)] 
