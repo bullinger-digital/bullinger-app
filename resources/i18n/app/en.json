@@ -12,7 +12,8 @@
         "letter-id": "Letter ID",
         "mentioned-persons": "Mentioned persons",
         "mentioned-places": "Mentioned places",
-        "has-facsimile": "Facsimile availability"
+        "has-facsimile": "Facsimile availability",
+        "language-threshold": "Letter language"
     },
     "search": {
         "title": "Titel",

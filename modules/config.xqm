@@ -300,6 +300,27 @@ declare variable $config:facets := [
                 case "false" return "Briefe ohne Faksimile / Letters without facsimile"
                 default return "unknown"
         }
+    },
+    map {
+        "dimension": "language-threshold",
+        "heading": "facets.language-threshold",
+        "source": "api/facets/language-threshold",
+        "max": 0,
+        "output": function($label) {
+            let $tokens := tokenize($label, ':>')
+            let $lang := $tokens[1]
+            let $percentage := xs:decimal($tokens[2])
+            let $percentageText := " (> " || $percentage || "%)"
+            return switch ($lang)
+                case "de" return "Deutsch / German" || $percentageText
+                case "fr" return "Französisch / French" || $percentageText
+                case "it" return "Italienisch / Italian" || $percentageText
+                case "el" return "Griechisch / Greek" || $percentageText
+                case "he" return "Hebräisch / Hebrew" || $percentageText
+                case "la" return "Latein / Latin" || $percentageText
+                case "en" return "Englisch / English" || $percentageText
+                default return "unknown"
+        }
     }
 ];
 

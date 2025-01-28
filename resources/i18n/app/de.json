@@ -12,7 +12,8 @@
         "letter-id": "Brief-ID",
         "mentioned-persons": "Erwähnte Personen",
         "mentioned-places": "Erwähnte Ortschaften",
-        "has-facsimile": "Faksimile Verfügbarkeit"
+        "has-facsimile": "Faksimile Verfügbarkeit",
+        "language-threshold": "Briefsprache"
     },
     "search": {
         "title": "Titel",

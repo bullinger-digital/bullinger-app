@@ -730,6 +730,9 @@ declare function api:facets-search($request as map(*)) {
     let $facets := ft:facets($hits, $type, ())
     (: let $log := util:log("info", "api:facets-search: $facets: " || count($facets)) :)
 
+    let $facet-config := (for $f in $config:facets?*
+                        where $f instance of map(*) and map:get($f, 'dimension') = $type
+                        return $f)[1]
     
     let $matches := 
         for $key in if (exists($request?parameters?value)) 
@@ -779,11 +782,10 @@ declare function api:facets-search($request as map(*)) {
                         $key
                     case "letter-id" return
                         $key
+                    case "language-threshold" return
+                        map:get($facet-config, 'output')($key)
                     case "has-facsimile" return
-                        switch ($key)
-                            case "true" return "Briefe mit Faksimile / Letters with facsimile"
-                            case "false" return "Briefe ohne Faksimile / Letters without facsimile"
-                            default return "unknown"
+                        map:get($facet-config, 'output')($key)
                     default return 
                         let $_ := util:log("info", "api:facets-search: default return, $type: " || $type)
                         return 
