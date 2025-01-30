@@ -44,7 +44,7 @@ declare function api:persons-all-list($request as map(*)) {
     let $limit := $request?parameters?limit
     let $start := $request?parameters?start
     let $filter := $request?parameters?search
-    let $correspondentsOnly := $request?parameters?view != "all"
+    let $correspondentsOnly := $request?parameters?view = "correspondents"
     
     let $entries := api:persons-all-list-filter($filter, $correspondentsOnly)
     let $log := util:log("info", "api:persons-all-list entries: " || count($entries))
@@ -310,10 +310,10 @@ declare function api:person-filter($filter as xs:string?, $key as xs:string, $vi
     let $options := api:get-register-query-options()
     let $all-letters := collection($config:data-default)//tei:TEI
     let $letters := switch ($view)
-        case "all" return
-            $all-letters[ft:query(.//tei:text, 'mentioned-persons:' || $key , $options)]
-        default return
+        case "correspondence" return
             $all-letters[ft:query(.//tei:text, 'correspondant:' || $key , $options)]
+        default return
+            $all-letters[ft:query(.//tei:text, 'mentioned-persons:' || $key , $options)]
     let $result := 
         if ($filter) then
             $letters[ft:query(.//tei:text, 'title:(' || $filter || '*)', $options)] 
@@ -685,10 +685,10 @@ declare function api:locality-filter($filter as xs:string?, $key as xs:string, $
 
     let $all-letters := collection($config:data-default)//tei:TEI
     let $letters := switch ($view)
-        case "all" return
-            $all-letters[ft:query(.//tei:text, 'place:' || $key || ' OR mentioned-places:' || $key , $options)]
-        default return
+        case "correspondence" return
             $all-letters[ft:query(.//tei:text, 'place:' || $key , $options)]
+        default return
+            $all-letters[ft:query(.//tei:text, 'place:' || $key || ' OR mentioned-places:' || $key , $options)]
     let $result := 
         if ($filter) then
             $letters[ft:query(.//tei:text, 'title:(' || $filter || '*)', $options)] 
