@@ -1023,3 +1023,15 @@ pb-split-list::part(items) {
 .about h2 { font-size: 1.3em; margin: 25px 0 0 0; font-weight:bold; }
 .about-question h2 { margin: 12px 0 10px 0; padding:10px 0; }
 .diacritics { font-family:'Times New Roman', Times, serif }
+
+#metagrid-widget {
+    margin-bottom:20px;
+    display:none;
+    background:#F1F1F1;
+    padding:20px;
+    border-radius:10px;
+}
+
+#metagrid-widget ul {
+    margin-top:0;
+}

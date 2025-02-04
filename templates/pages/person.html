@@ -19,15 +19,34 @@
                         <div data-template="app:person-letters-total"></div>
                         <div data-template="app:person-letters-mentions"></div>
                     </section>
-                    <div id="metagrid-widget" style="margin-bottom:20px;">
+                    <div id="metagrid-widget">
                         <div id="metagrid-widget-gnd" style="display:none" data-template="app:person-gnd"></div>
+                        <ul></ul>
+                        <div class="metagrid-credit">Links powered by <a href="https://www.metagrid.ch" target="_blank">Metagrid</a> – die Vernetzungsinitiative der SAGW</div>
                     </div>
-                    <script type="module">
-                        import { widget } from "https://unpkg.com/@metagrid/modern-metagrid-widget@1.0.2/dist/index.es.js";
-                        const widgetElement = document.getElementById('metagrid-widget');
-                        const gnd = widgetElement.querySelector("#metagrid-widget-gnd").innerText;
-                        if(gnd) {
-                            widget(widgetElement, 'gnd', gnd);
+                    <script>
+                        // We're not using the official metagrid widget because there is no way to hide the widget completely if no links are available
+                        const gndId = document.querySelector('#metagrid-widget-gnd').innerText;
+                        if(gndId) {
+                            fetch(`https://api.metagrid.ch/widget/gnd/person/${gndId}.json?include=false&amp;language=de`)
+                            .then(response => response.json())
+                            .then(data => {
+                                if(!data[0]  || !Object.keys(data[0]).length) {
+                                    return;
+                                }
+                                const links = Object.entries(data[0]);
+                                const linkList = document.querySelector('#metagrid-widget > ul');
+                                links.forEach(([key, value]) => {
+                                    const link = document.createElement('li');
+                                    const a = document.createElement('a');
+                                    a.href = value;
+                                    a.target = '_blank';
+                                    a.innerText = key;
+                                    link.appendChild(a);
+                                    linkList.appendChild(link);
+                                });
+                                document.getElementById('metagrid-widget').style.display = 'block';
+                            });
                         }
                     </script>
                     <div data-template="app:name-alternatives"></div>
