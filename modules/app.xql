@@ -127,6 +127,63 @@ function app:name-alternatives($node as node(), $model as map(*)) {
         else ()
 };
 
+
+declare %templates:replace   
+function app:bio-footnotes($node as node(), $model as map(*)) {    
+    let $person := ($model?data)
+    (: Biographical footnotes are identified by the ana attribute with the value "bio". We only display footnotes
+        where the first persName reference matches the person's xml:id. :)
+    let $footnotes := (
+        for $note in collection($config:data-default)//tei:note[@ana="bio" and (.//tei:persName)[1][@ref=lower-case($person/@xml:id)]]
+        order by string-length($note/string()) descending
+        return $note
+    )[position() <= 20]
+        
+    return 
+        if (count($footnotes) > 0)
+        then (
+            element div {
+                attribute class { "bio-footnotes" },
+                element hr {},
+                element pb-i18n {
+                    attribute key { "registers.persons.biographical-footnotes"},
+                    "(Zusatzinformationen)"
+                },
+                element div {
+                    (
+                        for $note in $footnotes
+                        let $note-content-string := $note/string()
+                        let $letter-id := replace($note/ancestor::tei:TEI/@xml:id/string(), "file", "")
+                        return element span {
+                            attribute style { "margin-right: 0.3em;" },
+                            element a {
+                                attribute href { "../file" || $letter-id },
+                                element pb-popover {
+                                    attribute placement { "top" },
+                                    element span {
+                                        attribute slot { "default" },
+                                        $letter-id || " "
+                                    },
+                                    element div {
+                                        attribute style { "max-height: 200px; overflow-y: auto;" },
+                                        attribute slot { "alternate" },
+                                        element div {
+                                            "Fussnote " || $note/@n || " in Brief " || $letter-id || ":"
+                                        },
+                                        element div {
+                                            $note-content-string
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    )
+                }
+            }
+        )
+        else ()
+};
+
 declare function app:print-mentions($matches) {
     element summary {
         element pb-i18n { 
