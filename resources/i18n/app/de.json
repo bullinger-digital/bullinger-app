@@ -25,7 +25,8 @@
         "fnhd-normalization": "Normalisiertes Deutsch",
         "displayed-period": "Angezeigter Zeitraum",
         "filters": "Filter",
-        "additional-filters": "Weitere Filter"
+        "additional-filters": "Weitere Filter",
+        "special-characters": "Spezielle Zeichen einfügen"
     },
     "mobile" : {
         "menu": "Menü"

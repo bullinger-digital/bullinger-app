@@ -25,7 +25,8 @@
         "fnhd-normalization": "Normalized German",
         "displayed-period": "Displayed period",
         "filters": "Filters",
-        "additional-filters": "More filters"
+        "additional-filters": "More filters",
+        "special-characters": "Insert special characters"
     },
     "mobile" : {
         "menu": "Menu"
