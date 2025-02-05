@@ -27,7 +27,8 @@
         "filters": "Filter",
         "additional-filters": "Weitere Filter",
         "special-characters": "Spezielle Zeichen einfügen",
-        "search": "Suchen"
+        "search": "Suchen",
+        "reset": "Zurücksetzen"
     },
     "mobile" : {
         "menu": "Menü"

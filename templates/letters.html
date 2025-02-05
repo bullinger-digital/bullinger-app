@@ -54,7 +54,10 @@
                     <pb-search id="search-form" subscribe="search" data-template="pages:parse-params" value="${query}"
                         subforms=".facets,.options,#timeline-options" submit-on-load="submit-on-load">
                         <div style="display:flex; justify-content: space-between;">
-                            <paper-button slot="searchButton" class="btn-search"><pb-i18n key="search.search">Search</pb-i18n></paper-button>
+                            <div class="flex">
+                                <paper-button slot="searchButton" class="btn-search"><pb-i18n key="search.search">Search</pb-i18n></paper-button>
+                                <a class="btn-search-reset" href="./letters.html"><pb-i18n key="search.reset">(Zurücksetzen)</pb-i18n></a>
+                            </div>
                             <div>
                                 <pb-popover theme="light" placement="bottom">
                                     <iron-icon icon="info" style="color: #AFAFAF" />

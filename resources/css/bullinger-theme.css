@@ -178,6 +178,14 @@ footer a:visited {
     margin:1rem 0 1rem 0;
 }
 
+a.btn-search-reset, a.btn-search-reset:visited, a.btn-search-reset:link {
+    margin-left:10px;
+    color:#AFAFAF;
+}
+a.btn-search-reset:hover {
+    color:#000;
+}
+
 
 .mobile {
     width: 100%;
