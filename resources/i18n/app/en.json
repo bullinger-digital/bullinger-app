@@ -26,7 +26,8 @@
         "displayed-period": "Displayed period",
         "filters": "Filters",
         "additional-filters": "More filters",
-        "special-characters": "Insert special characters"
+        "special-characters": "Insert special characters",
+        "search": "Search"
     },
     "mobile" : {
         "menu": "Menu"

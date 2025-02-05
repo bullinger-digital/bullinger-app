@@ -26,7 +26,8 @@
         "displayed-period": "Angezeigter Zeitraum",
         "filters": "Filter",
         "additional-filters": "Weitere Filter",
-        "special-characters": "Spezielle Zeichen einfügen"
+        "special-characters": "Spezielle Zeichen einfügen",
+        "search": "Suchen"
     },
     "mobile" : {
         "menu": "Menü"
