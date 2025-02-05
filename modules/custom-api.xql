@@ -745,7 +745,7 @@ declare function api:facets-search($request as map(*)) {
                     case "mentioned-persons"
                         return
                             let $persName := $config:persons/id($key)/parent::tei:person/tei:persName[@type='main']
-                            let $name := string-join(($persName/tei:surname, $persName/tei:forename), ", ")
+                            let $name := string-join(($persName/tei:forename, $persName/tei:surname), " ")
                             (: let $_ := util:log("info", "api:facets-search: $name: " || $name) :)
                             return
                                 $name 

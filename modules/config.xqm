@@ -131,7 +131,7 @@ declare variable $config:facets := [
             let $person := $config:persons/id($label)/parent::tei:person/tei:persName[@type='main']
             return 
                 if ($person) 
-                then (string-join(($person/*),", "))
+                then ($person/tei:forename || " " || $person/tei:surname)
                 else ($label)
         }
     },
