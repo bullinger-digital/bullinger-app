@@ -293,7 +293,6 @@
         </model>
                     <model predicate="@ref" behaviour="inline" cssClass="person">
             <desc>persName in TEI Text</desc>
-            <param name="content" value="./text()"/>
             <param name="pers-id" value="fn:upper-case(./@ref)"/>
             <param name="label" value="let $ref := ./@ref let $persParam := $parameters?persons/persName[@xml:id = $ref]  return $persParam/forename/text() || &#34; &#34; || $persParam/surname/text()"/>
             <pb:template xmlns="" xml:space="preserve"><pb-popover>
@@ -370,7 +369,6 @@
         </model>
                     <model predicate="@ref" behaviour="inline" cssClass="place">
             <desc>placeName in TEI Text</desc>
-            <param name="content" value="./text()"/>
             <param name="label" value="let $ref := ./@ref let $place := fn:string-join($parameters?places[@xml:id = $ref]/(settlement,district,country)/text(), ', ') return   &lt;a href=&#34;./localities/{$ref}&#34;&gt;{$place}&lt;/a&gt;"/>
             <pb:template xmlns="" xml:space="preserve"><pb-popover>
   <span slot="default"><span class="ne-with-ref">[[content]]</span></span>
