@@ -1,5 +1,6 @@
 <?xml-model href="teipublisher_odds.xsd"?>
-<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xml:lang="en">
+<TEI xmlns="http://www.tei-c.org/ns/1.0"
+    xmlns:pb="http://teipublisher.com/1.0" xml:lang="en">
     <teiHeader>
         <fileDesc>
             <titleStmt>
@@ -40,412 +41,257 @@
     <text>
         <body>
             <schemaSpec start="TEI teiCorpus" ident="bullinger" source="teipublisher.odd">
+                <elementSpec ident="TEI" mode="change">
+                    <model predicate="$parameters?view='metadata'" behaviour="inline">
+                        <desc>Metadata Rendering (title, metadata, regest, incipit)</desc>
+                        <param name="header" value="ext:get-header(.//teiHeader, $parameters?language)"/>
+                        <param name="metadata" value="ext:metadata-by-letter(.//teiHeader, $parameters?language)"/>
+                        <param name="regest" value="./teiHeader"/>
+                        <pb:set-param name="persons" value="let $persons := doc('/db/apps/bullinger-data/data/index/persons.xml') return     for $person in .//teiHeader//persName[@ref]      group by $persref := $person/@ref     return         id($persref,$persons)/ancestor::person"/>
+                        <pb:set-param name="places" value="let $places := doc('/db/apps/bullinger-data/data/index/localities.xml')  return   for $place in .//teiHeader//placeName[@ref] group by $placeref := $place/@ref  return id($placeref,$places)"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <div>
+                                [[header]]
+                                <div id="metaWrapper">
+                                    <div>
+                                        [[metadata]]
+                                    </div>
+                                    <div>
+                                        [[regest]]
+                                    </div>
+                                </div>
+                            </div>
+                        </pb:template>
+                    </model>
+                    <model behaviour="document"/>
+                </elementSpec>
                 <elementSpec ident="zone" mode="change">
                     <model behaviour="omit"/>
                 </elementSpec>
-            <elementSpec ident="graphic" mode="change"/>
-            <elementSpec ident="teiHeader" mode="change">
+                <elementSpec ident="graphic" mode="change"/>
+                <elementSpec ident="teiHeader" mode="change">
                     <modelSequence predicate="$parameters?view='metadata'">
-            <desc>TEI Header Data for Bullinger Letters</desc>
-            <model behaviour="section" pb:mode="header">
-                <desc>TEI Title</desc>
-                <param name="level" value="1"/>
-                <param name="sender" value="ext:correspondents-by-letter(., 'sent')"/>
-                <param name="receiver" value="ext:correspondents-by-letter(., 'received')"/>
-                <param name="date" value="ext:date-by-letter(., $parameters?language)"/>
-                <param name="place" value="ext:place-by-letter(.)"/>
-                <param name="type" value="../@type/string()"/>
-                <param name="previous-letter" value="ancestor::TEI//correspContext/ref[@type='prev_chronologically']/@target" />
-                <param name="next-letter" value="ancestor::TEI//correspContext/ref[@type='next_chronologically']/@target" />
-                <param name="previous-letter-correspondence" value="ancestor::TEI//correspContext/ref[@type='prev_correspondence']/@target" />
-                <param name="next-letter-correspondence" value="ancestor::TEI//correspContext/ref[@type='next_correspondence']/@target" />
-                <pb:template xmlns="" xml:space="preserve">
-                    <div class="letter-navigation">
-                        <a title="Vorheriger Brief (nach Datum)" href="./[[previous-letter]]"><iron-icon icon="chevron-left"/></a>
-                        <a title="Vorheriger Brief (mit gleichen Korrespondenten)" href="./[[previous-letter-correspondence]]"><iron-icon icon="chevron-left"/><iron-icon style="margin-left: -18px" icon="chevron-left"/></a>
-                        <a title="Nächster Brief (mit gleichen Korrespondenten)" href="./[[next-letter-correspondence]]"><iron-icon icon="chevron-right"/><iron-icon style="margin-left: -18px" icon="chevron-right"/></a>
-                        <a title="Nächster Brief (nach Datum)" href="./[[next-letter]]"><iron-icon icon="chevron-right"/></a>
-                    </div>
-                <h1><span><span style="color:var(--bb-beige);">[[sender]]</span>&#8199;<pb-i18n key="_to_">(an)</pb-i18n>&#8199;<span style="color:var(--bb-beige);">[[receiver]]</span></span></h1>
-<div class="subtitle"><iron-icon id="date-range" icon="date-range"/><div>[[date]]</div> <iron-icon id="map-near-me" icon="maps:near-me"/>[[place]] <span class="doc-type"><pb-i18n key="metadata.types.[[type]]">([[type]])</pb-i18n></span></div></pb:template>
-            </model>
-            <model behaviour="section">
-                <desc>Person Images</desc>
-                <param name="pictures" value="$parameters?persons-correspondents-only[idno/@subtype=&#34;portrait&#34;]"/>
-                <pb:set-param name="subtype" value="'pictures'"/>
-                <pb:template xmlns="" xml:space="preserve"><div class="portrait-container">[[pictures]]</div></pb:template>
-            </model>
-            <model behaviour="section">
-                <desc>Bullinger Metadata</desc>
-                <param name="correspAction" value=".//correspAction"/>
-                <param name="place" value=".//correspAction[@type='sent']/placeName" />
-                <param name="msDesc" value=".//msDesc"/>
-                <param name="lang" value=".//langUsage"/>
-                <param name="printed" value="if (exists(.//listBibl/bibl[@type='Gedruckt'])) then .//listBibl else ()"/>
-                <param name="hbbw-no" value="$parameters?hbbw-no"/>
-                <param name="hbbw-band" value="$parameters?hbbw-band"/>
-                <param name="hbbw-hidden" value="let $hbbw := $parameters?hbbw-no return if(string-length($hbbw) &gt; 0) then () else ('display:none;')"/>
-                <param name="links-parents-hidden" value="if (exists(.//correspContext/ref[@type='parent'])) then () else ('display:none;')"/>
-                <param name="links-children-hidden" value="if (exists(.//correspContext/ref[@type='child'])) then () else ('display:none;')"/>
-                <param name="links-parents" value=".//correspContext/ref[@type='parent']"/>
-                <param name="links-children" value=".//correspContext/ref[@type='child']"/>
-                <pb:set-param name="subtype" value="metadata"/>
-                <pb:template xmlns="" xml:space="preserve">
-<div id="sourceDesc">
-  [[correspAction]]
-  [[place]]
-  [[msDesc]]
-  [[lang]]
-  [[printed]]
-  <div style="[[hbbw-hidden]]">
-    <div>HBBW-Briefnummer</div>
-    <div><a target="_blank" href="http://teoirgsed.uzh.ch/SedWEB.cgi?Alias=Briefe&amp;Lng=1&amp;aheight=910&amp;PrjName=Bullinger+-+Briefwechsel&amp;fld_418=[[hbbw-no]]">Band [[hbbw-band]], Nr. [[hbbw-no]]</a></div>
-  </div>
-  <div style="[[links-parents-hidden]]">
-    <div><pb-i18n key="metadata.referenced">(Verweise auf diesen Eintrag)</pb-i18n></div>
-    <div class="tei-refs-metadata">[[links-parents]]</div>
-  </div>
-  <div style="[[links-children-hidden]]">
-    <div><pb-i18n key="metadata.references">(Dieser Eintrag verweist auf)</pb-i18n></div>
-    <div class="tei-refs-metadata">[[links-children]]</div>
-  </div>
-</div></pb:template>
-            </model>
-            <model predicate="exists(.//msContents/summary/node())" behaviour="section" cssClass="regest">
-                <desc>Regest</desc>
-                <param name="content" value=".//msContents/summary"/>
-                <param name="source" value=".//bibl[@type='regest']"/>
-                <param name="overlength" value="let $request := .//msContents/summary/p/text() let $text := string-join($request, &#34; &#34;) return   if(exists($request) and string-length($text) &lt; 300)    then ()   else (&#34;overlength&#34;)"/>
-                <pb:template xmlns="" xml:space="preserve"><h2><pb-i18n key="regest">(Regest)</pb-i18n>&#160;[[source]]</h2>
-<div class="regesttext [[overlength]]">
-  <div id="regest" class="metaregest">[[content]]</div>
-  <div class="expander"><iron-icon icon="arrow-drop-down"/></div>
-</div></pb:template>
-            </model>
-            <model predicate="exists(.//msContents//incipit/node())" behaviour="section" cssClass="incipit">
-                <desc>Incipit</desc>
-                <param name="content" value=".//msContents//incipit"/>
-                <pb:template xmlns="" xml:space="preserve"><pb-restricted login="login"><h2>Incipit</h2>
-<div id="incipit">[[content]]</div></pb-restricted></pb:template>
-            </model>
-        </modelSequence>
+                        <desc>TEI Header Data for Bullinger Letters</desc>
+                        <model behaviour="section" pb:mode="header">
+                            <desc>TEI Title</desc>
+                            <param name="level" value="1"/>
+                        </model>
+                        <model predicate="exists(.//msContents/summary/node())" behaviour="section" cssClass="regest">
+                            <desc>Regest</desc>
+                            <param name="content" value=".//msContents/summary"/>
+                            <param name="source" value=".//bibl[@type='regest']"/>
+                            <param name="overlength" value="let $request := .//msContents/summary/p/text() let $text := string-join($request, &#34; &#34;) return   if(exists($request) and string-length($text) &lt; 300)    then ()   else (&#34;overlength&#34;)"/>
+                            <pb:template xmlns="" xml:space="preserve">
+                                <h2>
+                                    <pb-i18n key="regest">(Regest)</pb-i18n>&#160;[[source]]</h2>
+                                <div class="regesttext [[overlength]]">
+                                    <div id="regest" class="metaregest">[[content]]</div>
+                                    <div class="expander">
+                                        <iron-icon icon="arrow-drop-down"/>
+                                    </div>
+                                </div>
+                            </pb:template>
+                        </model>
+                    </modelSequence>
                     <model output="latex" behaviour="metadata"/>
                     <model output="fo" behaviour="omit"/>
                     <model output="web" predicate="$parameters?header='short'" behaviour="block"/>
                     <model output="web" predicate="exists(.//language)" behaviour="pass-through">
-            <param name="color-info" value="sort(.//language, (), function ($lang as element(language)) { -number($lang/@usage) })"/>
-            <pb:template xmlns="" xml:space="preserve"><div class="lang-usage"><pb-i18n key="color-legend">(Farblegende)</pb-i18n>: [[color-info]]</div></pb:template>
-        </model>
+                        <param name="color-info" value="sort(.//language, (), function ($lang as element(language)) { -number($lang/@usage) })"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <div class="lang-usage">
+                                <pb-i18n key="color-legend">(Farblegende)</pb-i18n>: [[color-info]]</div>
+                        </pb:template>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="summary" mode="add">
                     <model behaviour="block"/>
                 </elementSpec>
-                <elementSpec ident="TEI" mode="change">
-                    <model predicate="$parameters?view='metadata'" behaviour="inline">
-            <desc>Metadata Rendering (title, metadata, regest, incipit)</desc>
-            <param name="content" value="teiHeader"/>
-            <pb:set-param name="hbbw-no" value="if(fn:starts-with(./@source/string(), 'HBBW') and string-length(./@n/string()) &gt; 0) then (./@n/string()) else ()"/>
-            <pb:set-param name="hbbw-band" value="if(fn:starts-with(./@source/string(), 'HBBW-')) then (fn:substring-after(./@source/string(), '-')) else ()"/>
-            <pb:set-param name="persons" value="let $persons := doc('/db/apps/bullinger-data/data/index/persons.xml') return     for $person in .//teiHeader//persName[@ref]      group by $persref := $person/@ref     return         id($persref,$persons)/ancestor::person"/>
-            <pb:set-param name="persons-correspondents-only" value="let $persons := doc('/db/apps/bullinger-data/data/index/persons.xml') return     for $person in .//teiHeader//correspDesc//persName[@ref]      group by $persref := $person/@ref     return         id($persref,$persons)/ancestor::person"/>
-            <pb:set-param name="orgs" value="let $orgs := doc('/db/apps/bullinger-data/data/index/organizations.xml') return  for $org in .//teiHeader//orgName[@ref]  group by $orgref := $org/@ref return id($orgref,$orgs)"/>
-            <pb:set-param name="places" value="let $places := doc('/db/apps/bullinger-data/data/index/localities.xml')  return   for $place in .//teiHeader//placeName[@ref] group by $placeref := $place/@ref  return id($placeref,$places)"/>
-            <pb:set-param name="archives" value="let $archives := doc('/db/apps/bullinger-data/data/index/archives.xml')  return   for $archive in .//teiHeader//repository[@ref] group by $archiveref := $archive/@ref  return id($archiveref,$archives)"/>
-            <pb:template xmlns="" xml:space="preserve"><div id="metaWrapper">
- [[content]]
-</div></pb:template>
-        </model>
-                    <model behaviour="document"/>
-                </elementSpec>
-            <elementSpec ident="language" mode="add">
-                    <model predicate="$parameters?view='metadata'" behaviour="inline" cssClass="meta-language">
-            <param name="ident" value="@ident"/>
-            <pb:template xmlns="" xml:space="preserve">
-                <pb-i18n key="metadata.language.[[ident]]">(ident)</pb-i18n>
-            </pb:template>
-        </model>
+                <elementSpec ident="language" mode="add">
                     <model output="web" behaviour="pass-through">
-            <desc>output specific language usage percentage </desc>
-            <param name="ident" value="@ident"/>
-            <param name="percentage" value="let $usage := xs:integer(@usage) return if ($usage = 0 ) then ( $usage ) else ( $usage div 10 )"/>
-            <pb:template xmlns="" xml:space="preserve"><span class="lang-[[ident]] lang__usage"><pb-i18n key="metadata.language.[[ident]]">(ident)</pb-i18n> <span class="lang-usage-percent">[[percentage]]%</span></span></pb:template>
-        </model>
-                </elementSpec>
-                <elementSpec ident="langUsage" mode="add">
-                    <model predicate="$parameters?view='metadata'" behaviour="block">
-            <param name="langs" value="let $langs := (for $l in ./language where $l/@usage &gt; 0 order by $l/@usage div 10 descending return $l)  return $langs"/>
-            <pb:template xmlns="" xml:space="preserve"><div><pb-i18n key="metadata.languages">(Sprachen)</pb-i18n></div><div>[[langs]]</div></pb:template>
-        </model>
-                </elementSpec>
-                <elementSpec ident="msIdentifier" mode="add"/>
-                <elementSpec ident="correspAction" mode="add">
-                    <modelSequence predicate="@type = &#34;sent&#34; and $parameters?view='metadata'">
-            <model predicate="exists(date/note)" behaviour="block">
-                <desc>Date with a Note</desc>
-                <param name="content" value="ext:date-by-letter(., $parameters?language)"/>
-                <param name="note" value="./date/note/text()"/>
-                <pb:template xmlns="" xml:space="preserve"><div><pb-i18n key="metadata.date">(Date)</pb-i18n></div>
-<div>[[content]]<pb-popover>
-    <span slot="default"><iron-icon class="metadata-info-icon" id="info-outline" icon="info-outline"/></span>
-    <span slot="alternate">[[note]]</span>
-  </pb-popover></div>
-</pb:template>
-            </model>
-            <model predicate="not(exists(date/note))" behaviour="block">
-                <desc>Date without Note</desc>
-                <param name="content" value="ext:date-by-letter(., $parameters?language)"/>
-                <pb:template xmlns="" xml:space="preserve"><div><pb-i18n key="metadata.date">(Date)</pb-i18n></div>
-<div>[[content]]</div>
-</pb:template>
-            </model>
-            <model behaviour="block" pb:mode="metadata">
-                <desc>Sender</desc>
-                <param name="sender" value="(persName,orgName,roleName)"/>
-                <pb:template xmlns="" xml:space="preserve"><div><pb-i18n key="metadata.sender">(Absender)</pb-i18n></div>
-<div>[[sender]]</div></pb:template>
-            </model>
-        </modelSequence>
-                    <model predicate="@type = &#34;received&#34; and $parameters?view='metadata'" behaviour="block">
-            <param name="receiver" value="(persName,orgName,roleName)"/>
-            <pb:template xmlns="" xml:space="preserve"><div><pb-i18n key="metadata.addressee">(Empfänger)</pb-i18n></div>
-<div>[[receiver]]</div></pb:template>
-        </model>
-                </elementSpec>
-                <elementSpec ident="bibl" mode="change">
-                    <model output="web" predicate="$parameters?view='metadata' and @type='regest'" behaviour="pass-through">
-            <desc>info popover next to regest</desc>
-            <pb:template xmlns="" xml:space="preserve"><pb-popover class="source-info">
-  <iron-icon slot="default" icon="info" class="source-info--icon"/>
-  <span slot="alternate"><pb-i18n key="source">(Quelle)</pb-i18n>: [[content]]</span>
-</pb-popover></pb:template>
-        </model>
-                    <model predicate="$parameters?view='metadata' and @type='Gedruckt' and @subtype!='Gedruckt' and string-length(@subtype) &gt; 0" behaviour="listItem">
-            <param name="content" value="./title/text()"/>
-            <param name="subtype" value="@subtype"/>
-            <pb:template xmlns="" xml:space="preserve">[[subtype]]: [[content]]</pb:template>
-        </model>
-                    <model predicate="$parameters?view='metadata' and @type='Gedruckt'" behaviour="listItem"/>
-                    <model predicate="parent::listBibl" behaviour="listItem"/>
-                    <model predicate="@source" behaviour="inline">
-                        <param name="source" value="@source"/>
-                        <pb:template xmlns="" xml:space="preserve"><a target="_blank" href="[[source]]">[[content]]</a></pb:template>
+                        <desc>output specific language usage percentage </desc>
+                        <param name="ident" value="@ident"/>
+                        <param name="percentage" value="let $usage := xs:integer(@usage) return if ($usage = 0 ) then ( $usage ) else ( $usage div 10 )"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <span class="lang-[[ident]] lang__usage">
+                                <pb-i18n key="metadata.language.[[ident]]">(ident)</pb-i18n>
+                                <span class="lang-usage-percent">[[percentage]]%</span>
+                            </span>
+                        </pb:template>
                     </model>
-                </elementSpec>
-                <elementSpec ident="repository" mode="add">
-                    <model predicate="$parameters?view='metadata' and exists($parameters?archive/idno[@subtype='url'])" behaviour="inline">
-            <param name="uri" value="$parameters?archive/idno[@subtype=&#34;url&#34;]/text()"/>
-            <param name="label" value="$parameters?archive/orgName/text()"/>
-            <pb:template xmlns="" xml:space="preserve"><a href="[[uri]]" target="_blank">[[label]]</a></pb:template>
-        </model>
-                    <model predicate="$parameters?view='metadata'" behaviour="inline">
-            <param name="label" value="$parameters?archive/orgName/text()"/>
-            <pb:template xmlns="" xml:space="preserve">[[label]]</pb:template>
-        </model>
                 </elementSpec>
                 <elementSpec ident="titleStmt" mode="change">
                     <model output="latex" behaviour="meta">
-            <param name="content" value="."/>
-        </model>
+                        <param name="content" value="."/>
+                    </model>
                     <model output="fo" behaviour="heading"/>
                     <model predicate="$parameters?mode='title'" behaviour="heading">
-            <param name="content" value="title[not(@type)]"/>
-            <param name="level" value="5"/>
-        </model>
+                        <param name="content" value="title[not(@type)]"/>
+                        <param name="level" value="5"/>
+                    </model>
                     <modelSequence output="web" predicate="$parameters?header='short'">
-            <model behaviour="link" pb:mode="header">
-                <desc>Title in search results</desc>
-                <param name="uri" value="$parameters?doc || '?highlight=yes'"/>
-                <param name="level" value="1"/>
-                <param name="sender" value="ext:correspondents-by-letter(ancestor::teiHeader, 'sent')"/>
-                <param name="receiver" value="ext:correspondents-by-letter(ancestor::teiHeader, 'received')"/>
-                <param name="date" value="ext:date-by-letter(ancestor::teiHeader, $parameters?language)"/>
-                <param name="place" value="ext:place-by-letter(ancestor::teiHeader)"/>
-                <param name="type" value="ancestor::TEI/@type/string()"/>
-                <param name="has-facsimile" value="if (exists(ancestor::TEI//facsimile//graphic)) then ('display: block;') else ('display: none;')"/>
-                <param name="first-facsimile" value="let $path := ancestor::TEI//facsimile//graphic/desc[@subtype='path'][1]  return if(exists($path)) then ('https://iiif.bullinger-digital.ch/iiif/3/' || fn:encode-for-uri($path/text()) || '/full/100,/0/default.jpg') else ('')"/>
-                <pb:template xmlns="" xml:space="preserve">
-                    <div class="search-result">
-                        <div>
-                            <div class="search-result-title"><span style="color:var(--bb-beige);">[[sender]]</span>&#8199;<pb-i18n key="_to_">(an)</pb-i18n>&#8199;<span style="color:var(--bb-beige);">[[receiver]]</span></div>
-                            <div class="search-result-subtitle">[[date]], <span>[[place]]</span> <span class="doc-type"> (<pb-i18n key="metadata.types.[[type]]">_[[type]]_</pb-i18n>)</span></div>
-                        </div>
-                        <div style="[[has-facsimile]]" class="search-result-facsimile">
-                            <div>
-                                <img src="[[first-facsimile]]" style="[[has-facsimile]]"/>
-                            </div>
-                        </div>
-                    </div>
-                </pb:template>
-            </model>
-            <model behaviour="block">
-                <param name="content" value="subsequence(title, 2)"/>
-            </model>
-            <model behaviour="block">
-                <param name="content" value="author"/>
-            </model>
-        </modelSequence>
+                        <model behaviour="link" pb:mode="header">
+                            <desc>Title in search results</desc>
+                            <param name="uri" value="$parameters?doc || '?highlight=yes'"/>
+                            <param name="level" value="1"/>
+                            <param name="sender" value="ext:correspondents-by-letter(ancestor::teiHeader, 'sent')"/>
+                            <param name="receiver" value="ext:correspondents-by-letter(ancestor::teiHeader, 'received')"/>
+                            <param name="date" value="ext:date-by-letter(ancestor::teiHeader, $parameters?language)"/>
+                            <param name="place" value="ext:place-by-letter(ancestor::teiHeader)"/>
+                            <param name="type" value="ancestor::TEI/@type/string()"/>
+                            <param name="has-facsimile" value="if (exists(ancestor::TEI//facsimile//graphic)) then ('display: block;') else ('display: none;')"/>
+                            <param name="first-facsimile" value="let $path := ancestor::TEI//facsimile//graphic/desc[@subtype='path'][1]  return if(exists($path)) then ('https://iiif.bullinger-digital.ch/iiif/3/' || fn:encode-for-uri($path/text()) || '/full/100,/0/default.jpg') else ('')"/>
+                            <pb:template xmlns="" xml:space="preserve">
+                                <div class="search-result">
+                                    <div>
+                                        <div class="search-result-title">
+                                            <span style="color:var(--bb-beige);">[[sender]]</span>&#8199;<pb-i18n key="_to_">(an)</pb-i18n>&#8199;<span style="color:var(--bb-beige);">[[receiver]]</span>
+                                        </div>
+                                        <div class="search-result-subtitle">[[date]], <span>[[place]]</span>
+                                            <span class="doc-type"> (                                                <pb-i18n key="metadata.types.[[type]]">_[[type]]_</pb-i18n>)
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div style="[[has-facsimile]]" class="search-result-facsimile">
+                                        <div>
+                                            <img src="[[first-facsimile]]" style="[[has-facsimile]]"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </pb:template>
+                        </model>
+                        <model behaviour="block">
+                            <param name="content" value="subsequence(title, 2)"/>
+                        </model>
+                        <model behaviour="block">
+                            <param name="content" value="author"/>
+                        </model>
+                    </modelSequence>
                     <model output="web" behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="persName" mode="add">
-                    <model predicate="$parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
-            <param name="name" value="let $ref := ./@ref  let $persName := $parameters?persons/persName[@xml:id = $ref] return   &lt;a href=&#34;./persons/{fn:upper-case($ref)}&#34;&gt;{$persName/forename/text() || &#34; &#34; || $persName/surname/text()}&lt;/a&gt;"/>
-            <pb:template xmlns="" xml:space="preserve"><span>[[name]]</span></pb:template>
-        </model>
                     <model predicate="@ref" behaviour="inline" cssClass="person">
-            <desc>persName in TEI Text</desc>
-            <param name="pers-id" value="fn:upper-case(./@ref)"/>
-            <param name="label" value="let $ref := ./@ref let $persParam := $parameters?persons/persName[@xml:id = $ref]  return $persParam/forename/text() || &#34; &#34; || $persParam/surname/text()"/>
-            <pb:template xmlns="" xml:space="preserve"><pb-popover>
-  <span slot="default"><span class="ne-with-ref">[[content]]</span></span>
-  <span slot="alternate"><a href="./persons/[[pers-id]]">[[label]]</a></span>
-</pb-popover></pb:template>
-        </model>
+                        <desc>persName in TEI Text</desc>
+                        <param name="pers-id" value="fn:upper-case(./@ref)"/>
+                        <param name="label" value="let $ref := ./@ref let $persParam := $parameters?persons/persName[@xml:id = $ref]  return $persParam/forename/text() || &#34; &#34; || $persParam/surname/text()"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <pb-popover>
+                                <span slot="default">
+                                    <span class="ne-with-ref">[[content]]</span>
+                                </span>
+                                <span slot="alternate">
+                                    <a href="./persons/[[pers-id]]">[[label]]</a>
+                                </span>
+                            </pb-popover>
+                        </pb:template>
+                    </model>
                     <model behaviour="inline" cssClass="person"/>
                 </elementSpec>
-                <elementSpec ident="orgName" mode="add">
-                    <model predicate="$parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
-            <param name="org" value="let $ref := @ref  let $type := @type return if(fn:string-length(./text()) > 0) then (./text()) else ($parameters?orgs[@xml:id = $ref]/string())"/>
-            <pb:template xmlns="" xml:space="preserve">[[org]]</pb:template>
-        </model>
-                </elementSpec>
-                <elementSpec ident="personGrp" mode="add"/>
-                <elementSpec ident="listBibl" mode="change">
-                    <model predicate="$parameters?view='metadata'" behaviour="block">
-            <param name="printed" value="let $printed := (for $b in bibl where $b/@type = 'Gedruckt' order by fn:starts-with($b/title/text(), 'HBBW') descending return $b)  return $printed"/>
-            <pb:template xmlns="" xml:space="preserve"><div><pb-i18n key="metadata.printed">(Gedruckt)</pb-i18n></div>
-<div><ul>[[printed]]</ul></div></pb:template>
-        </model>
-                    <model predicate="bibl" behaviour="list">
-            <param name="content" value="bibl"/>
-        </model>
-                </elementSpec>
-                <elementSpec ident="msDesc" mode="add">
-                    <modelSequence predicate="$parameters?view='metadata'">
-            <model predicate="exists(./msIdentifier/idno)" behaviour="block">
-                <param name="repository" value=".//repository"/>
-                <param name="idno" value="let $sub := @subtype  return (', ' || (./msIdentifier/idno[@subtype=$sub]/text())[1])"/>
-                <param name="note" value="./msIdentifier/idno[@subtype='Hinweis']/text()"/>
-                <param name="author" value="let $author := .//author/text()  return if(exists($author)) then ('Autor: ' || $author) else ()" />
-                <param name="has-note" value="if (string-length(./msIdentifier/idno[@subtype='Hinweis']/text() || .//author/text()) &gt; 0) then () else ('display: none;')"/>
-                <param name="subtype" value="fn:replace(@subtype, '__', ' ')"/>
-                <param name="era" value="let $era := .//idno[@subtype='Ära']/text()  return if (exists($era)) then (' (' || $era || ')') else ()" />
-                <pb:set-param name="archive" value="let $archive-id := ./msIdentifier/repository/@ref return doc('/db/apps/bullinger-data/data/index/archives.xml')//org[@xml:id=$archive-id]"/>
-                <pb:template xmlns="" xml:space="preserve"><div><pb-i18n key="metadata.documents.[[subtype]]">([[subtype]])</pb-i18n></div>
-<div>[[repository]] [[idno]][[era]]<span style="[[has-note]]"><pb-popover>
-    <span slot="default"><iron-icon class="metadata-info-icon" title="Hinweis" id="info-outline" icon="info-outline"/></span>
-    <span slot="alternate">[[note]]<br />[[author]]</span>
-  </pb-popover></span></div></pb:template>
-            </model>
-        </modelSequence>
-                </elementSpec>
-            <elementSpec ident="text" mode="change">
+                <elementSpec ident="text" mode="change">
                     <model predicate="not(exists(.//div))" behaviour="inline">
-            <pb:template xmlns="" xml:space="preserve"><div>Für diesen Brief ist keine Transkription verfügbar.</div></pb:template>
-        </model>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <div>Für diesen Brief ist keine Transkription verfügbar.</div>
+                        </pb:template>
+                    </model>
                     <model behaviour="body">
-            <pb:set-param name="persons" value="let $persons := doc('/db/apps/bullinger-data/data/index/persons.xml') return     for $person in .//persName[@ref]      group by $persref := $person/@ref     return       id($persref,$persons)/ancestor::person"/>
-            <pb:set-param name="places" value="let $places := doc('/db/apps/bullinger-data/data/index/localities.xml') return   for $place in .//placeName[@ref]   group by $placeref := $place/@ref  return id($placeref,$places)"/>
-            <param name="content" value="(./note[@type='footnote'], ancestor::TEI//summary//note[@type='footnote'], ./*[not(self::note)])" />
-        </model>
+                        <pb:set-param name="persons" value="let $persons := doc('/db/apps/bullinger-data/data/index/persons.xml') return     for $person in .//persName[@ref]      group by $persref := $person/@ref     return       id($persref,$persons)/ancestor::person"/>
+                        <pb:set-param name="places" value="let $places := doc('/db/apps/bullinger-data/data/index/localities.xml') return   for $place in .//placeName[@ref]   group by $placeref := $place/@ref  return id($placeref,$places)"/>
+                        <param name="content" value="(./note[@type='footnote'], ancestor::TEI//summary//note[@type='footnote'], ./*[not(self::note)])" />
+                    </model>
                 </elementSpec>
-            <elementSpec ident="person" mode="add">
-                    <model predicate="$parameters?subtype = 'pictures'" behaviour="inline" cssClass="portrait">
-            <param name="url" value="'resources/portraits/' || ./idno[@subtype='portrait']/text()"/>
-            <param name="title" value="./persName[@type='main']/forename || &#34; &#34; || ./persName[@type='main']/surname"/>
-            <pb:template xmlns="" xml:space="preserve"><img title="[[title]]" src="[[url]]" alt="[[title]]"/></pb:template>
-        </model>
+                <elementSpec ident="bibl" mode="change">
+                    <model output="web" predicate="$parameters?view='metadata' and @type='regest'" behaviour="pass-through">
+                        <desc>info popover next to regest</desc>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <pb-popover class="source-info">
+                                <iron-icon slot="default" icon="info" class="source-info--icon"/>
+                                <span slot="alternate">
+                                    <pb-i18n key="source">(Quelle)</pb-i18n>: [[content]]</span>
+                            </pb-popover>
+                        </pb:template>
+                    </model>
                 </elementSpec>
-            <elementSpec ident="placeName" mode="add">
-                <model predicate="@ref and $parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
-                    <param name="placename" value="let $ref := @ref return $parameters?places[@xml:id=$ref]"/>
-                    <pb:template xmlns="" xml:space="preserve">
-                        <div><pb-i18n key="metadata.place">(Absendeort)</pb-i18n></div>
-                        <div>[[placename]]</div>
-                    </pb:template>
-                </model>
-                    <model predicate="@ref and $parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="pass-through">
-            <param name="placename" value="let $ref := @ref return $parameters?places[@xml:id=$ref]"/>
-            <pb:template xmlns="" xml:space="preserve">[[placename]]</pb:template>
-        </model>
+                <elementSpec ident="placeName" mode="add">
                     <model predicate="@ref" behaviour="inline" cssClass="place">
-            <desc>placeName in TEI Text</desc>
-            <param name="label" value="let $ref := ./@ref let $place := fn:string-join($parameters?places[@xml:id = $ref]/(settlement,district,country)/text(), ', ') return   &lt;a href=&#34;./localities/{$ref}&#34;&gt;{$place}&lt;/a&gt;"/>
-            <pb:template xmlns="" xml:space="preserve"><pb-popover>
-  <span slot="default"><span class="ne-with-ref">[[content]]</span></span>
-  <span slot="alternate">[[label]]</span>
-</pb-popover></pb:template>
-        </model>
+                        <desc>placeName in TEI Text</desc>
+                        <param name="label" value="let $ref := ./@ref let $place := fn:string-join($parameters?places[@xml:id = $ref]/(settlement,district,country)/text(), ', ') return   &lt;a href=&#34;./localities/{$ref}&#34;&gt;{$place}&lt;/a&gt;"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <pb-popover>
+                                <span slot="default">
+                                    <span class="ne-with-ref">[[content]]</span>
+                                </span>
+                                <span slot="alternate">[[label]]</span>
+                            </pb-popover>
+                        </pb:template>
+                    </model>
                     <model behaviour="inline" cssClass="place"/>
                 </elementSpec>
                 <elementSpec ident="body" mode="change"/>
-            <elementSpec ident="place" mode="add">
+                <elementSpec ident="place" mode="add">
                     <model behaviour="pass-through">
-            <param name="place" value="if(./settlement)  then (./settlement/text())  else if(./district)  then (./district/text()) else (./country/text())"/>
-            <pb:template xmlns="" xml:space="preserve">[[place]]</pb:template>
-        </model>
+                        <param name="place" value="if(./settlement)  then (./settlement/text())  else if(./district)  then (./district/text()) else (./country/text())"/>
+                        <pb:template xmlns="" xml:space="preserve">[[place]]</pb:template>
+                    </model>
                 </elementSpec>
-                <elementSpec ident="roleName" mode="add">
-                    <model predicate="$parameters?view='metadata' and exists(ancestor::correspAction)" behaviour="block">
-            <param name="name" value="let $ref := @ref let $type := @type return $parameters?roles[@xml:id=$ref]/form[@xml:lang='de'][@type=$type]/text()"/>
-            <param name="send-from" value="let $placeref := ../placeName/@ref  return if($parameters?places[@xml:id=$placeref])  then ( (&#34;, &#34;, $parameters?places[@xml:id=$placeref]) ) else ()"/>
-            <param name="place" value="let $placeref := .//placeName/@ref  return if($parameters?places[@xml:id=$placeref])  then ( (&#34; &#34;, $parameters?places[@xml:id=$placeref]) ) else ()"/>
-            <param name="org" value="let $orgref := .//orgName/@ref  let $type := .//orgName/@type   return    if($parameters?orgs[@xml:id=$orgref])     then (      (&#34; &#34;, $parameters?orgs[@xml:id = $orgref]/name[@xml:lang='de'][@type=$type]/text())    ) else ()"/>
-            <pb:template xmlns="" xml:space="preserve">[[name]][[place]][[org]]</pb:template>
-        </model>
-                </elementSpec>
-            <elementSpec ident="s" mode="change">
+                <elementSpec ident="s" mode="change">
                     <model output="web" behaviour="pass-through">
-            <desc>Render language specific s as spans in paragraphs</desc>
-            <param name="language" value="@xml:lang/string()"/>
-            <pb:template xmlns="" xml:space="preserve"><span class="lang-[[language]]">[[content]]</span></pb:template>
-        </model>
+                        <desc>Render language specific s as spans in paragraphs</desc>
+                        <param name="language" value="@xml:lang/string()"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <span class="lang-[[language]]">[[content]]</span>
+                        </pb:template>
+                    </model>
                 </elementSpec>
-            <elementSpec ident="foreign" mode="change">
+                <elementSpec ident="foreign" mode="change">
                     <model output="web" behaviour="pass-through">
-            <desc>Render language specific foreign as spans in paragraphs</desc>
-            <param name="language" value="@xml:lang/string()"/>
-            <pb:template xmlns="" xml:space="preserve"><span class="lang-[[language]]">[[content]]</span></pb:template>
-        </model>
+                        <desc>Render language specific foreign as spans in paragraphs</desc>
+                        <param name="language" value="@xml:lang/string()"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <span class="lang-[[language]]">[[content]]</span>
+                        </pb:template>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="ref" mode="change">
-                    <model predicate="$parameters?view='metadata' and @target" behaviour="inline">
-            <param name="nr" value="fn:replace(@target, 'file', '')"/>
-            <!-- If ref contains text node, set label to that, else use the same as nr-->
-            <param name="label" value="if (exists(./text())) then (./text()) else (fn:replace(@target, 'file', ''))"/>
-            <pb:template xmlns="" xml:space="preserve"><a href="file[[nr]]">[[label]]</a></pb:template>
-        </model>
-                <model predicate="@target" behaviour="inline">
-                    <param name="nr" value="fn:replace(@target, 'file', '')"/>
-                    <pb:template xmlns="" xml:space="preserve"><a target="_blank" href="file[[nr]]">[[content]]</a></pb:template>
-                </model>
+                    <model predicate="@target" behaviour="inline">
+                        <param name="nr" value="fn:replace(@target, 'file', '')"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <a target="_blank" href="file[[nr]]">[[content]]</a>
+                        </pb:template>
+                    </model>
                 </elementSpec>
-            <elementSpec ident="note" mode="change">
-                <model predicate="@type = 'footnote' and (@subtype = 'metadata' or ($parameters?view!='metadata' and exists(ancestor::summary)))" cssClass="footnote-metadata" behaviour="note">
-                    <desc>Metadata or regest footnotes are processed but hidden with CSS to display them in the footnote list</desc>
-                    <param name="place" value="@place"/>
-                    <param name="label" value="@n"/>
-                    <pb:template xmlns="" xml:space="preserve">
-                        <span>[[content]]
-                            <span className="footnote-metadata-hint">
-                                <pb-popover>
-                                    <span slot="default"><iron-icon class="metadata-info-icon" id="info-outline" icon="info-outline"/></span>
-                                    <span slot="alternate"><pb-i18n key="metadata.footnote">(Fussnote zu Metadaten)</pb-i18n> </span>
-                                </pb-popover>
+                <elementSpec ident="note" mode="change">
+                    <model predicate="@type = 'footnote' and (@subtype = 'metadata' or ($parameters?view!='metadata' and exists(ancestor::summary)))" cssClass="footnote-metadata" behaviour="note">
+                        <desc>Metadata or regest footnotes are processed but hidden with CSS to display them in the footnote list</desc>
+                        <param name="place" value="@place"/>
+                        <param name="label" value="@n"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <span>[[content]]
+                                <span className="footnote-metadata-hint">
+                                    <pb-popover>
+                                        <span slot="default">
+                                            <iron-icon class="metadata-info-icon" id="info-outline" icon="info-outline"/>
+                                        </span>
+                                        <span slot="alternate">
+                                            <pb-i18n key="metadata.footnote">(Fussnote zu Metadaten)</pb-i18n>
+                                        </span>
+                                    </pb-popover>
+                                </span>
                             </span>
-                        </span>
-                    </pb:template>
-                </model>
+                        </pb:template>
+                    </model>
                     <model predicate="@type = 'footnote'" behaviour="note">
-            <param name="place" value="@place"/>
-            <param name="label" value="@n"/>
-        </model>
+                        <param name="place" value="@place"/>
+                        <param name="label" value="@n"/>
+                    </model>
                     <model behaviour="inline" cssClass="inline-remark"/>
                 </elementSpec>
                 <elementSpec ident="facsimile" mode="add">
                     <model behaviour="inline">
-            <param name="path" value="./ancestor-or-self::TEI/@xml:id"/>
-            <pb:template xmlns="" xml:space="preserve"><pb-facs-link facs="api/iiif/[[path]]" emit="facsimile" emit-on-load=""/></pb:template>
-        </model>
+                        <param name="path" value="./ancestor-or-self::TEI/@xml:id"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <pb-facs-link facs="api/iiif/[[path]]" emit="facsimile" emit-on-load=""/>
+                        </pb:template>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="pb" mode="change">
                     <model predicate="not(@type = 'edition')" behaviour="break" useSourceRendition="true">
@@ -465,13 +311,17 @@
                 <elementSpec ident="cit" mode="add">
                     <model behaviour="inline">
                         <param name="text" value="./ref/text()"/>
-                        <pb:template xmlns="" xml:space="preserve"><span class="citation">[[text]]</span></pb:template>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <span class="citation">[[text]]</span>
+                        </pb:template>
                     </model>
                 </elementSpec>
                 <elementSpec ident="div" mode="change">
                     <model predicate="@corresp" behaviour="section">
                         <param name="regest-div-id" value="@corresp"/>
-                        <pb:template xmlns="" xml:space="preserve"><div class="link-regest" id="link-[[regest-div-id]]">[[content]]</div></pb:template>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <div class="link-regest" id="link-[[regest-div-id]]">[[content]]</div>
+                        </pb:template>
                     </model>
                     <model behaviour="block"></model>
                 </elementSpec>
