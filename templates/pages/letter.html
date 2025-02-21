@@ -11,8 +11,8 @@
         <header class="top-header">
             <nav data-template="lib:include" data-template-path="templates/menu.html"></nav>
         </header>
-        <main class="center-l">
-            <section class="pageWrapper">
+        <main>
+            <section>
                 <header>
                     <pb-view id="metadata" src="document1" view="single" use-language="use-language" emit="metadata" subscribe="transcription" load-css="resources/css/bullinger-shadow.css">
                         <pb-param name="view" value="metadata"/>
@@ -22,22 +22,34 @@
             <section class="text">
                 <div class="pageWrapper">
                     <div class="facsimile card">
-                        <h2><pb-i18n key="facsimile">(Faksimile)</pb-i18n> <span data-template="app:facsimile-source"></span></h2>
+                        <h2 class="section-title"><pb-i18n key="facsimile">(Faksimile)</pb-i18n> <span data-template="app:facsimile-source"></span></h2>
                         <div id="facsimile-status"><pb-i18n key="facsimileUnavailable">(faksimileUnavailable)</pb-i18n></div>
-                        <div style="position:relative; padding-bottom:125%;">
-                        <pb-tify id="facsimile"
-                            style="position:absolute; width: 100%; height:100%;"
-                            subscribe="facsimile"
-                            ></pb-tify>
+                        <div id="facsimile-wrapper" style="position:relative; padding-bottom:125%;">
+                            <pb-tify id="facsimile"
+                                style="position:absolute; width: 100%; height:100%; max-height: 100vh;"
+                                subscribe="facsimile"
+                                ></pb-tify>
+                            <script>
+                                // Move facsimile viewer down when users scroll down the letter text
+                                document.addEventListener('scroll', function() {
+                                    const facsimileWrapper = document.getElementById('facsimile-wrapper');
+                                    const facsimile = document.getElementById('facsimile');
+                                    const facsimileWrapperPosition = facsimileWrapper.getBoundingClientRect().top;
+                                    const translateY = Math.max(0, -facsimileWrapperPosition);
+                                    facsimile.style.transform = `translateY(${translateY}px)`;
+                                });
+                            </script>
                         </div>
                     </div>
                     <div class="transkription card">
-                        <h2><pb-i18n key="letterText">(Brieftext)</pb-i18n> <span data-template="app:transcription-source"></span> 
+                        <h2 class="section-title"><pb-i18n key="letterText">(Brieftext)</pb-i18n> <span data-template="app:transcription-source"></span> 
                           <small class="small-t"><label for="lang-toggle"><input type="checkbox" name="lang-toggle" id="lang-toggle" value="test" />&#160;<pb-i18n key="showLanguage">(Show Language)</pb-i18n></label></small></h2>
-                        <pb-view id="view1" src="document1" column-separator=".tei-cb" append-footnotes="append-footnotes" subscribe="transcription" emit="transcription" use-language="" />
-                        <pb-view id="facsimile-links" src="document1" xpath="//facsimile" view="single" wait-for="#facsimile" emit="facsimile" use-language="">
-                            <pb-param name="view" value="facsimile"/>
-                        </pb-view>
+                        <div class="section-content">
+                            <pb-view id="view1" src="document1" column-separator=".tei-cb" append-footnotes="append-footnotes" subscribe="transcription" emit="transcription" use-language="" />
+                            <pb-view id="facsimile-links" src="document1" xpath="//facsimile" view="single" wait-for="#facsimile" emit="facsimile" use-language="">
+                                <pb-param name="view" value="facsimile"/>
+                            </pb-view>
+                        </div>
                     </div>
                 </div>
             </section>

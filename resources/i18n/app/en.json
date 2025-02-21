@@ -141,6 +141,7 @@
     "total": "Total",
     "mentions": "Mentions",
     "further-names": "Further names",
+    "mark-named-entities": "Highlight names",
     "footer": {
         "text": "Department of Computational Linguistics, University of Zurich, 2024",
         "contact": "Contact",

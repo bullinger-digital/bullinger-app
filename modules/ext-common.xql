@@ -19,27 +19,34 @@ declare function ext:get-header($letter, $lang-browser as xs:string?) {
 
     return <div>
         <div class="letter-navigation">
-            <a title="Vorheriger Brief (nach Datum)" href="./{$previous-letter}"><iron-icon icon="chevron-left"/></a>
-            <a title="Vorheriger Brief (mit gleichen Korrespondenten)" href="./{$previous-letter-correspondence}"><iron-icon icon="chevron-left"/><iron-icon style="margin-left: -18px" icon="chevron-left"/></a>
-            <a title="Nächster Brief (mit gleichen Korrespondenten)" href="./{$next-letter-correspondence}"><iron-icon icon="chevron-right"/><iron-icon style="margin-left: -18px" icon="chevron-right"/></a>
-            <a title="Nächster Brief (nach Datum)" href="./{$next-letter}"><iron-icon icon="chevron-right"/></a>
+            <div class="center-l">
+                <a title="Vorheriger Brief (nach Datum)" href="./{$previous-letter}"><iron-icon icon="chevron-left"/></a>
+                <a title="Vorheriger Brief (mit gleichen Korrespondenten)" href="./{$previous-letter-correspondence}"><iron-icon icon="chevron-left"/><iron-icon class="double-icon" icon="chevron-left"/></a>
+                <a title="Nächster Brief (mit gleichen Korrespondenten)" href="./{$next-letter-correspondence}"><iron-icon icon="chevron-right"/><iron-icon class="double-icon" icon="chevron-right"/></a>
+                <a title="Nächster Brief (nach Datum)" href="./{$next-letter}"><iron-icon icon="chevron-right"/></a>
+                <span class="letter-navigation-mark-names">
+                    <label><input type="checkbox" onclick="javascript:document.body.classList.toggle('colorize-named-entities', this.checked)" /> <pb-i18n key="mark-named-entities">(Namen markieren)</pb-i18n></label>
+                </span>
+            </div>
         </div>
-        <div style="display:flex; justify-content:space-between;">
+        <div class="header-container center-l">
             <div>
                 <h1>
-                    <span style="color:var(--bb-beige);">{$senders}</span>&#8199;
-                    <pb-i18n key="_to_">(an)</pb-i18n>&#8199;
+                    <span style="color:var(--bb-beige);">{$senders}</span>{" "}
+                    <pb-i18n key="_to_">(an)</pb-i18n>{" "}
                     <span style="color:var(--bb-beige);">{$receivers}</span>
                 </h1>
                 <div class="subtitle">
-                    <iron-icon id="date-range" icon="date-range" /> {ext:date-by-letter($letter, $lang-browser)}
-                    <iron-icon id="map-near-me" icon="maps:near-me" /> {ext:place-name(ext:place-by-letter($letter, 'sent'))}
+                    <span>
+                        <iron-icon id="date-range" icon="date-range" /> {ext:date-by-letter($letter, $lang-browser)}
+                        <iron-icon id="map-near-me" icon="maps:near-me" /> {ext:place-name(ext:place-by-letter($letter, 'sent'))}
+                    </span>
                     <span class="doc-type">
                         <pb-i18n key="metadata.types.{$type}">{$type}</pb-i18n>
                     </span>
                 </div>
             </div>
-            <div>
+            <div style="flex-shrink: 0;">
                 {
                     let $persons := (for $persName in $letter//tei:correspDesc//tei:persName[@ref]
                         group by $persref := $persName/@ref
@@ -69,8 +76,12 @@ declare function ext:metadata-by-letter($letter, $lang-browser as xs:string?) {
     let $hbbw-no := if(fn:starts-with($root/@source/string(), 'HBBW') and string-length($root/@n/string()) > 0) then ($root/@n/string()) else ()
     let $hbbw-band := if(fn:starts-with($root/@source/string(), 'HBBW-')) then (fn:substring-after($root/@source/string(), '-')) else ()
     
+    let $languages := for $l in $letter//tei:langUsage/tei:language
+        where $l/@usage > 0
+        order by $l/@usage div 10 descending
+        return <pb-i18n key="metadata.language.{$l/@ident}">({$l/@ident/string()})</pb-i18n>
+
     return <div>
-        <h3>[Metadaten]</h3>
         <div>
             <div id="sourceDesc">
                 <div>
@@ -111,17 +122,18 @@ declare function ext:metadata-by-letter($letter, $lang-browser as xs:string?) {
                     else ()
                 }
                 {ext:get-documents-signatures($letter)}
-                <div>
-                    <div><pb-i18n key="metadata.languages">(Sprachen)</pb-i18n></div>
-                    <div>
-                        {ext:join-sequence(
-                            for $l in $letter//tei:langUsage/tei:language
-                            where $l/@usage > 0
-                            order by $l/@usage div 10 descending
-                            return <pb-i18n key="metadata.language.{$l/@ident}">({$l/@ident/string()})</pb-i18n>
-                        , ", ")}
-                    </div>
-                </div>
+                {
+                    if(exists($languages)) then
+                        <div>
+                            <div><pb-i18n key="metadata.languages">(Sprachen)</pb-i18n></div>
+                            <div>
+                                {ext:join-sequence(
+                                    $languages
+                                , ", ")}
+                            </div>
+                        </div>
+                    else ()
+                }
                 {if (exists($letter//tei:listBibl/tei:bibl[@type='Gedruckt'])) then <div>
                     <div><pb-i18n key="metadata.printed">(Gedruckt in)</pb-i18n></div>
                     <div>
@@ -276,19 +288,24 @@ declare function ext:date-by-letter($item, $lang-browser as xs:string?) {
     else if (exists($date/@notBefore) and exists($date/@notAfter)) then
         (
             <pb-i18n key="dates.between">(Between)</pb-i18n>,
-            " " || ext:format-date($date/@notBefore, $lang) || " ",
+            " ",
+            ext:format-date($date/@notBefore, $lang),
+            " ",
             <pb-i18n key="dates.and">(und)</pb-i18n>,
-            " " || ext:format-date($date/@notAfter, $lang)
+            " ", 
+            ext:format-date($date/@notAfter, $lang)
         )
     else if(exists($date/@notBefore)) then
         (
             <pb-i18n key="dates.after">(Nach)</pb-i18n>,
-            " " || ext:format-date($date/@notBefore, $lang)
+            " ",
+            ext:format-date($date/@notBefore, $lang)
         )
     else if(exists($date/@notAfter)) then
         (
             <pb-i18n key="dates.before">(Vor)</pb-i18n>,
-            " " || ext:format-date($date/@notAfter, $lang)
+            " ",
+            ext:format-date($date/@notAfter, $lang)
         )
     else
         <pb-i18n key="dates.unknown">(Unbekannt)</pb-i18n>

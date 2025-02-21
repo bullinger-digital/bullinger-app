@@ -28,10 +28,11 @@
  
 #metaWrapper .metaregest {
     overflow:hidden;
+    line-height: 1.4rem;
 }
 
 #metaWrapper .expander::before {
-    display: block;
+    display: none;
     width: 100%;
     content: '';
     background: rgb(119,119,119);
@@ -39,6 +40,10 @@
     position: absolute;
     height: 6rem;
     bottom: 0rem;
+}
+
+#metaWrapper .regesttext.overlength .expander::before {
+    display:block;
 }
 
 
@@ -68,6 +73,7 @@
 
 .portrait-container {
     text-align:right;
+    max-width:18rem;
 }
 .portrait-container:hover .portrait {
     margin-left:-1rem;
