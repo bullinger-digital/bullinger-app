@@ -50,9 +50,9 @@
                         <pb:set-param name="persons" value="let $persons := doc('/db/apps/bullinger-data/data/index/persons.xml') return     for $person in .//teiHeader//persName[@ref]      group by $persref := $person/@ref     return         id($persref,$persons)/ancestor::person"/>
                         <pb:set-param name="places" value="let $places := doc('/db/apps/bullinger-data/data/index/localities.xml')  return   for $place in .//teiHeader//placeName[@ref] group by $placeref := $place/@ref  return id($placeref,$places)"/>
                         <pb:template xmlns="" xml:space="preserve">
-                            <div>
+                            <div style="background: white; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
                                 [[header]]
-                                <div id="metaWrapper">
+                                <div id="metaWrapper" class="center-l">
                                     <div>
                                         [[metadata]]
                                     </div>
@@ -82,7 +82,7 @@
                             <param name="source" value=".//bibl[@type='regest']"/>
                             <param name="overlength" value="let $request := .//msContents/summary/p/text() let $text := string-join($request, &#34; &#34;) return   if(exists($request) and string-length($text) &lt; 300)    then ()   else (&#34;overlength&#34;)"/>
                             <pb:template xmlns="" xml:space="preserve">
-                                <h2>
+                                <h2 class="section-title">
                                     <pb-i18n key="regest">(Regest)</pb-i18n>&#160;[[source]]</h2>
                                 <div class="regesttext [[overlength]]">
                                     <div id="regest" class="metaregest">[[content]]</div>
@@ -204,7 +204,7 @@
                         <desc>info popover next to regest</desc>
                         <pb:template xmlns="" xml:space="preserve">
                             <pb-popover class="source-info">
-                                <iron-icon slot="default" icon="info" class="source-info--icon"/>
+                                <iron-icon slot="default" icon="info-outline" class="source-info--icon"/>
                                 <span slot="alternate">
                                     <pb-i18n key="source">(Quelle)</pb-i18n>: [[content]]</span>
                             </pb-popover>

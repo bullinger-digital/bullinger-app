@@ -1,60 +1,50 @@
 <nav class="menubar center-l" data-template="pages:parse-params">
     <a href="${app}/index.html" class="logo" data-template="lib:parse-params"/>
-    <pb-media-query class="menubar-left desktop" query="min-width: 48.5rem">
-        <a href="${app}/letters.html">
-            <pb-i18n key="letters">Briefe</pb-i18n>
-        </a>
-        <div class="dropdown-menu">
-            <div class="dropdown dropdown-register">
-                <label class="menu-label" for="m-register">
-                    <pb-i18n key="register">Register</pb-i18n>
-                </label>
-                <input id="m-register" name="register" type="checkbox"/>
-                <div class="menu-list">
-                    <ul>
-                        <li><a href="${app}/persons/">
-                            <pb-i18n key="menu.persons">Personen</pb-i18n>
-                        </a></li>
-                        <li><a href="${app}/localities/">
-                            <pb-i18n key="menu.localities">Orte</pb-i18n>
-                        </a></li>
-                        <li><a href="${app}/organizations/">
-                            <pb-i18n key="menu.organizations">Institutionen / Gruppen</pb-i18n>
-                        </a></li>
-                        <li><a href="${app}/archives/">
-                            <pb-i18n key="menu.archives">Archive</pb-i18n>
-                        </a></li>
-                        <li><a href="${app}/bibliography/">
-                            <pb-i18n key="menu.bibliography">Bibliography</pb-i18n>
-                        </a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="dropdown-menu">
-            <div class="dropdown dropdown-register">
-                <label class="menu-label" for="m-register">
-                    <pb-i18n key="menu.about-parent">(About-Parent)</pb-i18n>
-                </label>
-                <input id="m-register" name="register" type="checkbox"/>
-                <div class="menu-list">
-                    <ul>
-                        <li><a href="${app}/static/about">
-                            <pb-i18n key="menu.about">(About)</pb-i18n>
-                        </a></li>
-                        <li><a href="${app}/static/about-project">
-                            <pb-i18n key="menu.about-project">(About-Project)</pb-i18n>
-                        </a></li>
-                        <li><a href="${app}/static/privacy">
-                            <pb-i18n key="menu.privacy">(Privacy)</pb-i18n>
-                        </a></li>
-                        <li><a href="${app}/static/disclaimers">
-                            <pb-i18n key="menu.disclaimers">(Impressum)</pb-i18n>
-                        </a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+    <pb-media-query class="menubar-left desktop" query="min-width: 48rem">
+        <ul class="dropdown-menu">
+            <li>
+                <a href="${app}/letters.html">
+                    <pb-i18n key="letters">Briefe</pb-i18n>
+                </a>
+            </li>
+            <li>
+                <a tabindex="0"><pb-i18n key="register">Register</pb-i18n></a>
+                <ul>
+                    <li><a href="${app}/persons/">
+                        <pb-i18n key="menu.persons">Personen</pb-i18n>
+                    </a></li>
+                    <li><a href="${app}/localities/">
+                        <pb-i18n key="menu.localities">Orte</pb-i18n>
+                    </a></li>
+                    <li><a href="${app}/organizations/">
+                        <pb-i18n key="menu.organizations">Institutionen / Gruppen</pb-i18n>
+                    </a></li>
+                    <li><a href="${app}/archives/">
+                        <pb-i18n key="menu.archives">Archive</pb-i18n>
+                    </a></li>
+                    <li><a href="${app}/bibliography/">
+                        <pb-i18n key="menu.bibliography">Bibliography</pb-i18n>
+                    </a></li>
+                </ul>
+            </li>
+            <li>
+                <a tabindex="0"><pb-i18n key="menu.about-parent">(About-Parent)</pb-i18n></a>
+                <ul>
+                    <li><a href="${app}/static/about">
+                        <pb-i18n key="menu.about">(About)</pb-i18n>
+                    </a></li>
+                    <li><a href="${app}/static/about-project">
+                        <pb-i18n key="menu.about-project">(About-Project)</pb-i18n>
+                    </a></li>
+                    <li><a href="${app}/static/privacy">
+                        <pb-i18n key="menu.privacy">(Privacy)</pb-i18n>
+                    </a></li>
+                    <li><a href="${app}/static/disclaimers">
+                        <pb-i18n key="menu.disclaimers">(Impressum)</pb-i18n>
+                    </a></li>
+                </ul>
+            </li>
+        </ul>
     </pb-media-query>
 
     <fx-fore src="${app}/fore-search.html" data-template="pages:parse-params"></fx-fore>
@@ -105,9 +95,12 @@
                         </a></li>
                     </ul>
                 </div>
+                <pb-lang name="lang2" data-template="pages:languages"/>
             </section>
         </details>
     </pb-media-query>
 
-    <pb-lang name="lang" data-template="pages:languages"/>
+    <pb-media-query style="flex:auto" class="" query="min-width: 48rem">
+        <pb-lang style="margin-top: 4px;" name="lang" data-template="pages:languages"/>
+    </pb-media-query>
 </nav>

@@ -141,6 +141,7 @@
     "total": "Total",
     "mentions": "Erwähnungen",
     "further-names": "Weitere Namen",
+    "mark-named-entities": "Namen markieren",
     "footer": {
         "text": "Institut für Computerlinguistik, Universität Zürich, 2024",
         "contact": "Kontakt",

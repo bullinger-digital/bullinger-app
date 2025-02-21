@@ -382,7 +382,7 @@ function app:transcription-source($node as node(), $model as map(*)) {
         if(fn:string-length($text) > 0)
         then (
             <pb-popover class="source-info" persistent="true" theme="light">
-                <iron-icon slot="default" icon="info" class="source-info--icon"/>
+                <iron-icon slot="default" icon="info-outline" class="source-info--icon"/>
                 <span slot="alternate">{$text}</span>
             </pb-popover>
         ) else ()
@@ -397,7 +397,7 @@ function app:facsimile-source($node as node(), $model as map(*)) {
         if($bibl) 
         then (
             <pb-popover class="source-info" persistent="true" theme="light">
-                <iron-icon slot="default" icon="info" class="source-info--icon"/>
+                <iron-icon slot="default" icon="info-outline" class="source-info--icon"/>
                 <span slot="alternate"><pb-i18n key="source">(Quelle)</pb-i18n>: {$bibl/text()}</span>
             </pb-popover>
         ) else ()
