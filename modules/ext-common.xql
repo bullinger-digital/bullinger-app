@@ -276,7 +276,6 @@ declare function ext:correspondent-by-item($item) {
 
 declare function ext:date-by-letter($item, $lang-browser as xs:string?) {
     let $lang := if(starts-with($lang-browser, 'de')) then 'de' else 'en'
-    let $log := util:log('info', 'language is ' || $lang-browser)
     
     let $date := typeswitch($item)
         case element(tei:correspAction) return $item/tei:date
