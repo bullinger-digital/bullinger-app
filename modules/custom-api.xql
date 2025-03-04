@@ -284,8 +284,6 @@ declare function api:sort($entries as element()*, $sortBy as xs:string, $dir as 
                     let $send-place := id($letter//tei:correspAction[@type="sent"]/tei:placeName/@ref/string(), $config:localities)
                     return
                         lower-case(api:get-place-name($send-place))
-                case "date" return
-                    $letter//tei:correspAction[@type="sent"]/tei:date
                 case "recipients" return                    
                     lower-case(api:get-persons-from-correspAction($letter//tei:correspAction[@type="sent"]))
                 case "recipients" return
@@ -295,7 +293,11 @@ declare function api:sort($entries as element()*, $sortBy as xs:string, $dir as 
                         return 
                             lower-case(api:get-place-name($recipients-place))
                 default return
-                    $letter/@xml:id
+                    let $date := $letter//tei:correspAction[@type="sent"]/tei:date
+                    return if ($date/@when) then $date/@when
+                    else if ($date/@notBefore) then $date/@notBefore
+                    else if ($date/@notAfter) then $date/@notAfter
+                    else "_" || $letter/@xml:id
         })
     return
         if ($dir = "asc") then
@@ -542,7 +544,8 @@ declare function api:organizations-sort($entries as element()*, $sortBy as xs:st
             reverse($sorted)
 };
 
-declare function api:register-person-detail($request as map(*)) {    
+declare function api:register-person-detail($request as map(*)) {   
+    let $log := util:log("info", "api:register-person-detail " || $request?parameters?order) 
     let $key := $request?parameters?key
     let $sortBy := $request?parameters?order
     let $sortDir := $request?parameters?dir
@@ -573,7 +576,7 @@ declare function api:register-person-detail($request as map(*)) {
                                 "title": <a style="color:var(--bb-beige);text-decoration:none;" href="../{$id}">{$title}</a>,
                                 "senders":$senders,
                                 "place": $send-place-name,
-                                "date":$date,
+                                "date":<span>{$date}</span>,
                                 "recipients":$recipients,
                                 "recipients-place":$recipients-place-name
                             }
