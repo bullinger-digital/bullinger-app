@@ -631,19 +631,20 @@ declare function api:facets-search($request as map(*)) {
                         return $f)[1]
     
     let $matches := 
-        for $key in if (exists($request?parameters?value)) 
-                            then $request?parameters?value 
+        for $key in if (exists($value)) 
+                            then $value 
                             else map:keys($facets)
             let $text := 
                 switch($type) 
                     case "sender" 
                     case "recipient"
-                    case "mentioned-persons"
-                        return
-                            let $persName := $config:persons/id($key)/parent::tei:person/tei:persName[@type='main']
-                            let $name := string-join(($persName/tei:forename, $persName/tei:surname), " ")
-                            return
-                                $name 
+                    case "mentioned-persons" return
+                        let $p := $config:persons/id(upper-case($key))
+                        let $persName := $p/tei:persName[@type='main'][1]
+                        return 
+                            if ($persName) then
+                                string-join(($persName/tei:forename[1]/text(), $persName/tei:surname[1]/text()), " ")
+                            else $key
                     case "place"
                     case "mentioned-places"
                         return
@@ -677,12 +678,13 @@ declare function api:facets-search($request as map(*)) {
                         let $_ := util:log("info", "api:facets-search: default return, $type: " || $type)
                         return 
                             ("unknown facet type " || $type)
+            let $freq := $facets($key)
             (: Numerical values should be sorted by number and ascending (double negation using - and descending) :)
-            order by if($type = 'hbbw-number' or $type = 'letter-id') then -(xs:integer(replace($text, "[^\d]+", ""))) else $facets($key) descending, $text
+            order by if($type = 'hbbw-number' or $type = 'letter-id') then -(xs:integer(replace($text, "[^\d]+", ""))) else $freq descending, $text
             return 
                 map {
                     "text": $text,
-                    "freq": $facets($key),
+                    "freq": $freq,
                     "value": $key
                 } 
 
