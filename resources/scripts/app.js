@@ -112,6 +112,7 @@ window.addEventListener('DOMContentLoaded', function() {
         // When the mouse is moved over the transcription, trigger the pb-show-annotation event
         // of the closest pb-facs-link element based on the y position of the mouse
         view.shadowRoot.addEventListener('mousemove', (ev) => {
+            if(!yPositions.length) return;
             const y = ev.clientY + window.scrollY;
             // Find the nearest element: the one with the highest y position that is still smaller than the mouse y position
             const closest = yPositions.reduce((prev, curr) => {
