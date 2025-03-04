@@ -502,8 +502,7 @@ declare function api:organizations-sort($entries as element()*, $sortBy as xs:st
             reverse($sorted)
 };
 
-declare function api:register-person-detail($request as map(*)) {   
-    let $log := util:log("info", "api:register-person-detail " || $request?parameters?order) 
+declare function api:register-person-detail($request as map(*)) {
     let $key := $request?parameters?key
     let $sortBy := $request?parameters?order
     let $sortDir := $request?parameters?dir
@@ -526,7 +525,7 @@ declare function api:register-person-detail($request as map(*)) {
                         let $title := ext:get-title($letter)
                         let $senders := ext:correspondents-by-letter($letter, 'sent')
                         let $send-place-name := ext:place-name(ext:place-by-letter($letter, 'sent'))
-                        let $date := ext:date-by-letter($letter, $request?parameters?lang)
+                        let $date := ext:date-by-letter($letter, $request?parameters?language)
                         let $recipients := ext:correspondents-by-letter($letter, 'received')
                         let $recipients-place-name :=  ext:place-name(ext:place-by-letter($letter, 'received'))
                         return
@@ -566,7 +565,7 @@ declare function api:register-locality-detail($request as map(*)) {
                         let $title := ext:get-title($letter)
                         let $senders := ext:correspondents-by-letter($letter, 'sent')
                         let $send-place-name := ext:place-name(ext:place-by-letter($letter, 'sent'))
-                        let $date := ext:date-by-letter($letter, $request?parameters?lang)
+                        let $date := ext:date-by-letter($letter, $request?parameters?language)
                         let $recipients := ext:correspondents-by-letter($letter, 'received')
                         let $recipients-place-name :=  ext:place-name(ext:place-by-letter($letter, 'received'))
                         return

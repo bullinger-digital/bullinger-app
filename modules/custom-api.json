@@ -814,7 +814,15 @@
                             "type": "string",
                             "default": ""
                         }
-                    }
+                    },
+					{
+						"name": "language",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"default": "de"
+						}
+					}
                 ],
                 "responses": {
                     "200": {
@@ -975,6 +983,14 @@
                         "schema":{
                             "type": "string",
 							"default": ""
+                        }
+                    },
+					{
+                        "name": "language",
+                        "in": "query",
+                        "schema":{
+                            "type": "string",
+							"default": "de"
                         }
                     }
                 ],
