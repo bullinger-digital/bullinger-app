@@ -334,7 +334,7 @@ declare function ext:place-name($place) {
 
 declare function ext:place-by-letter($letter, $type as xs:string) {
     let $place-id := $letter//tei:correspAction[@type = $type]/tei:placeName/@ref
-    return $config:localities//tei:place[@xml:id=$place-id]
+    return id($place-id, $config:localities)
 };
 
 declare function ext:place-by-letter($letter) {
