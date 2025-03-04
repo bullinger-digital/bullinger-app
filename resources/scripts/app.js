@@ -80,5 +80,53 @@ window.addEventListener('DOMContentLoaded', function() {
          });
     });
 
+
+    pbEvents.subscribe('pb-update', 'transcription', ev => {
+        const view = document.getElementById('view1');
+
+        // Collect the y positions of all pb-facs-link elements in the transcription
+        let yPositions = [];
+
+        const updatePositions = () => {
+            yPositions = [];
+            const teiLineBreaks = view.shadowRoot.querySelectorAll("pb-facs-link.facs-link-hidden");
+            teiLineBreaks.forEach((teiLb) => {
+                teiLb.style.display = 'inline-block';
+                teiLb.style.verticalAlign = 'top';
+
+                const y = teiLb.getBoundingClientRect().top + window.scrollY;
+                yPositions.push({
+                    y: y,
+                    order: teiLb.getAttribute('order'),
+                    coordinates: teiLb.getAttribute('coordinates')
+                });
+            });
+        };
+
+        updatePositions();
+
+        // Update the y positions when the size of view1 changes
+        const observer = new ResizeObserver(updatePositions);
+        observer.observe(view);
+
+        // When the mouse is moved over the transcription, trigger the pb-show-annotation event
+        // of the closest pb-facs-link element based on the y position of the mouse
+        view.shadowRoot.addEventListener('mousemove', (ev) => {
+            if(!yPositions.length) return;
+            const y = ev.clientY + window.scrollY;
+            // Find the nearest element: the one with the highest y position that is still smaller than the mouse y position
+            const closest = yPositions.reduce((prev, curr) => {
+                if (curr.y <= y && (!prev || curr.y > prev.y)) {
+                    return curr;
+                }
+                return prev;
+            }, null);
+            if (closest) {
+                pbEvents.emit('pb-show-annotation', 'facsimile', { order: closest.order, coordinates: JSON.parse(closest.coordinates) });
+            } else {
+                pbEvents.emit('pb-show-annotation', 'facsimile', { coordinates: null });
+            }
+        });
+    })
 });
 
