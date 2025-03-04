@@ -232,7 +232,6 @@ declare function api:localities-all($request as map(*)) {
                 then (
                     let $tokenized := tokenize($place/tei:location/tei:geo)                    
                     let $name := ft:field($place, 'name')[1]
-                    (: let $log := util:log("info", ("api:localities-all name: ", $name)) :)
                     return
                         map {
                             "latitude":$tokenized[1],
@@ -240,29 +239,26 @@ declare function api:localities-all($request as map(*)) {
                             "label":$name,
                             "id":$place/@xml:id/string()
                         }
-                ) else()
+                ) else ()
             }
 };
 
 
-declare function api:sort($entries as element()*, $sortBy as xs:string, $dir as xs:string) {
+declare function api:sort-letters($entries as element()*, $sortBy as xs:string, $dir as xs:string) {
     let $sorted :=
         sort($entries, (), function($letter) {
             switch ($sortBy)
                 case "title" return
-                    lower-case($letter//tei:titleStmt/tei:title)
+                    lower-case(ext:get-title($letter))
                 case "place" return
-                    let $send-place := id($letter//tei:correspAction[@type="sent"]/tei:placeName/@ref/string(), $config:localities)
-                    return
-                        lower-case(api:get-place-name($send-place))
-                case "recipients" return                    
-                    lower-case(api:get-persons-from-correspAction($letter//tei:correspAction[@type="sent"]))
+                    lower-case(ext:place-name(ext:place-by-letter($letter, 'sent')))
                 case "recipients" return
-                    lower-case(api:get-persons-from-correspAction($letter//tei:correspAction[@type="received"]))
+                    lower-case(ext:correspondents-by-letter($letter, 'received'))
+                case "senders" return
+                    lower-case(ext:correspondents-by-letter($letter, 'sent'))
                 case "recipients-place" return
-                        let $recipients-place := id($letter//tei:correspAction[@type="received"]/tei:placeName/@ref/string(), $config:localities)
-                        return 
-                            lower-case(api:get-place-name($recipients-place))
+                    lower-case(ext:place-name(ext:place-by-letter($letter, 'received')))
+                (: Default: sort by date :)
                 default return
                     let $date := $letter//tei:correspAction[@type="sent"]/tei:date
                     return if ($date/@when) then $date/@when
@@ -516,7 +512,7 @@ declare function api:register-person-detail($request as map(*)) {
     let $filter := $request?parameters?search
 
     let $entries := api:person-filter($filter,$key,$request?parameters?view)
-    let $sorted := api:sort($entries, $sortBy, $sortDir)
+    let $sorted := api:sort-letters($entries, $sortBy, $sortDir)
     let $subset := subsequence($sorted, $start, $limit)
     return (
         session:set-attribute($config:session-prefix || ".persons.hits", $entries),
@@ -527,7 +523,7 @@ declare function api:register-person-detail($request as map(*)) {
                 array {
                     for $letter in $subset
                         let $id := $letter/@xml:id/string()
-                        let $title := ext:correspondents-by-letter($letter, 'sent') || " an " || ext:correspondents-by-letter($letter, 'received')
+                        let $title := ext:get-title($letter)
                         let $senders := ext:correspondents-by-letter($letter, 'sent')
                         let $send-place-name := ext:place-name(ext:place-by-letter($letter, 'sent'))
                         let $date := ext:date-by-letter($letter, $request?parameters?lang)
@@ -546,58 +542,6 @@ declare function api:register-person-detail($request as map(*)) {
         }
 )};
 
-declare function api:get-persons-from-correspAction($corresp as element(tei:correspAction)?){
-    let $entities := for $entity in $corresp/tei:*
-                        return
-                            typeswitch($entity)
-                                case element(tei:persName) return (api:get-persName($entity))
-                                case element(tei:orgName) return (api:get-orgName($entity))
-                                case element(tei:roleName) return (api:get-roleName($entity))
-                                default return () 
-    return
-        string-join($entities, "; ")
-};
-
-declare function api:get-persName($persName as element(tei:persName)?){
-    let $person := id($persName/@ref, $config:persons)    
-    return  
-        string-join(($person/tei:forename/text(), $person/tei:surname/text()),", ")
-        
-};
-
-declare function api:get-orgName($orgName as element(tei:orgName)?){
-    let $org := id($orgName/@ref, $config:orgs)
-    return  
-        $org/string()
-
-};
-declare function api:get-roleName($roleName as element(tei:roleName)?){
-    let $role := id($roleName/@ref, $config:roles)
-    let $form := $role/tei:form[@xml:lang="de"][@type=$roleName/@type]/text()
-    let $place := 
-        if($roleName/tei:placeName/@ref) 
-        then (
-            let $role-place := id($roleName/tei:placeName/@ref/string(), $config:localities)
-            return
-                api:get-place-name($role-place)
-        ) else ()
-    let $org :=
-        if($roleName/tei:orgName/@ref)
-        then ( api:get-orgName($roleName/tei:orgName)  )
-        else ()
-
-    return  
-        string-join(($form, $org, $place), " ")
-};
-
-declare function api:get-place-name($place as element(tei:place)?){
-    if($place/tei:settlement)
-    then ($place/tei:settlement/text())
-    else if($place/tei:district)  
-    then ($place/tei:district/text())
-    else ($place/tei:country/text())
-};
-
 declare function api:register-locality-detail($request as map(*)) {    
     let $key := $request?parameters?key
     let $sortBy := $request?parameters?order
@@ -608,7 +552,7 @@ declare function api:register-locality-detail($request as map(*)) {
     let $view := $request?parameters?view
 
     let $entries := api:locality-filter($filter,$key,$view)
-    let $sorted := api:sort($entries, $sortBy, $sortDir)
+    let $sorted := api:sort-letters($entries, $sortBy, $sortDir)
     let $subset := subsequence($sorted, $start, $limit)
     return (
         session:set-attribute($config:session-prefix || ".localities.hits", $entries),
@@ -619,20 +563,18 @@ declare function api:register-locality-detail($request as map(*)) {
                 array {
                     for $letter in $subset
                         let $id := $letter/@xml:id/string()
-                        let $title := $letter//tei:titleStmt/tei:title/text()
-                        let $senders := api:get-persons-from-correspAction($letter//tei:correspAction[@type="sent"])
-                        let $send-place := id($letter//tei:correspAction[@type="sent"]/tei:placeName/@ref/string(), $config:localities)
-                        let $send-place-name := api:get-place-name($send-place)
+                        let $title := ext:get-title($letter)
+                        let $senders := ext:correspondents-by-letter($letter, 'sent')
+                        let $send-place-name := ext:place-name(ext:place-by-letter($letter, 'sent'))
                         let $date := ext:date-by-letter($letter, $request?parameters?lang)
-                        let $recipients := api:get-persons-from-correspAction($letter//tei:correspAction[@type="received"])
-                        let $recipients-place := id($letter//tei:correspAction[@type="received"]/tei:placeName/@ref/string(), $config:localities)
-                        let $recipients-place-name := api:get-place-name($recipients-place)
+                        let $recipients := ext:correspondents-by-letter($letter, 'received')
+                        let $recipients-place-name :=  ext:place-name(ext:place-by-letter($letter, 'received'))
                         return
                             map {
                                 "title": <a style="color:var(--bb-beige);text-decoration:none;" href="../{$id}">{$title}</a>,
-                                "senders": $senders,
+                                "senders":$senders,
                                 "place": $send-place-name,
-                                "date":$date,
+                                "date":<span>{$date}</span>,
                                 "recipients":$recipients,
                                 "recipients-place":$recipients-place-name
                             }
