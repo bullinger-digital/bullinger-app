@@ -28,7 +28,12 @@
         "additional-filters": "Weitere Filter",
         "special-characters": "Spezielle Zeichen einfügen",
         "search": "Suchen",
-        "reset": "Zurücksetzen"
+        "reset": "Zurücksetzen",
+        "sort": "Sortieren nach",
+        "sortBy": {
+            "date": "Datum",
+            "title": "Titel"
+        }
     },
     "mobile" : {
         "menu": "Menü"

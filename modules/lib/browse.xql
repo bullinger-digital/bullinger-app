@@ -56,7 +56,7 @@ function app:clear-facets($node as node(), $model as map(*)) {
 declare 
     %templates:wrap
     %templates:default("field", "text")
-    %templates:default("sort", "category")
+    %templates:default("sort", "date")
 function app:form($node as node(), $model as map(*), $field as xs:string, $sort as xs:string) {
     map {
         "field": $field,

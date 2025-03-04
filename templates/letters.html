@@ -27,6 +27,14 @@
                 <aside data-template="browse:form">
                     <pb-custom-form class="options">
                         <input type="hidden" name="collection" value="${collection}" data-template="pages:parse-params"/>
+                        <pb-select label="search.sort" name="sort" value="${sort}" data-template="pages:parse-params">
+                            <paper-item value="date" selected="">
+                                <pb-i18n key="search.sortBy.date">(Briefdatum)</pb-i18n>
+                            </paper-item>
+                            <paper-item value="title">
+                                <pb-i18n key="search.sortBy.title">(Titel)</pb-i18n>
+                            </paper-item>
+                        </pb-select>
                         <pb-select label="search.scope" name="field" value="${field}" data-template="pages:parse-params">
                             <!-- <paper-item value="title">
                                 <pb-i18n key="search.title">Titel</pb-i18n>
