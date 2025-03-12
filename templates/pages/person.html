@@ -37,6 +37,10 @@
                                 const links = Object.entries(data[0]);
                                 const linkList = document.querySelector('#metagrid-widget > ul');
                                 links.forEach(([key, value]) => {
+                                    // Hide histhub links
+                                    if(key === 'histhub') {
+                                        return;
+                                    }
                                     const link = document.createElement('li');
                                     const a = document.createElement('a');
                                     a.href = value;
