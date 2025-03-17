@@ -340,3 +340,17 @@ declare function ext:place-by-letter($letter, $type as xs:string) {
 declare function ext:place-by-letter($letter) {
     ext:place-by-letter($letter, 'sent')
 };
+
+(: Converts a polygon string to an array of coordinaates in the format [x, y, w, h] :)
+declare function ext:convert-polygon-to-coordinates($polygon as xs:string) {
+    let $points := tokenize($polygon, '\s+')
+    let $x-values := for $p in $points return number(tokenize($p, ',')[1])
+    let $y-values := for $p in $points return number(tokenize($p, ',')[2])
+    let $x-min := min($x-values)
+    let $x-max := max($x-values)
+    let $y-min := min($y-values)
+    let $y-max := max($y-values)
+    let $width := $x-max - $x-min
+    let $height := $y-max - $y-min
+    return concat("[", $x-min, ", ", $y-min, ", ", $width, ", ", $height, "]")
+};
