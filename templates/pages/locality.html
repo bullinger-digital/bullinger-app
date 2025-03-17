@@ -40,12 +40,12 @@
                         </div>
                     </pb-custom-form>
                     <pb-table-grid source="api/locality/${key}" resizable="" emit="grid" subscribe="grid" per-page="10" search="" data-template="pages:parse-params">                        
-                        <pb-table-column label="Brief" property="title" sort=""></pb-table-column>
-                        <pb-table-column label="Absender" property="senders" sort=""></pb-table-column>
-                        <pb-table-column label="Absender Ort " property="place" sort=""></pb-table-column>
-                        <pb-table-column label="Datum" property="date" sort=""></pb-table-column>
-                        <pb-table-column label="Empfänger" property="recipients" sort=""></pb-table-column>
-                        <pb-table-column label="Empfänger Ort" property="recipients-place" sort=""></pb-table-column> 
+                        <pb-table-column label="registers.details-letters.title" property="title" sort=""></pb-table-column>
+                        <pb-table-column label="registers.details-letters.senders" property="senders" sort=""></pb-table-column>
+                        <pb-table-column label="registers.details-letters.place" property="place" sort=""></pb-table-column>
+                        <pb-table-column label="registers.details-letters.date" property="date" sort=""></pb-table-column>
+                        <pb-table-column label="registers.details-letters.recipients" property="recipients" sort=""></pb-table-column>
+                        <pb-table-column label="registers.details-letters.recipients-place" property="recipients-place" sort=""></pb-table-column> 
                     </pb-table-grid>
                 </section>
             </main>

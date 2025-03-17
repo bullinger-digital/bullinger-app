@@ -133,12 +133,32 @@
         "correspondence": "Correspondence",
         "correspondenceAndMentions": "Correspondence and mentions",
         "all": "All",
+        "archives": {
+            "name": "Archive",
+            "count": "Number of Documents"
+        },
         "organizations": {
             "name": "Name",
-            "count": "Number of letters"
+            "count": "Number of Letters"
+        },
+        "bibliography": {
+            "title": "Title",
+            "text": "Text"
         },
         "persons": {
-            "biographical-footnotes": "You may find additional information related to this person in the HBBW footnotes of the following letters (incomplete):"
+            "biographical-footnotes": "Additional information about this person may be found in the HBBW footnotes for the following letters (incomplete):",
+            "forename": "First Name",
+            "surname": "Last Name",
+            "sent-count": "Sent",
+            "received-count": "Received"
+        },
+        "details-letters": {
+            "title": "Letter",
+            "senders": "Sender",
+            "place": "Place of Dispatch",
+            "date": "Date",
+            "recipients": "Recipient",
+            "recipients-place": "Place of Receipt"
         }
     },
     "sent": "Sent",
