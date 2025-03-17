@@ -148,7 +148,7 @@ body.colorize-named-entities {
 }
 
 .center-l {
-    box-sizing: content-box;
+    box-sizing: border-box;
     max-width: 75rem;
     margin-left: auto;
     margin-right: auto;
@@ -250,7 +250,7 @@ a.btn-search-reset:hover {
     height: 100vh;
     background: white;
     border-left: thin solid var(--bb-light-gray);
-    z-index: 5;
+    z-index: 5000;
     padding-left: 1rem;
 }
 .mobile-menu header{
@@ -411,7 +411,7 @@ a.btn-search-reset:hover {
 
 main {
     width:100%;
-    box-sizing: content-box;
+    box-sizing: border-box;
     margin-top: 0;
     padding-bottom: 3rem;
     --pb-browse-toolbar-justify-content: space-between;
@@ -808,6 +808,7 @@ pb-view {
     font-family: var(--bb-font-family-unicode);
     font-size: 1.1rem;
     color: #000;
+    margin-bottom: -1000px; /* Prevent the facsimile-wrapper from taking space if no facsimile is available */
 }
 
 .transkription .section-title .small-t {
@@ -1039,9 +1040,22 @@ pb-split-list::part(items) {
     display: flex;
     gap: 4rem;
     justify-content: space-between;
-    font-size: var(--s0);
-    font-family: var(--bb-font-family-serif);
+    font-size: 1.15rem;
+    font-family: var(--bb-font-family-sans);
     color: var(--bb-dark-gray)
+}
+
+.search-result-title { 
+    margin-bottom:0.3rem!important;
+}
+
+
+.search-result .doc-type {
+    border-radius: 0.65rem;
+    font-size: 0.95rem;
+    background-color: rgba(210,218,212,0.5);
+    margin-right: 0.3rem;
+    padding: 0.2rem 0.4rem 0.2rem 0.4rem;
 }
 
 .search-result-facsimile {

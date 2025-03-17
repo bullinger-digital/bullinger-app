@@ -147,9 +147,11 @@
                                         <div class="search-result-title">
                                             <span style="color:var(--bb-beige);">[[sender]]</span>&#8199;<pb-i18n key="_to_">(an)</pb-i18n>&#8199;<span style="color:var(--bb-beige);">[[receiver]]</span>
                                         </div>
-                                        <div class="search-result-subtitle">[[date]], <span>[[place]]</span>
-                                            <span class="doc-type"> (                                                <pb-i18n key="metadata.types.[[type]]">_[[type]]_</pb-i18n>)
+                                        <div class="search-result-subtitle">
+                                            <span class="doc-type">
+                                                <pb-i18n key="metadata.types.[[type]]">_[[type]]_</pb-i18n>
                                             </span>
+                                            [[date]], <span>[[place]]</span>
                                         </div>
                                     </div>
                                     <div style="[[has-facsimile]]" class="search-result-facsimile">
