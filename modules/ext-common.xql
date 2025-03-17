@@ -102,14 +102,14 @@ declare function ext:metadata-by-letter($letter, $lang-browser as xs:string?) {
                 <div>
                     <div><pb-i18n key="metadata.sender">(Absender)</pb-i18n></div>
                     <div>{
-                        for $i in $letter//tei:correspAction[@type='sent']//(tei:persName)
+                        for $i in $letter//tei:correspAction[@type='sent']/*[self::tei:persName or self::tei:orgName or self::tei:roleName]
                         return <div>{ext:correspondent-by-item($i)}</div>
                     }</div>
                 </div>
                 <div>
                     <div><pb-i18n key="metadata.addressee">(Empfänger)</pb-i18n></div>
                     <div>{
-                        for $i in $letter//tei:correspAction[@type='received']//(tei:persName)
+                        for $i in $letter//tei:correspAction[@type='received']/*[self::tei:persName or self::tei:orgName or self::tei:roleName]
                         return <div>{ext:correspondent-by-item($i)}</div>
                     }</div>
                 </div>
@@ -248,7 +248,8 @@ declare function ext:get-title($letter) {
 
 (: $type should be either 'sent' or 'received :)
 declare function ext:correspondents-by-letter($letter, $type as xs:string) {
-    let $items := for $item in $letter//tei:correspAction[@type = $type]/(tei:persName,tei:orgName,tei:roleName)
+    let $items := for $item in $letter//tei:correspAction[@type = $type]/*[self::tei:persName or self::tei:orgName or self::tei:roleName]
+        order by $item
         return ext:correspondent-by-item($item)
     let $correspondents := string-join($items, ', ')
     return if(fn:string-length($correspondents) > 0) then
@@ -271,7 +272,7 @@ declare function ext:correspondent-by-item($item) {
         case element(tei:roleName) return
             id($item/@ref, $config:roles)/tei:form[@xml:lang="de"][@type=$item/@type]
         default return
-            ()
+            "[...]"
 };
 
 declare function ext:date-by-letter($item, $lang-browser as xs:string?) {
@@ -328,7 +329,13 @@ declare function ext:place-name($place) {
     let $settlement := $place//tei:settlement/text()
     let $district := $place//tei:district/text()
     let $country := $place//tei:country/text()
-    let $place-name := if($settlement) then ($settlement) else if ($district) then ($district) else ($country)
+    let $place-name := if($settlement) then
+            ($settlement)
+        else if ($district) then
+            ($district)
+        else if ($country) then
+            ($country)
+        else ("[...]")
     return $place-name
 };
 

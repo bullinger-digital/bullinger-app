@@ -1040,13 +1040,15 @@ pb-split-list::part(items) {
     display: flex;
     gap: 4rem;
     justify-content: space-between;
-    font-size: 1.15rem;
+    font-size: 1rem;
     font-family: var(--bb-font-family-sans);
     color: var(--bb-dark-gray)
 }
 
 .search-result-title { 
     margin-bottom:0.3rem!important;
+    font-family: var(--bb-font-family-serif);
+    font-size: 1.15rem;
 }
 
 
