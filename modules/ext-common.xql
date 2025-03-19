@@ -11,10 +11,12 @@ declare function ext:get-header($letter, $lang-browser as xs:string?) {
     let $root := $letter/ancestor::tei:TEI
     let $senders := ext:correspondents-by-letter($letter, 'sent')
     let $receivers := ext:correspondents-by-letter($letter, 'received')
-    let $previous-letter := $root//tei:correspContext/tei:ref[@type='prev_chronologically']/@target
-    let $next-letter := $root//tei:correspContext/tei:ref[@type='next_chronologically']/@target
-    let $previous-letter-correspondence := $root//tei:correspContext/tei:ref[@type='prev_correspondence']/@target
-    let $next-letter-correspondence := $root//tei:correspContext/tei:ref[@type='next_correspondence']/@target
+
+    let $navigation-item := id($root/@xml:id, doc("/db/apps/bullinger-data/generated/navigation.xml"))
+    let $previous-letter := $navigation-item/tei:ptr[@type='prev']/@target
+    let $next-letter := $navigation-item/tei:ptr[@type='next']/@target
+    let $previous-letter-correspondence := $navigation-item/tei:ptr[@type='prev-same-correspondents']/@target
+    let $next-letter-correspondence := $navigation-item/tei:ptr[@type='next-same-correspondents']/@target
     let $type := $letter/ancestor::tei:TEI/@type/string()
 
     return <div>
