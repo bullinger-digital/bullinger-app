@@ -47,7 +47,7 @@
                         <param name="header" value="ext:get-header(.//teiHeader, $parameters?language)"/>
                         <param name="metadata" value="ext:metadata-by-letter(.//teiHeader, $parameters?language)"/>
                         <param name="regest" value="./teiHeader"/>
-                        <pb:set-param name="persons" value="let $persons := doc('/db/apps/bullinger-data/data/index/persons.xml') return     for $person in .//teiHeader//persName[@ref]      group by $persref := $person/@ref     return         id($persref,$persons)/ancestor::person"/>
+                        <pb:set-param name="persons" value="let $persons := doc('/db/apps/bullinger-data/data/index/persons.xml') return     for $person in .//teiHeader//persName[@ref]      group by $persref := upper-case($person/@ref)     return         id($persref,$persons)"/>
                         <pb:set-param name="places" value="let $places := doc('/db/apps/bullinger-data/data/index/localities.xml')  return   for $place in .//teiHeader//placeName[@ref] group by $placeref := $place/@ref  return id($placeref,$places)"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <div style="background: white; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
@@ -175,7 +175,7 @@
                     <model predicate="@ref" behaviour="inline" cssClass="person">
                         <desc>persName in TEI Text</desc>
                         <param name="pers-id" value="fn:upper-case(./@ref)"/>
-                        <param name="label" value="let $ref := ./@ref let $persParam := $parameters?persons/persName[@xml:id = $ref]  return $persParam/forename/text() || &#34; &#34; || $persParam/surname/text()"/>
+                        <param name="label" value="let $ref := ./@ref let $persParam := $parameters?persons[@xml:id = upper-case($ref)]/persName[@type='main']  return $persParam/forename/text() || &#34; &#34; || $persParam/surname/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <pb-popover>
                                 <span slot="default">
@@ -196,7 +196,7 @@
                         </pb:template>
                     </model>
                     <model behaviour="body">
-                        <pb:set-param name="persons" value="let $persons := doc('/db/apps/bullinger-data/data/index/persons.xml') return     for $person in .//persName[@ref]      group by $persref := $person/@ref     return       id($persref,$persons)/ancestor::person"/>
+                        <pb:set-param name="persons" value="let $persons := doc('/db/apps/bullinger-data/data/index/persons.xml') return     for $person in .//persName[@ref]      group by $persref := upper-case($person/@ref)     return       id($persref,$persons)"/>
                         <pb:set-param name="places" value="let $places := doc('/db/apps/bullinger-data/data/index/localities.xml') return   for $place in .//placeName[@ref]   group by $placeref := $place/@ref  return id($placeref,$places)"/>
                         <param name="content" value="(./note[@type='footnote'], ancestor::TEI//summary//note[@type='footnote'], ./*[not(self::note)])" />
                     </model>
