@@ -250,23 +250,38 @@ declare function ext:get-title($letter) {
 
 (: $type should be either 'sent' or 'received :)
 declare function ext:correspondents-by-letter($letter, $type as xs:string) {
-    let $items := for $item in $letter//tei:correspAction[@type = $type]/*[self::tei:persName or self::tei:orgName or self::tei:roleName]
-        order by $item
-        return ext:correspondent-by-item($item)
-    let $correspondents := string-join($items, ', ')
-    return if(fn:string-length($correspondents) > 0) then
-        $correspondents
+    let $text := $letter//tei:correspAction[@type = $type]/tei:rs
+    return if(fn:string-length($text) > 0) then
+        $text/text()
     else
-        "[...]"
+        let $items := for $item in $letter//tei:correspAction[@type = $type]/*[self::tei:persName or self::tei:orgName or self::tei:roleName]
+            order by $item
+            return ext:correspondent-by-item($item, true())
+        let $correspondents := string-join($items, ', ')
+        return if(fn:string-length($correspondents) > 0) then
+            $correspondents
+        else
+            "[...]"
+};
+
+declare function ext:correspondent-by-item($item) {
+    ext:correspondent-by-item($item, false())
 };
 
 (: Item should be one of persName, orgName, roleName :)
-declare function ext:correspondent-by-item($item) {
+declare function ext:correspondent-by-item($item, $persname-remove-round-brackets as xs:boolean) {
     typeswitch ($item)
         case element(tei:persName) return
-            let $persName := id($item/@ref, $config:persons)
+            let $person := id(upper-case($item/@ref), $config:persons)
+            let $persName := $person/tei:persName[@type='main']
+            let $name := $persName/tei:forename || " " || $persName/tei:surname
+            (: Remove round brackets if required :)
+            let $display-name := if($persname-remove-round-brackets) then
+                fn:replace($name, '\s*\(.*?\)', '')
+            else
+                $name
             return
-                <a href="./persons/{upper-case($item/@ref)}">{$persName/tei:forename || " " || $persName/tei:surname}</a>
+                <a href="./persons/{upper-case($item/@ref)}">{$display-name}</a>
         case element(tei:orgName) return
             if(fn:string-length($item/text()) > 0) then
                 ($item/text())
