@@ -271,8 +271,6 @@ declare function ext:correspondent-by-item($item) {
             if(fn:string-length($item/text()) > 0) then
                 ($item/text())
             else (id($item/@ref, $config:orgs)/string())
-        case element(tei:roleName) return
-            id($item/@ref, $config:roles)/tei:form[@xml:lang="de"][@type=$item/@type]
         default return
             "[...]"
 };

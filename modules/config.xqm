@@ -551,7 +551,6 @@ declare variable $config:data-root := "/db/apps/bullinger-data/data";
 declare variable $config:persons := doc($config:data-root || '/index/persons.xml');
 declare variable $config:localities := doc($config:data-root || '/index/localities.xml');
 declare variable $config:orgs := doc($config:data-root || '/index/organizations.xml');
-declare variable $config:roles := doc($config:data-root || '/index/groups.xml');
 declare variable $config:archives := doc($config:data-root || '/index/archives.xml');
 declare variable $config:bibliography := doc($config:data-root || '/index/bibliography.xml');
 
