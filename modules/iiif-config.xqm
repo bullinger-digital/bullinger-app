@@ -12,7 +12,7 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 (:~
  : Base URI of the IIIF image API service to use for the images
  :)
-declare variable $iiifc:IMAGE_API_BASE := "https://iiif.bullinger-digital.ch/iiif/2";
+declare variable $iiifc:IMAGE_API_BASE := "https://media.sources-online.org/cantaloupe/iiif/2";
 
 (:~
  : URL prefix to use for the canvas id
@@ -33,7 +33,8 @@ declare function iiifc:milestones($doc as node()) {
  : out or add something, this is the place. By default strips any prefix before a colon.
  :)
 declare function iiifc:milestone-id($milestone as element()) {
-    replace($milestone/@url, "https://iiif.bullinger-digital.ch/iiif/3/([^/]+)/.*$", "$1")
+    let $path := $milestone/tei:desc[@subtype='path'][1]/text()
+    return fn:encode-for-uri("bullinger!" || replace($path, "/", "!"))
 };
 
 (:~

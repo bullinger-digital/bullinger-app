@@ -140,7 +140,7 @@
                             <param name="place" value="ext:place-by-letter(ancestor::teiHeader)"/>
                             <param name="type" value="ancestor::TEI/@type/string()"/>
                             <param name="has-facsimile" value="if (exists(ancestor::TEI//facsimile//graphic)) then ('display: block;') else ('display: none;')"/>
-                            <param name="first-facsimile" value="let $path := ancestor::TEI//facsimile//graphic/desc[@subtype='path'][1]  return if(exists($path)) then ('https://iiif.bullinger-digital.ch/iiif/3/' || fn:encode-for-uri($path/text()) || '/full/100,/0/default.jpg') else ('')"/>
+                            <param name="first-facsimile" value="let $path := ancestor::TEI//facsimile//graphic/desc[@subtype='path'][1]  return if(exists($path)) then ('https://media.sources-online.org/cantaloupe/iiif/3/bullinger!' || fn:encode-for-uri(replace($path/text(), '/', '!')) || '/full/100,/0/default.jpg') else ('')"/>
                             <pb:template xmlns="" xml:space="preserve">
                                 <div class="search-result">
                                     <div>
