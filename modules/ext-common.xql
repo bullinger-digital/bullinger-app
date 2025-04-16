@@ -269,15 +269,15 @@ declare function ext:correspondent-by-item($item) {
 };
 
 (: Item should be one of persName, orgName, roleName :)
-declare function ext:correspondent-by-item($item, $persname-remove-round-brackets as xs:boolean) {
+declare function ext:correspondent-by-item($item, $persname-remove-brackets as xs:boolean) {
     typeswitch ($item)
         case element(tei:persName) return
             let $person := id(upper-case($item/@ref), $config:persons)
             let $persName := $person/tei:persName[@type='main']
             let $name := $persName/tei:forename || " " || $persName/tei:surname
-            (: Remove round brackets if required :)
-            let $display-name := if($persname-remove-round-brackets) then
-                fn:replace($name, '\s*\(.*?\)', '')
+            (: Remove brackets if required :)
+            let $display-name := if($persname-remove-brackets) then
+                fn:replace(fn:replace($name, '\s*\(.*?\)', ''), '\s*\[.*?\]', '')
             else
                 $name
             return
