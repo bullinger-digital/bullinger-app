@@ -21,14 +21,17 @@
                     </section>
                     <div id="metagrid-widget">
                         <div id="metagrid-widget-gnd" style="display:none" data-template="app:person-gnd"></div>
+                        <div id="metagrid-widget-hls" style="display:none" data-template="app:person-hls"></div>
                         <ul></ul>
                         <div class="metagrid-credit">Links powered by <a href="https://www.metagrid.ch" target="_blank">Metagrid</a> – die Vernetzungsinitiative der SAGW</div>
                     </div>
                     <script>
                         // We're not using the official metagrid widget because there is no way to hide the widget completely if no links are available
                         const gndId = document.querySelector('#metagrid-widget-gnd').innerText;
-                        if(gndId) {
-                            fetch(`https://api.metagrid.ch/widget/gnd/person/${gndId}.json?include=false&amp;language=de`)
+                        const hlsId = document.querySelector('#metagrid-widget-hls').innerText;
+                        const metagridUrl = gndId ? `https://api.metagrid.ch/widget/gnd/person/${gndId}.json?include=false&amp;language=de` : hlsId ?  `https://api.metagrid.ch/widget/hls-dhs-dss/person/${hlsId}.json?include=false&amp;language=de` : null;
+                        if(metagridUrl) {
+                            fetch(metagridUrl)
                             .then(response => response.json())
                             .then(data => {
                                 if(!data[0]  || !Object.keys(data[0]).length) {

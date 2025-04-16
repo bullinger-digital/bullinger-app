@@ -934,18 +934,11 @@ pb-view {
 
 .meta-info--link {
     display: inline-block;
-    width: 1.25em;
-    height: 1.25em;
-    margin: var(--s-3);
-    background-position: center;
-    background-size: contain;
-}
-.meta-info--link__gnd {
-    background-image: url("../images/gnd-icon.svg");
-}
-
-.meta-info--link__wiki {
-    background-image: url("../images/wiki-icon.svg");
+    margin: 3px;
+    background: #BBB;
+    padding: 3px 7px;
+    border-radius: 0.5rem;
+    color:white!important;
 }
 
 [slot=controls] {

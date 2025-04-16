@@ -97,6 +97,12 @@ function app:person-gnd($node as node(), $model as map(*)) {
         $gnd
 };
 
+declare %templates:wrap    
+function app:person-hls($node as node(), $model as map(*)) {
+    let $hls := replace(($model?data)//tei:idno[@subtype="hls"], "^https://hls-dhs-dss.ch/de/articles/([0-9]+)/.*", "$1")
+    return  
+        $hls
+};
 
 declare %templates:replace   
 function app:name-alternatives($node as node(), $model as map(*)) {    
@@ -281,7 +287,8 @@ function app:further-information($node as node(), $model as map(*)) {
                             attribute class { "meta-info--link", "meta-info--link__" || $subtype },
                             attribute href { $entry/text() },
                             attribute target { "blank_" },
-                            attribute title { $subtype }
+                            attribute title { $subtype },
+                            upper-case($subtype)
                         }
                     }
             }</ul>
