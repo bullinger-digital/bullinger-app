@@ -639,11 +639,10 @@ declare function api:facets-search($request as map(*)) {
                     case "sender" 
                     case "recipient"
                     case "mentioned-persons" return
-                        let $p := $config:persons/id(upper-case($key))
-                        let $persName := $p/tei:persName[@type='main'][1]
+                        let $persName := $config:persons/id($key)
                         return 
                             if ($persName) then
-                                string-join(($persName/tei:forename[1]/text(), $persName/tei:surname[1]/text()), " ")
+                                string-join(($persName/tei:forename/text(), $persName/tei:surname/text()), " ")
                             else $key
                     case "place"
                     case "mentioned-places"
@@ -694,7 +693,7 @@ declare function api:facets-search($request as map(*)) {
         })
         let $log := util:log("info", "api:facets-search: filtered $matches: " || count($filtered))
         return
-            array { $filtered }
+            array { subsequence($filtered, 0, 50) }
 };
 
 declare function api:include-static-content($request as map(*)) as node()* {
