@@ -106,6 +106,28 @@
                     </pb-table-grid>
                     <div style="margin-top: 15px;">
                         <div data-template="app:bio-footnotes"></div>
+                        <a class="bio-footnotes-more" style="display: none;">
+                            <pb-i18n key="registers.persons.biographical-footnotes-more">(Mehr)</pb-i18n>
+                        </a>
+                        <!-- Hide all footnotes after the first 10 -->
+                        <script>
+                            const footnotes = document.querySelectorAll('.bio-footnotes-list > span');
+                            const moreButton = document.querySelector('.bio-footnotes-more');
+                            if (footnotes.length > 10) {
+                                footnotes.forEach(function(footnote, index) {
+                                    if (index >= 10) {
+                                        footnote.style.display = 'none';
+                                    }
+                                });
+                                moreButton.style.display = 'block';
+                            }
+                            moreButton.addEventListener('click', function() {
+                                footnotes.forEach(function(footnote) {
+                                    footnote.style.display = 'inline';
+                                });
+                                moreButton.style.display = 'none';
+                            });
+                        </script>
                     </div>
                 </section>
             </main>

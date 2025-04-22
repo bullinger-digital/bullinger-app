@@ -147,6 +147,7 @@
         },
         "persons": {
             "biographical-footnotes": "Zusatzinformationen zu dieser Person finden Sie möglicherweise in den HBBW-Fussnoten zu den folgenden Briefen (unvollständig):",
+            "biographical-footnotes-more": "Mehr",
             "forename": "Vorname",
             "surname": "Nachname",
             "sent-count": "Gesendet",

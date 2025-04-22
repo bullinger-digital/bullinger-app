@@ -143,7 +143,7 @@ function app:bio-footnotes($node as node(), $model as map(*)) {
         for $note in collection($config:data-default)//tei:note[@ana="bio" and (.//tei:persName)[1][@ref=lower-case($person/@xml:id)]]
         order by string-length($note/string()) descending
         return $note
-    )[position() <= 20]
+    )
         
     return 
         if (count($footnotes) > 0)
@@ -156,6 +156,7 @@ function app:bio-footnotes($node as node(), $model as map(*)) {
                     "(Zusatzinformationen)"
                 },
                 element div {
+                    attribute class { "bio-footnotes-list" },
                     (
                         for $note in $footnotes
                         let $note-content-string := $note/string()

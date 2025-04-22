@@ -147,6 +147,7 @@
         },
         "persons": {
             "biographical-footnotes": "Additional information about this person may be found in the HBBW footnotes for the following letters (incomplete):",
+            "biographical-footnotes-more": "More",
             "forename": "First Name",
             "surname": "Last Name",
             "sent-count": "Sent",

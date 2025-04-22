@@ -877,6 +877,11 @@ pb-view {
     height: 50vh;
 }
 
+.bio-footnotes-more {
+    cursor:pointer;
+    text-decoration: underline;
+}
+
 .detail {
     display: grid;
     grid-gap: var(--s3);
