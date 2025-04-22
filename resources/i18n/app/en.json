@@ -142,8 +142,8 @@
             "count": "Number of Letters"
         },
         "bibliography": {
-            "title": "Title",
-            "text": "Text"
+            "title": "Abbreviation",
+            "text": "Bibliographic Reference"
         },
         "persons": {
             "biographical-footnotes": "Additional information about this person may be found in the HBBW footnotes for the following letters (incomplete):",
