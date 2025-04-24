@@ -252,56 +252,6 @@ declare variable $config:facets := [
         }
     },
     map {
-        "dimension": "archive",
-        "heading": "facets.archive",
-        "source": "api/facets/archive",
-        "max": 0,
-        "output": function($label) {
-            $config:archives/id($label)/tei:orgName/text()
-        }
-    },
-    (: map {
-        "dimension": "has-facsimile",
-        "source": "api/facets/has-facsimile",
-        "max": 1,
-        "output": function($label, $language) {
-            if ($language = "de") then
-                "Mit Faksimile"
-            else
-                "With facsimile"
-        }
-    }, :)
-    map {
-        "dimension": "hbbw-number",
-        "heading": "facets.hbbw-number",
-        "source": "api/facets/hbbw-number",
-        "max": 0
-    },
-    map {
-        "dimension": "signature",
-        "heading": "facets.signature",
-        "source": "api/facets/signature",
-        "max": 0
-    },
-    map {
-        "dimension": "letter-id",
-        "heading": "facets.letter-id",
-        "source": "api/facets/letter-id",
-        "max": 0
-    },
-    map {
-        "dimension": "has-facsimile",
-        "heading": "facets.has-facsimile",
-        "source": "api/facets/has-facsimile",
-        "max": 0,
-        "output": function($label) {
-            switch ($label)
-                case "true" return "Briefe mit Faksimile / Letters with facsimile"
-                case "false" return "Briefe ohne Faksimile / Letters without facsimile"
-                default return "unknown"
-        }
-    },
-    map {
         "dimension": "language-threshold",
         "heading": "facets.language-threshold",
         "source": "api/facets/language-threshold",
@@ -319,6 +269,45 @@ declare variable $config:facets := [
                 case "he" return "Hebräisch / Hebrew" || $percentageText
                 case "la" return "Latein / Latin" || $percentageText
                 case "en" return "Englisch / English" || $percentageText
+                default return "unknown"
+        }
+    },
+    map {
+        "dimension": "archive",
+        "heading": "facets.archive",
+        "source": "api/facets/archive",
+        "max": 0,
+        "output": function($label) {
+            $config:archives/id($label)/tei:orgName/text()
+        }
+    },
+    map {
+        "dimension": "signature",
+        "heading": "facets.signature",
+        "source": "api/facets/signature",
+        "max": 0
+    },
+    map {
+        "dimension": "hbbw-number",
+        "heading": "facets.hbbw-number",
+        "source": "api/facets/hbbw-number",
+        "max": 0
+    },
+    map {
+        "dimension": "letter-id",
+        "heading": "facets.letter-id",
+        "source": "api/facets/letter-id",
+        "max": 0
+    },
+    map {
+        "dimension": "has-facsimile",
+        "heading": "facets.has-facsimile",
+        "source": "api/facets/has-facsimile",
+        "max": 0,
+        "output": function($label) {
+            switch ($label)
+                case "true" return "Briefe mit Faksimile / Letters with facsimile"
+                case "false" return "Briefe ohne Faksimile / Letters without facsimile"
                 default return "unknown"
         }
     }
