@@ -114,6 +114,18 @@ declare variable $config:pagination-fill := 5;
 
 declare variable $config:max-facets := 5;
 
+declare function config:get-session-lang() {
+    let $lang := session:get-attribute($config:session-prefix || '.params')?("language")
+    return
+        if ($lang) then
+            if (contains($lang, "-")) then
+                substring-before($lang, "-")
+            else
+                $lang
+        else
+            $config:default-language
+};
+
 (:
  : Display configuration for facets to be shown in the sidebar. The facets themselves
  : are configured in the index configuration, collection.xconf.
@@ -161,38 +173,10 @@ declare variable $config:facets := [
             $config:orgs/id($label)/string()
         }
     },
-    (: map {
-        "dimension": "text-mention",
-        "heading": "facets.mentioned-in-text",
-        "max": 5,
-        "hierarchical": false(),
-        "output": function($label) {
-            let $person := $config:persons/id($label)/parent::tei:person/tei:persName[@type='main']
-            return 
-                if ($person) 
-                then (string-join(($person/*),", "))
-                else ($label)
-        }
-    },
-    map {
-        "dimension": "mscontents-mention",
-        "heading": "facets.mentioned-in-mscontents",
-        "max": 5,
-        "hierarchical": false(),
-        "output": function($label) {
-            let $person := $config:persons/id($label)/parent::tei:person/tei:persName[@type='main']
-            return 
-                if ($person) 
-                then (string-join(($person/*),", "))
-                else ($label)
-        }
-    },     :)
     map {
         "dimension": "place",
         "heading": "facets.place",
         "max": 0,
-        (: "max": 5,
-        "hierarchical": false(), :)
         "source": "api/facets/place",
         "output": function($label) {
             let $place := $config:localities/id($label)
@@ -214,7 +198,7 @@ declare variable $config:facets := [
         "max": 0,
         "source": "api/facets/topics",
         "output": function($label) {
-            let $lang := session:get-attribute($config:session-prefix || '.params')?("language")
+            let $lang := config:get-session-lang()
             let $topic := $config:taxonomy/id($label)
             return (
                 $topic/tei:catDesc[@xml:lang = $lang]/text(), $topic/tei:catDesc[1]/text()
@@ -241,8 +225,6 @@ declare variable $config:facets := [
         "dimension": "mentioned-places",
         "heading": "facets.mentioned-places",
         "max": 0,
-        (: "max": 5,
-        "hierarchical": false(), :)
         "source": "api/facets/mentioned-places",
         "output": function($label) {
             let $place := $config:localities/id($label)
@@ -264,18 +246,19 @@ declare variable $config:facets := [
         "source": "api/facets/language-threshold",
         "max": 0,
         "output": function($label) {
+            let $lang-id := if (config:get-session-lang() = "de") then 1 else 2
             let $tokens := tokenize($label, ':>')
-            let $lang := $tokens[1]
+            let $token-lang := $tokens[1]
             let $percentage := xs:decimal($tokens[2])
             let $percentageText := " (> " || $percentage || "%)"
-            return switch ($lang)
-                case "de" return "Deutsch / German" || $percentageText
-                case "fr" return "Französisch / French" || $percentageText
-                case "it" return "Italienisch / Italian" || $percentageText
-                case "el" return "Griechisch / Greek" || $percentageText
-                case "he" return "Hebräisch / Hebrew" || $percentageText
-                case "la" return "Latein / Latin" || $percentageText
-                case "en" return "Englisch / English" || $percentageText
+            return switch ($token-lang)
+                case "de" return ("Deutsch", "German")[$lang-id] || $percentageText
+                case "fr" return ("Französisch", "French")[$lang-id] || $percentageText
+                case "it" return ("Italienisch", "Italian")[$lang-id] || $percentageText
+                case "el" return ("Griechisch", "Greek")[$lang-id] || $percentageText
+                case "he" return ("Hebräisch", "Hebrew")[$lang-id] || $percentageText
+                case "la" return ("Latein", "Latin")[$lang-id] || $percentageText
+                case "en" return ("Englisch", "English")[$lang-id] || $percentageText
                 default return "unknown"
         }
     },
@@ -312,9 +295,18 @@ declare variable $config:facets := [
         "source": "api/facets/has-facsimile",
         "max": 0,
         "output": function($label) {
-            switch ($label)
-                case "true" return "Briefe mit Faksimile / Letters with facsimile"
-                case "false" return "Briefe ohne Faksimile / Letters without facsimile"
+            let $lang := config:get-session-lang()
+            return switch ($label)
+                case "true" return
+                    if ($lang = "de") then
+                        "Briefe mit Faksimile"
+                    else
+                        "Letters with facsimile"
+                case "false" return
+                    if ($lang = "de") then
+                        "Briefe ohne Faksimile"
+                    else
+                        "Letters without facsimile"
                 default return "unknown"
         }
     }
