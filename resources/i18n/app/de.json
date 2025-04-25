@@ -13,7 +13,8 @@
         "mentioned-persons": "Erwähnte Personen",
         "mentioned-places": "Erwähnte Ortschaften",
         "has-facsimile": "Faksimile Verfügbarkeit",
-        "language-threshold": "Briefsprache"
+        "language-threshold": "Briefsprache",
+        "topics": "Themen"
     },
     "search": {
         "title": "Titel",
@@ -47,6 +48,7 @@
         "addressee": "Empfänger",
         "autograph": "Autograph",
         "place": "Absendeort",
+        "topics": "Themen",
         "types": {
             "Begleitbrief": "Begleitbrief",
             "Beilage": "Beilage",

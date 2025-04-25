@@ -208,12 +208,19 @@ declare variable $config:facets := [
                 else ($label)
         }
     },
-    (: map {
-        "dimension": "date",
-        "heading": "facets.date",
-        "max": 5,
-        "hierarchical": true()
-    }, :)
+    map {
+        "dimension": "topics",
+        "heading": "facets.topics",
+        "max": 0,
+        "source": "api/facets/topics",
+        "output": function($label) {
+            let $lang := session:get-attribute($config:session-prefix || '.params')?("language")
+            let $topic := $config:taxonomy/id($label)
+            return (
+                $topic/tei:catDesc[@xml:lang = $lang]/text(), $topic/tei:catDesc[1]/text()
+            )[1]
+        }
+    },
     <a class="additional-facets-trigger">
         <pb-i18n key="search.additional-filters">Weitere Filter</pb-i18n>
     </a>,
@@ -542,6 +549,7 @@ declare variable $config:localities := doc($config:data-root || '/index/localiti
 declare variable $config:orgs := doc($config:data-root || '/index/organizations.xml');
 declare variable $config:archives := doc($config:data-root || '/index/archives.xml');
 declare variable $config:bibliography := doc($config:data-root || '/index/bibliography.xml');
+declare variable $config:taxonomy := doc($config:data-root || '/index/taxonomy.xml');
 
 (:~
  : The root of the collection hierarchy whose files should be displayed

@@ -184,6 +184,27 @@ declare function ext:metadata-by-letter($letter, $lang-browser as xs:string?) {
                     else ()
                 }
                 
+                {
+                    let $topic-ids := $letter//tei:encodingDesc//tei:taxonomy/tei:category/@n/string()
+                    return if (exists($topic-ids)) then
+                        <div>
+                            <div><pb-i18n key="metadata.topics">(Themen)</pb-i18n></div>
+                            <div>
+                                <ul>
+                                    {
+                                        for $topic-id in $topic-ids
+                                        let $topic := id($topic-id, $config:taxonomy)
+                                        let $topic-name := (
+                                            $topic/tei:catDesc[@xml:lang = $lang-browser]/text(),
+                                            $topic/tei:catDesc[1]/text()
+                                        )[1]
+                                        return <li>{$topic-name}</li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    else ()
+                }
             </div>
         </div>
     </div>

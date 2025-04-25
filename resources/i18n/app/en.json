@@ -13,7 +13,8 @@
         "mentioned-persons": "Mentioned persons",
         "mentioned-places": "Mentioned places",
         "has-facsimile": "Facsimile availability",
-        "language-threshold": "Letter language"
+        "language-threshold": "Letter language",
+        "topics": "Topics"
     },
     "search": {
         "title": "Titel",
@@ -47,6 +48,7 @@
         "addressee": "Receiver",
         "autograph": "Autograph",
         "place": "Sending location",
+        "topics": "Topics",
         "types": {
             "Begleitbrief": "Cover Letter",
             "Beilage": "Enclosure",

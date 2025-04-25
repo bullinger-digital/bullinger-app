@@ -673,6 +673,8 @@ declare function api:facets-search($request as map(*)) {
                         map:get($facet-config, 'output')($key)
                     case "has-facsimile" return
                         map:get($facet-config, 'output')($key)
+                    case "topics" return
+                        map:get($facet-config, 'output')($key)
                     default return 
                         let $_ := util:log("info", "api:facets-search: default return, $type: " || $type)
                         return 
