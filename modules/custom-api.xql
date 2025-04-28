@@ -65,7 +65,8 @@ declare function api:persons-all-list($request as map(*)) {
                                 "forename": $link(ft:field($person, 'forename')[1]),
                                 "surname": $link(ft:field($person, 'surname')[1]),
                                 "sent-count": ft:field($person, 'sent-count')[1],
-                                "received-count": ft:field($person, 'received-count')[1]
+                                "received-count": ft:field($person, 'received-count')[1],
+                                "mentioned-count": ft:field($person, 'mentioned-count')[1]
                             }
                 }
         })
@@ -101,8 +102,10 @@ declare function api:persons-all-list-sort($entries as element()*, $sortBy as xs
                     xs:integer(ft:field($person, 'sent-count')[1])
                 case "received-count" return
                     xs:integer(ft:field($person, 'received-count')[1])
+                case "mentioned-count" return
+                    xs:integer(ft:field($person, 'mentioned-count')[1])
                 default return
-                    lower-case(ft:field($person, 'surname')[1])
+                    - (xs:integer(ft:field($person, 'sent-count')[1]) + xs:integer(ft:field($person, 'received-count')[1]))
         })
     return
         if ($dir = "asc") then

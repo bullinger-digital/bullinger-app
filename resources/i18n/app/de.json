@@ -153,7 +153,8 @@
             "forename": "Vorname",
             "surname": "Nachname",
             "sent-count": "Gesendet",
-            "received-count": "Empfangen"
+            "received-count": "Empfangen",
+            "mentioned-count": "Erwähnungen"
         },
         "details-letters": {
             "title": "Brief",
