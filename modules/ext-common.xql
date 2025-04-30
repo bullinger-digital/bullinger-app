@@ -246,8 +246,12 @@ declare function ext:get-documents-signatures($letter) {
                     <span slot="default"><iron-icon class="metadata-info-icon" title="Hinweis" id="info-outline" icon="info-outline"/></span>
                     <span slot="alternate">
                         {$note}
-                        {if (exists($note) and exists($author)) then (<br />) else ()}
-                        {if (exists($author)) then ("Autor: ", $author) else ()}
+                        {if (exists($author)) then
+                            <div>
+                                <pb-i18n key="metadata.author">(Hand von:)</pb-i18n>
+                                {" " || $author}
+                            </div>
+                        else ()}
                     </span>
                 </pb-popover>
             else ()}
