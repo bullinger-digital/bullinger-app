@@ -365,12 +365,27 @@ function app:pb-geolocation($node as node(), $model as map(*)) {
 };
 
 declare 
-    %templates:wrap    
+    %templates:replace    
 function app:show-map($node as node(), $model as map(*)) {
     let $place := $model?data
+    let $geo := $place//tei:geo/text()
+    let $coords := tokenize($geo, " ")
+    let $latitude := $coords[1]
+    let $longitude := $coords[2]
     return
-        if(string-length(normalize-space($place//tei:geo/text() ) ) > 1)
-        then ( templates:process($node/*, $model) ) 
+        if(string-length(normalize-space($geo ) ) > 1)
+        then (
+            <pb-leaflet-map id="map" zoom="14" subscribe="map" emit="map" cluster="" latitude="{$latitude}" longitude="{$longitude}">
+                <pb-map-layer show="" 
+                    base="" 
+                    label="Mapbox OSM"
+                    url="https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{{z}}/{{x}}/{{y}}?access_token={{accessToken}}"
+                    max-zoom="19" 
+                    access-token="pk.eyJ1Ijoid29sZmdhbmdtbSIsImEiOiJjam1kMjVpMnUwNm9wM3JwMzdsNGhhcnZ0In0.v65crewF-dkNsPF3o1Q4uw" 
+                    attribution="© Mapbox © OpenStreetMap">
+                </pb-map-layer>
+            </pb-leaflet-map>
+        ) 
         else (
             <div style="text-align:center;font-style:italic;"><pb-i18n key="no-geo-data">Keine Geodaten verfügbar</pb-i18n></div>
         ) 

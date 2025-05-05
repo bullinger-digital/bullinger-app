@@ -15,18 +15,23 @@
                     <h1 id="locality">
                         <span data-template="app:locality-name"> </span>
                     </h1>
-                    <div data-template="app:show-map">
-                        <pb-leaflet-map id="map" zoom="13" subscribe="map" emit="map" cluster="" latitude="47.3686498" longitude="8.5391825">
-                            <pb-map-layer show="" 
-                                base="" 
-                                label="Mapbox OSM"
-                                url="https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}"
-                                max-zoom="19" 
-                                access-token="pk.eyJ1Ijoid29sZmdhbmdtbSIsImEiOiJjam1kMjVpMnUwNm9wM3JwMzdsNGhhcnZ0In0.v65crewF-dkNsPF3o1Q4uw" 
-                                attribution="© Mapbox © OpenStreetMap">
-                            </pb-map-layer>
-                        </pb-leaflet-map>
-                    </div>
+                    <div data-template="app:show-map"></div>
+                    <script>
+                        window.addEventListener('load', function() {
+                            const map = document.querySelector('pb-leaflet-map');
+                            console.log(`pb-leaflet-map is ready`);
+                            console.log("coordinates: ", map.getAttribute("latitude"), map.getAttribute("longitude"));
+                            pbEvents.emit("pb-geolocation", "map", {
+                                coordinates: {
+                                    latitude: parseFloat(map.getAttribute("latitude")),
+                                    longitude: parseFloat(map.getAttribute("longitude"))
+                                },
+                                label: "",
+                                zoom: "13",
+                            });
+                        });
+
+                    </script>
                 </section>
                 <section class="bottom">
                     <pb-custom-form class="facets" auto-submit="[name=view]" event="pb-results-received" subscribe="grid" emit="grid">
