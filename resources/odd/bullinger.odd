@@ -285,6 +285,9 @@
                         <param name="place" value="@place"/>
                         <param name="label" value="@n"/>
                     </model>
+                    <model predicate="@type = 'entity'" behaviour="omit">
+                        <desc>Hide entity notes</desc>
+                    </model>
                     <model behaviour="inline" cssClass="inline-remark"/>
                 </elementSpec>
                 <elementSpec ident="facsimile" mode="add">
