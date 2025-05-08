@@ -75,8 +75,12 @@ declare function ext:get-header($letter, $lang-browser as xs:string?) {
 
 declare function ext:metadata-by-letter($letter, $lang-browser as xs:string?) {
     let $root := $letter/ancestor::tei:TEI
-    let $hbbw-no := if(fn:starts-with($root/@source/string(), 'HBBW') and string-length($root/@n/string()) > 0) then ($root/@n/string()) else ()
-    let $hbbw-band := if(fn:starts-with($root/@source/string(), 'HBBW-')) then (fn:substring-after($root/@source/string(), '-')) else ()
+
+    let $regest-source := $root/tei:teiHeader//tei:sourceDesc/tei:bibl[@type='regest']
+    let $regest-bibliography := id('b' || $regest-source/@ref/string(), $config:bibliography)
+    let $is-hbbw := if($regest-bibliography/tei:series/text() = 'HBBW') then true() else false()
+    let $hbbw-band := if($is-hbbw) then ($regest-bibliography/tei:unit[@type = 'volume']/text()) else ()
+    let $hbbw-no := if($is-hbbw) then ($regest-source/@n/string()) else ()
     
     let $languages := for $l in $letter//tei:langUsage/tei:language
         where $l/@usage > 0
@@ -154,7 +158,7 @@ declare function ext:metadata-by-letter($letter, $lang-browser as xs:string?) {
                 </div> else ()}
                 
                 {
-                    if($hbbw-no) then
+                    if($is-hbbw) then
                         <div>
                             <div>HBBW-Briefnummer</div>
                             <div>
