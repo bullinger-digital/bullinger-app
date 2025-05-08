@@ -118,6 +118,7 @@
         "about-parent": "Infos",
         "about": "Informationen zum Suchsystem",
         "about-project": "Informationen zum Projekt",
+        "stats": "Statistiken",
         "privacy": "Datenschutz",
         "disclaimers": "Impressum",
         "bibliography": "Bibliografie"
@@ -174,7 +175,7 @@
     "further-names": "Weitere Namen",
     "mark-named-entities": "Namen markieren",
     "footer": {
-        "text": "Institut für Computerlinguistik, Universität Zürich, 2024",
+        "text": "Institut für Computerlinguistik, Universität Zürich, 2025",
         "contact": "Kontakt",
         "disclaimers": "Impressum",
         "privacy": "Datenschutz"
