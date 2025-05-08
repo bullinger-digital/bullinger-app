@@ -155,7 +155,8 @@
             "surname": "Last Name",
             "sent-count": "Sent",
             "received-count": "Received",
-            "mentioned-count": "Mentions"
+            "mentioned-count": "Mentions",
+            "loosely-annotated": "This person was not systematically tagged, which is why only a portion of the incidents is displayed."
         },
         "details-letters": {
             "title": "Letter",
