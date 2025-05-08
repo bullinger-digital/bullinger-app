@@ -155,7 +155,8 @@
             "surname": "Nachname",
             "sent-count": "Gesendet",
             "received-count": "Empfangen",
-            "mentioned-count": "Erwähnungen"
+            "mentioned-count": "Erwähnungen",
+            "loosely-annotated": "Diese Person wurde nicht systematisch markiert, weshalb nur ein Teil der Vorkommnisse angezeigt wird."
         },
         "details-letters": {
             "title": "Brief",
