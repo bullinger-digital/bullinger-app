@@ -332,7 +332,7 @@ function app:person-letters-mentions ($node as node(), $model as map(*)) {
 
 declare %templates:replace
 function app:person-loosely-annotated ($node as node(), $model as map(*)) {    
-    if (exists($model?data//tei:desc[@type = 'loosely-annotated'])) then
+    if (exists($model?data//tei:note[@type = 'loosely-annotated'])) then
         <div class="person-loosely-annotated"><pb-i18n key="registers.persons.loosely-annotated">(loosely-annotated)</pb-i18n></div>
     else ()
 };
