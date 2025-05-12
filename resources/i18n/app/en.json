@@ -118,6 +118,7 @@
         "about-parent": "About",
         "about": "Search System",
         "about-project": "Project",
+        "stats": "Statistics",
         "privacy": "Privacy",
         "disclaimers": "Disclaimers",
         "bibliography": "Bibliography"
@@ -174,7 +175,7 @@
     "further-names": "Further names",
     "mark-named-entities": "Highlight names",
     "footer": {
-        "text": "Department of Computational Linguistics, University of Zurich, 2024",
+        "text": "Department of Computational Linguistics, University of Zurich, 2025",
         "contact": "Contact",
         "disclaimers": "Disclaimers",
         "privacy": "Privacy"

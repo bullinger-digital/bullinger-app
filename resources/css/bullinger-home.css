@@ -1,0 +1,133 @@
+.home-container {
+    font-size: 1.15rem;
+}
+
+.home-section {
+    margin-top: 40px;
+}
+
+.home-column-2 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.home-column-2 > div {
+    flex: 1 1 100%;
+}
+
+.home-column-3 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.home-column-3 > a {
+    flex: 1 1 100%;
+    padding: 30px;
+    background: rgba(170,129,90,0.2);
+    color: #303030;
+    border-radius: 7px;
+    text-decoration: none;
+}
+
+.home-column-3 > a:hover {
+    background: rgba(170,129,90,0.3);
+}
+
+.home-main-heading {
+    font-size: 2.4rem;
+    font-weight: bold;
+    max-width: 400px;
+    margin-bottom: 10px;
+}
+
+.home-intro-text {
+    font-size: 1.2rem;
+    line-height: 1.7rem;
+    margin-top: 0;
+}
+
+.home-bullinger-image {
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    border-radius: 7px;
+}
+
+.home-image-caption {
+    font-size: 0.9rem;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.home-closing-event {
+    padding: 24px;
+    background: rgba(203, 214, 212, 0.3);
+    border-radius: 7px;
+}
+
+.home-section-border {
+    border-top: 1px solid #EEE;
+    padding-top: 40px;
+}
+
+.home-section-description {
+    line-height: 1.7rem;
+}
+
+.home-section-description p:first-child {
+    margin-top: 0;
+}
+
+.home-section-description p:last-child {
+    margin-bottom: 0;
+}
+
+.home-links-section {
+    padding: 30px;
+    margin-top: 5px;
+    border-left: 4px solid rgba(203, 214, 212, 0.7);
+}
+
+.home-links-heading {
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+.home-links-list {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+    line-height: 1.4em;
+    margin-bottom: 0;
+}
+
+.home-info-heading {
+    font-weight: bold;
+    margin-top: 0;
+    color: #5A5A5A;
+}
+
+.home-stats-big-number {
+    font-size: 3rem;
+}
+
+.home-more-stats-link {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+
+@media (min-width: 768px) {
+    .home-column-2 > div {
+        flex: 1 1 0;
+        max-width: calc(50% - 10px);
+    }
+    .home-column-3 > a {
+        flex: 1 1 0;
+        max-width: calc(33.333% - 13.33px);
+    }
+}
