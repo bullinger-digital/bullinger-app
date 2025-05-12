@@ -1,17 +1,79 @@
 <main>
-    <div class="bullinger-intro">
-        <h1 class="tp-title">Welcome to Bullinger Digital 2.0</h1>
-        <p style="padding: 16px; background: white; border: 1px solid #DDD; border-radius: 22px;">
-            To mark the end of the Bullinger Digital project, we would like to invite you to the <a target="_blank" href="https://www.cl.uzh.ch/en/events/upcoming-events/Abschlussveranstaltung-zu-Bullinger-Digital.html">closing event</a> on 12 May 2025; the event will be held in German. We are also pleased to confirm that www.bullinger-digital.ch will remain accessible after the end of the project.
+    <link rel="stylesheet" href="resources/css/bullinger-home.css" />
+    <div class="home-container">
+        <div class="home-section home-column-2">
+            <div>
+                <h1 class="home-main-heading">Welcome to Bullinger Digital 2.0</h1>
+                <p class="home-intro-text">
+                    The mission of Bullinger Digital is to digitise the extensive correspondence of Heinrich Bullinger (1504-1575), mark it up in XML, and make it publicly accessible via the internet.
+                </p>
+                <a class="bullinger-button" href="letters.html">Online Search System</a>
+            </div>
+            <div>
+                <img src="./resources/images/bullinger.jpg" alt="Heinrich Bullinger, Bildnis von Hans Asper, 1545" class="home-bullinger-image" />
+                <p class="home-image-caption">Heinrich Bullinger, Portrait by Hans Asper, 1545</p>
+            </div>
+        </div>
+
+        <p class="home-closing-event">
+            <strong>Closing Event</strong><br />
+            To mark the end of the Bullinger Digital project, we would like to invite you to the <a target="_blank" href="https://www.cl.uzh.ch/en/events/upcoming-events/Abschlussveranstaltung-zu-Bullinger-Digital.html">closing event</a> on 12 May 2025; the event will be held in German. We are also pleased to confirm that <a href="https://www.bullinger-digital.ch" target="_blank">www.bullinger-digital.ch</a> will remain accessible after the end of the project.
         </p>
-        <p>The mission of Bullinger Digital is to digitise the extensive correspondence of Heinrich Bullinger (1504-1575), mark it up in XML, and make it publicly accessible via the internet.</p>
-        <p>Heinrich Bullinger was the successor to Huldrych Zwingli in Zurich and a significant multiplier for the ideas of the Reformation in Switzerland and Europe. His correspondence is of great historical importance, offering insights into the political events and theological debates of the time, as well as the economic conditions and daily life of people in the Early Modern period.</p>
-        <p>Through the online search system, you can access around 10,000 letters to and 2,000 letters from Bullinger; for information on how to use the search system, see <a href="/static/about">About</a>.</p>
-        <ul style="list-style:none; margin-left:0; padding-left:0; line-height:1.4em;">
-            <li><a class="bullinger-button" href="letters.html">Online Search System</a></li>
-            <li><a href="/static/about-project">About the Project</a></li>
-            <li><a href="/static/about">About the Search System</a></li>
-            <li><a href="https://github.com/bullinger-digital/bullinger-korpus-tei" rel="noreferrer" target="_blank" >XML Corpus (TEI) on GitHub</a></li>
-        </ul>
+
+        <div class="home-section home-section-border home-column-2">
+            <div class="home-section-description">
+                <p>
+                    Heinrich Bullinger was the successor to Huldrych Zwingli in Zurich and a significant multiplier for the ideas of the Reformation in Switzerland and Europe. His correspondence is of great historical importance, offering insights into the political events and theological debates of the time, as well as the economic conditions and daily life of people in the Early Modern period.
+                </p>
+                <p>
+                    Through the <a href="letters.html">online search system</a>, you can access around 10,000 letters to and 2,000 letters from Bullinger; for information on how to use the search system, see <a href="/static/about">About</a>.
+                </p>
+            </div>
+            <div class="home-section-description">
+                <div class="home-links-section">
+                    <p class="home-links-heading">Links</p>
+                    <ul class="home-links-list">
+                        <li></li>
+                        <li><a href="/static/about-project">About the Project</a></li>
+                        <li><a href="/static/about">About the Search System</a></li>
+                        <li><a href="https://github.com/bullinger-digital/bullinger-korpus-tei" rel="noreferrer" target="_blank">XML Corpus (TEI) on GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="home-section">
+            <div class="home-column-3">
+                <a class="home-info-card" href="letters.html">
+                    <p class="home-info-heading">
+                        <span class="home-stats-big-number">12'000</span> letters
+                    </p>
+                    <div>
+                        <p>including</p>
+                        <ul>
+                            <li>3'200 letters edited</li>
+                            <li>5'300 letters manually transcribed</li>
+                            <li>2'800 letters automatically transcribed</li>
+                        </ul>
+                    </div>
+                </a>
+                <a class="home-info-card" href="persons/?search=&amp;view=correspondents">
+                    <p class="home-info-heading">
+                        <span class="home-stats-big-number">1'000</span> correspondents
+                    </p>
+                    <p>
+                        Bullinger's extensive network included scholars, reformers, political leaders, and ordinary people across Europe, demonstrating his significant influence during the Reformation period.
+                    </p>
+                </a>
+                <a class="home-info-card" href="localities/">
+                    <p class="home-info-heading">
+                        <span class="home-stats-big-number">147'000</span><br />marked place names
+                    </p>
+                    <p>
+                    </p>
+                </a>
+            </div>
+            <!--<a href="static/stats" class="home-more-stats-link">More statistics</a>-->
+        </div>
     </div>
 </main>

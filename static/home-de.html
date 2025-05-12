@@ -1,17 +1,79 @@
 <main>
-    <div class="bullinger-intro">
-        <h1 class="tp-title">Willkommen bei Bullinger Digital 2.0</h1>
-        <p style="padding: 16px; background: white; border: 1px solid #DDD; border-radius: 22px;">
+    <link rel="stylesheet" href="resources/css/bullinger-home.css" />
+    <div class="home-container">
+        <div class="home-section home-column-2">
+            <div>
+                <h1 class="home-main-heading">Willkommen bei Bullinger Digital 2.0</h1>
+                <p class="home-intro-text">
+                    Aufgabe und Ziel von Bullinger Digital ist es, den umfangreichen Briefwechsel von Heinrich Bullinger (1504-1575) digital zu erschliessen, in XML auszuzeichnen und übers Internet öffentlich zugänglich zu machen.
+                </p>
+                <a class="bullinger-button" href="letters.html">Online-Suchsystem</a>
+            </div>
+            <div>
+                <img src="./resources/images/bullinger.jpg" alt="Heinrich Bullinger, Bildnis von Hans Asper, 1545" class="home-bullinger-image" />
+                <p class="home-image-caption">Heinrich Bullinger, Portrait von Hans Asper, 1545</p>
+            </div>
+        </div>
+
+        <p class="home-closing-event">
+            <strong>Abschlussveranstaltung</strong><br />
             Zum Projektende von Bullinger Digital laden wir Sie am 12. Mai 2025 zur <a target="_blank" href="https://www.cl.uzh.ch/de/events/upcoming-events/Bullinger-Digital-2.0-Abschluss-Event.html">Abschlussveranstaltung</a> ein und freuen uns mitzuteilen, dass das Online-Suchsystem über das Projektende hinaus zugänglich bleibt.
         </p>
-        <p>Aufgabe und Ziel von Bullinger Digital ist es, den umfangreichen Briefwechsel von Heinrich Bullinger (1504-1575) digital zu erschliessen, in XML auszuzeichnen und übers Internet öffentlich zugänglich zu machen.</p>
-        <p>Heinrich Bullinger war Nachfolger von Huldrych Zwingli in Zürich und ein wichtiger Multiplikator für die Ideen der Reformation in der Schweiz und in Europa. Sein Briefwechsel ist von grosser historischer Bedeutung, die Briefe geben Einblick in die politischen Ereignisse und theologischen Auseinandersetzungen der Zeit, aber auch in die wirtschaftlichen Verhältnisse und das Leben der Menschen in der Frühen Neuzeit.</p>
-        <p>Über das Online-Suchsystem erhalten Sie Zugriff auf die rund 10'000 Briefe an und 2'000 Briefe von Bullinger; Informationen zur Benutzung des Suchsystems finden Sie unter <a href="/static/about">Infos</a>.</p>
-        <ul style="list-style:none; margin-left:0; padding-left:0; line-height:1.4em;">
-            <li><a class="bullinger-button" href="letters.html">Online-Suchsystem</a></li>
-            <li><a href="/static/about-project">Informationen zum Projekt</a></li>
-            <li><a href="/static/about">Informationen zum Suchsystem</a></li>
-            <li><a href="https://github.com/bullinger-digital/bullinger-korpus-tei" rel="noreferrer" target="_blank" >XML-Korpus (TEI) auf GitHub</a></li>
-        </ul>
+
+        <div class="home-section home-section-border home-column-2">
+            <div class="home-section-description">
+                <p>
+                    Heinrich Bullinger war Nachfolger von Huldrych Zwingli in Zürich und ein wichtiger Multiplikator für die Ideen der Reformation in der Schweiz und in Europa. Sein Briefwechsel ist von grosser historischer Bedeutung, die Briefe geben Einblick in die politischen Ereignisse und theologischen Auseinandersetzungen der Zeit, aber auch in die wirtschaftlichen Verhältnisse und das Leben der Menschen in der Frühen Neuzeit.
+                </p>
+                <p>
+                    Über das Online-Suchsystem erhalten Sie Zugriff auf die rund 10'000 Briefe an und 2'000 Briefe von Bullinger; Informationen zur Benutzung des Suchsystems finden Sie unter <a href="/static/about">Infos</a>.
+                </p>
+            </div>
+            <div class="home-section-description">
+                <div class="home-links-section">
+                    <p class="home-links-heading">Links</p>
+                    <ul class="home-links-list">
+                        <li></li>
+                        <li><a href="/static/about-project">Informationen zum Projekt</a></li>
+                        <li><a href="/static/about">Informationen zum Suchsystem</a></li>
+                        <li><a href="https://github.com/bullinger-digital/bullinger-korpus-tei" rel="noreferrer" target="_blank">XML Corpus (TEI) auf GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="home-section">
+            <div class="home-column-3">
+                <a class="home-info-card" href="letters.html">
+                    <p class="home-info-heading">
+                        <span class="home-stats-big-number">12'000</span> Briefe
+                    </p>
+                    <div>
+                        <p>davon</p>
+                        <ul>
+                            <li>3'200 Briefe ediert</li>
+                            <li>5'300 Briefe manuell transkribiert</li>
+                            <li>2'800 Briefe automatisch transkribiert</li>
+                        </ul>
+                    </div>
+                </a>
+                <a class="home-info-card" href="persons/?search=&amp;view=correspondents">
+                    <p class="home-info-heading">
+                        <span class="home-stats-big-number">1'000</span> Korrespondenten
+                    </p>
+                    <p>
+                        Bullingers weitreichendes Netzwerk umfasste Gelehrte, Reformatoren, politische Führer und einfache Menschen in ganz Europa, was seinen bedeutenden Einfluss während der Reformationszeit verdeutlicht.
+                    </p>
+                </a>
+                <a class="home-info-card" href="localities/">
+                    <p class="home-info-heading">
+                        <span class="home-stats-big-number">147'000</span><br />markierte Ortsnamen
+                    </p>
+                    <p>
+                    </p>
+                </a>
+            </div>
+            <!--<a href="static/stats" class="home-more-stats-link">More statistics</a>-->
+        </div>
     </div>
 </main>
