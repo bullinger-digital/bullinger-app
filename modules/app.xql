@@ -403,10 +403,11 @@ declare
     %templates:replace
 function app:transcription-source($node as node(), $model as map(*)) {
     let $tei := collection($config:data-default)//tei:TEI[@xml:id=$model?doc]
-    let $bibl := $tei//tei:sourceDesc/tei:bibl[@type="transcription"]
+    let $bibl-source := $tei//tei:sourceDesc/tei:bibl[@type="transcription"]
+    let $bibl := id($bibl-source/@source, $config:bibliography)/tei:bibl
     let $text := if ($bibl) then (
         <span><pb-i18n key="source">(Quelle)</pb-i18n>: {$bibl/text()}</span>
-    ) else if ($tei/@source/string() = "keine") then (
+    ) else if ($tei/@source/string() = "HTR") then (
         <pb-i18n key="automaticTranscription">(Automatische Transkription)</pb-i18n>
     ) else ""
     return

@@ -77,7 +77,7 @@ declare function ext:metadata-by-letter($letter, $lang-browser as xs:string?) {
     let $root := $letter/ancestor::tei:TEI
 
     let $regest-source := $root/tei:teiHeader//tei:sourceDesc/tei:bibl[@type='regest']
-    let $regest-bibliography := id('b' || $regest-source/@ref/string(), $config:bibliography)
+    let $regest-bibliography := id($regest-source/@source/string(), $config:bibliography)
     let $is-hbbw := if($regest-bibliography/tei:series/text() = 'HBBW') then true() else false()
     let $hbbw-band := if($is-hbbw) then ($regest-bibliography/tei:unit[@type = 'volume']/text()) else ()
     let $hbbw-no := if($is-hbbw) then ($regest-source/@n/string()) else ()

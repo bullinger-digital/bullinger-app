@@ -49,6 +49,7 @@
                         <param name="regest" value="./teiHeader"/>
                         <pb:set-param name="persons" value="let $persons := doc('/db/apps/bullinger-data/data/index/persons.xml') return     for $person in .//teiHeader//persName[@ref]      group by $persref := upper-case($person/@ref)     return         id($persref,$persons)"/>
                         <pb:set-param name="places" value="let $places := doc('/db/apps/bullinger-data/data/index/localities.xml')  return   for $place in .//teiHeader//placeName[@ref] group by $placeref := $place/@ref  return id($placeref,$places)"/>
+                        <pb:set-param name="bibliography" value="doc('/db/apps/bullinger-data/data/index/bibliography.xml')"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <div style="background: white; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
                                 [[header]]
@@ -202,13 +203,14 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="bibl" mode="change">
-                    <model output="web" predicate="$parameters?view='metadata' and @type='regest'" behaviour="pass-through">
+                    <model output="web" predicate="$parameters?view='metadata' and @type='regest' and string-length(@source) > 0" behaviour="pass-through">
                         <desc>info popover next to regest</desc>
+                        <param name="label" value="id(@source/string(), $parameters?bibliography)/bibl/text()"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <pb-popover class="source-info">
                                 <iron-icon slot="default" icon="info-outline" class="source-info--icon"/>
                                 <span slot="alternate">
-                                    <pb-i18n key="source">(Quelle)</pb-i18n>: [[content]]</span>
+                                    <pb-i18n key="source">(Quelle)</pb-i18n>: [[label]]</span>
                             </pb-popover>
                         </pb:template>
                     </model>
