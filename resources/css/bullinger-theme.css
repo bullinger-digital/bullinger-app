@@ -351,8 +351,8 @@ a.btn-search-reset:hover {
     transform: scaleY(0);
     transform-origin: top;
     transition: all 0.2s;
-    max-width: 25rem;
-    min-width: 10rem;
+    max-width: 20rem;
+    min-width: 13rem;
 }
 
 .dropdown-menu > li > ul::after {
@@ -1112,10 +1112,12 @@ pb-split-list::part(items) {
 
 /* About pages */
 .about h1 { border-bottom: 1px solid #EBEBEB; padding-bottom: 8px; margin-top:35px; font-size: 2em; }
-.about { font-size:1.1rem; line-height:1.6rem; }
+.about { font-size:1.1rem; line-height:1.6rem; max-width: 800px; padding: 40px 20px 20px 0; }
 .about-question { border-left: 10px solid #EBEBEB; padding: 0 0 0 20px; max-width:850px; margin-bottom:35px; }
 .about h2 { font-size: 1.3em; margin: 25px 0 0 0; font-weight:bold; }
 .about-question h2 { margin: 12px 0 10px 0; padding:10px 0; }
+.about ul li { margin: 0 0 10px 0; }
+.about ul li p { margin: 0; }
 .diacritics { font-family:'Times New Roman', Times, serif }
 
 #metagrid-widget {

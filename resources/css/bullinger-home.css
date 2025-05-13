@@ -60,12 +60,6 @@
     text-align: center;
 }
 
-.home-closing-event {
-    padding: 24px;
-    background: rgba(203, 214, 212, 0.3);
-    border-radius: 7px;
-}
-
 .home-section-border {
     border-top: 1px solid #EEE;
     padding-top: 40px;
