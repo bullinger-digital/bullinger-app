@@ -108,7 +108,8 @@
         "printed": "Gedruckt in",
         "references": "Verweise auf diesen Eintrag",
         "referenced": "Dieser Eintrag verweist auf",
-        "footnote": "Fussnote zu Metadaten"
+        "footnote": "Fussnote zu Metadaten",
+        "hbbw-link-info": "Um zum richtigen Brief zu gelangen, wählen Sie auf der Zielseite bitte den gewünschten Brief in der linken Spalte aus."
     },
     "menu": {
         "persons": "Personen",

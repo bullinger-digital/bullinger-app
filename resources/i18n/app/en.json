@@ -108,7 +108,8 @@
         "printed": "Printed in",
         "references": "References to this entry",
         "referenced": "This entry refers to",
-        "footnote": "Footnote on metadata"
+        "footnote": "Footnote on metadata",
+        "hbbw-link-info": "To view the correct letter, please select it from the left column on the destination page."
     },
     "menu": {
         "persons": "Persons",

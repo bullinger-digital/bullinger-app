@@ -163,6 +163,14 @@ declare function ext:metadata-by-letter($letter, $lang-browser as xs:string?) {
                             <div>HBBW-Briefnummer</div>
                             <div>
                                 <a target="_blank" href="http://teoirgsed.uzh.ch/SedWEB.cgi?Alias=Briefe&amp;Lng=1&amp;aheight=910&amp;PrjName=Bullinger+-+Briefwechsel&amp;fld_418={replace($hbbw-no, "[^0-9]", "")}">Band {$hbbw-band}, Nr. {$hbbw-no}</a>
+                                {
+                                    if (fn:matches($hbbw-no, '[a-z]')) then
+                                        <pb-popover>
+                                            <span slot="default"><iron-icon class="metadata-info-icon" id="info-outline" icon="info-outline"/></span>
+                                            <span slot="alternate"><pb-i18n key="metadata.hbbw-link-info" persistent="true">(Um zum richtigen Brief zu gelangen, wählen Sie auf der Zielseite bitte den gewünschten Brief in der linken Spalte aus.)</pb-i18n></span>
+                                        </pb-popover>
+                                    else ()
+                                }
                             </div>
                         </div>
                     else ()
