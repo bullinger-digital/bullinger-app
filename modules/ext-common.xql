@@ -162,7 +162,7 @@ declare function ext:metadata-by-letter($letter, $lang-browser as xs:string?) {
                         <div>
                             <div>HBBW-Briefnummer</div>
                             <div>
-                                <a target="_blank" href="http://teoirgsed.uzh.ch/SedWEB.cgi?Alias=Briefe&amp;Lng=1&amp;aheight=910&amp;PrjName=Bullinger+-+Briefwechsel&amp;fld_418={$hbbw-no}">Band {$hbbw-band}, Nr. {$hbbw-no}</a>
+                                <a target="_blank" href="http://teoirgsed.uzh.ch/SedWEB.cgi?Alias=Briefe&amp;Lng=1&amp;aheight=910&amp;PrjName=Bullinger+-+Briefwechsel&amp;fld_418={replace($hbbw-no, "[^0-9]", "")}">Band {$hbbw-band}, Nr. {$hbbw-no}</a>
                             </div>
                         </div>
                     else ()
