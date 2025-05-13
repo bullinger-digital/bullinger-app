@@ -91,9 +91,6 @@ window.addEventListener('DOMContentLoaded', function() {
             yPositions = [];
             const teiLineBreaks = view.shadowRoot.querySelectorAll("pb-facs-link.facs-link-hidden");
             teiLineBreaks.forEach((teiLb) => {
-                teiLb.style.display = 'inline-block';
-                teiLb.style.verticalAlign = 'top';
-
                 const y = teiLb.getBoundingClientRect().top + window.scrollY;
                 yPositions.push({
                     y: y,

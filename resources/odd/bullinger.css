@@ -310,3 +310,8 @@ p:first-child {
 .footnotes {
     border-top: 1px solid #BDBDBD;
 }
+
+pb-facs-link.facs-link-hidden {
+    display: inline-block;
+    vertical-align: top;
+}

@@ -345,9 +345,9 @@
                     <model behaviour="paragraph"></model>
                 </elementSpec>
                 <elementSpec ident="lb" mode="change">
-                    <model behaviour="inline" predicate="let $id := @xml:id || '-0'   return exists(./ancestor::TEI//zone[@xml:id = $id])">
+                    <model behaviour="inline" predicate="let $id := @xml:id || '-0'   return exists(id($id, .))">
                         <param name="order" value="tokenize(@xml:id, '\D+')[. ne ''][1]" />
-                        <param name="coordinates" value="let $id := @xml:id || '-0'   return ext:convert-polygon-to-coordinates(./ancestor::TEI//zone[@xml:id = $id]/@points)" />
+                        <param name="coordinates" value="let $id := @xml:id || '-0'   return ext:convert-polygon-to-coordinates(id($id, .)/@points)" />
                         <pb:template xmlns="" xml:space="preserve">
                             <br />
                             <pb-facs-link class="facs-link-hidden" emit="facsimile" order="[[order]]" subscribe="facsimile" coordinates="[[coordinates]]"></pb-facs-link>
