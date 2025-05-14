@@ -43,7 +43,7 @@ declare function ext:get-header($letter, $lang-browser as xs:string?) {
                         <iron-icon id="date-range" icon="date-range" /> {ext:date-by-letter($letter, $lang-browser)}
                         <iron-icon id="map-near-me" icon="maps:near-me" /> {ext:place-name(ext:place-by-letter($letter, 'sent'))}
                     </span>
-                    <span class="doc-type">
+                    <span class="doc-type {if ($type != 'Brief') then 'doc-type-nonletter' else ''}">
                         <pb-i18n key="metadata.types.{$type}">{$type}</pb-i18n>
                     </span>
                 </div>

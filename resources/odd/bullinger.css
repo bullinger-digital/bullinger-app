@@ -56,11 +56,16 @@
 }
 
 .subtitle .doc-type {
-    border-radius: 0.75rem;
-    background-color: rgba(210,218,212,1);
-    margin-left: 1rem;
-    padding: 0.25rem 0.5rem 0.25rem 0.5rem;
-    font-size: 1rem;
+    border-radius: 1rem;
+    background-color: rgb(240,240,240);
+    margin: -1px 0 0 1rem;
+    padding: 0.3rem 0.7rem 0.35rem 0.7rem;
+    font-size: 0.95rem;
+}
+
+.subtitle .doc-type-nonletter {
+    background-color: rgb(255 249 113);
+    border: 1px solid #DFDFDF;
 }
 
 .subtitle #date-range {
