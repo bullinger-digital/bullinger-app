@@ -45,7 +45,7 @@
                         <h2 class="section-title"><pb-i18n key="letterText">(Brieftext)</pb-i18n> <span data-template="app:transcription-source"></span> 
                           <small class="small-t"><label for="lang-toggle"><input type="checkbox" name="lang-toggle" id="lang-toggle" value="test" />&#160;<pb-i18n key="showLanguage">(Show Language)</pb-i18n></label></small></h2>
                         <div class="section-content">
-                            <pb-view id="view1" src="document1" column-separator=".tei-cb" append-footnotes="append-footnotes" subscribe="transcription" emit="transcription" use-language="" />
+                            <pb-view id="view1" src="document1" column-separator=".tei-cb" append-footnotes="append-footnotes" subscribe="transcription" emit="transcription" use-language="" view="single" />
                             <pb-view id="facsimile-links" src="document1" xpath="//facsimile" view="single" wait-for="#facsimile" emit="facsimile" use-language="">
                                 <pb-param name="view" value="facsimile"/>
                             </pb-view>
