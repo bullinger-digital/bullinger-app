@@ -2,8 +2,11 @@
     <div class="search-keyword-help">
         Refine the search with the following control characters:<br /><br />
         <span class="search-keyword-help-character">*</span> as a wildcard for any text<br />
-        Example: <i>Vadian*</i><br /><br />
+        Example: <span class="search-keyword-help-character">Vadian*</span><br /><br />
         <span class="search-keyword-help-character">~</span> to specify fuzziness / distance that will be considered in the search<br />
-        Example: <i>arbeit~1</i> will also find letters with the terms <i>arbeyt</i> or <i>arbait</i>
+        Example: <span class="search-keyword-help-character">arbeit~1</span> will also find letters with the terms <i>arbeyt</i> or <i>arbait</i><br /><br />
+
+        The character <span class="search-keyword-help-character">~</span> can also be used to search for words within a certain distance of each other.<br />
+        Example: <span class="search-keyword-help-character">"Zwingli Haller"~5</span> finds letters containing passages where there are no more than five words between Zwingli and Haller.
     </div>
 </main>
