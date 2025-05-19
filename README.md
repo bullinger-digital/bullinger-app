@@ -1,3 +1,8 @@
-# Bullinger Digital (built with TEI Publisher)
+# Bullinger Digital – TEI Publisher Application
 
-This repository holds the source code for the TEI Publisher version of Bullinger Digital, available on [www.bullinger-digital.ch](https://www.bullinger-digital.ch).
+[www.bullinger-digital.ch](https://www.bullinger-digital.ch)
+
+**Bullinger Digital** is developed using [TEI Publisher](https://teipublisher.com/index.html), a specialized framework for publishing digital editions.
+
+For more information about the project, please see the separate data repository at 
+[https://github.com/bullinger-digital/bullinger-korpus-tei](https://github.com/bullinger-digital/bullinger-korpus-tei).
