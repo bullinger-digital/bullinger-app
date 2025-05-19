@@ -45,7 +45,7 @@ declare %private function iiif:canvases($doc as node()) {
         map {
             "@id": $iiifc:CANVAS_ID_PREFIX || $id,
             "@type": "sc:Canvas",
-            "label": "Page " || $pb/@n,
+            "label": substring-after($pb/string(), "/"),
             "width": $info?width,
             "height": $info?height,
             "images": [
@@ -96,7 +96,6 @@ declare %private function iiif:link($relpath as xs:string) {
  :)
 declare function iiif:manifest($request as map(*)) {
     let $id := xmldb:decode-uri($request?parameters?path)
-    let $log := util:log("info", $id)
     let $doc := config:get-document($id)/tei:TEI
     let $canvases := iiif:canvases($doc)
     return
