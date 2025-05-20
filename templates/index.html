@@ -4,7 +4,7 @@
         <meta data-target="title-template" name="pb-template" content="index.html"/>
     </head>
     <body>
-        <pb-page data-template="pages:pb-page" unresolved="unresolved"
+        <pb-page id="pb-page-home" data-template="pages:pb-page" unresolved="unresolved"
                 locales="resources/i18n/{{ns}}/{{lng}}.json"
                 require-language="require-language" locale-fallback-ns="app">
             <header class="top-header">
@@ -15,5 +15,6 @@
             </main>
             <footer data-template="lib:include" data-template-path="templates/footer.html"/> 
         </pb-page>
+        <script src="./resources/scripts/home.js" type="text/javascript"></script>
     </body>
 </html>
