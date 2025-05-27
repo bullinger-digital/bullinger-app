@@ -214,6 +214,12 @@
                             </pb-popover>
                         </pb:template>
                     </model>
+                    <model predicate="@source and matches(@source, '^https?://')" behaviour="inline">
+                        <param name="url" value="@source"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <a target="_blank" href="[[url]]">[[content]]</a>
+                        </pb:template>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="placeName" mode="add">
                     <model predicate="@ref" behaviour="inline" cssClass="place">
@@ -256,10 +262,22 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="ref" mode="change">
-                    <model predicate="@target" behaviour="inline">
+                    <model predicate="@target and matches(@target, '^file[0-9a-z]+$')" behaviour="inline">
                         <param name="nr" value="fn:replace(@target, 'file', '')"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <a target="_blank" href="file[[nr]]">[[content]]</a>
+                        </pb:template>
+                    </model>
+                    <model predicate="@target and matches(@target, '^https?://')" behaviour="inline">
+                        <param name="url" value="@target"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <a target="_blank" href="[[url]]">[[content]]</a>
+                        </pb:template>
+                    </model>
+                    <model predicate="@type = 'url' and matches(./text(), '^https?://')" behaviour="inline">
+                        <param name="url" value="./text()"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <a target="_blank" href="[[url]]">[[content]]</a>
                         </pb:template>
                     </model>
                 </elementSpec>
