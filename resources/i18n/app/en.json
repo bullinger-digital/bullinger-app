@@ -132,6 +132,7 @@
     "automaticTranscription": "Automatic transcription",
     "facsimile": "Facsimile",
     "facsimileUnavailable": "Facsimile for this letter is not available.",
+    "facsimileExternal": "The facsimile for this letter is available externally:",
     "registers": {
         "search": "Search",
         "correspondents": "Correspondents",

@@ -434,3 +434,21 @@ function app:facsimile-source($node as node(), $model as map(*)) {
             </pb-popover>
         ) else ()
 };
+
+declare 
+    %templates:wrap
+function app:facsimile-availability($node as node(), $model as map(*)) {
+    let $tei := collection($config:data-default)//tei:TEI[@xml:id=$model?doc]
+    let $link := $tei//tei:sourceDesc//tei:idno[@subtype="Quelle"]
+    return
+        if($link and matches($link/text(), "^https?://")) 
+        then (
+            <pb-i18n key="facsimileExternal">(Das Faksimile für diesen Brief ist extern verfügbar:)</pb-i18n>,
+            <br />,
+            <a href="{$link/text()}" target="_blank">
+                { $link/text() }
+            </a>
+        ) else (
+            <pb-i18n key="facsimileUnavailable">(faksimileUnavailable)</pb-i18n>
+        )
+};

@@ -132,6 +132,7 @@
     "automaticTranscription": "Automatische Transkription",
     "facsimile": "Faksimile",
     "facsimileUnavailable": "Für diesen Brief ist kein Facsimile verfügbar.",
+    "facsimileExternal": "Das Faksimile für diesen Brief ist extern verfügbar:",
     "registers": {
         "search": "Suche",
         "correspondents": "Korrespondenten",
